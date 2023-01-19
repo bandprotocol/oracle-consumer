@@ -1,10 +1,12 @@
 // THIS FILE IS GENERATED AUTOMATICALLY. DO NOT MODIFY.
 
 import ConsumerConsumer from './consumer.consumer'
+import ConsumerOracleconsumer from './consumer.oracleconsumer'
 
 
 export default { 
   ConsumerConsumer: load(ConsumerConsumer, 'consumer.consumer'),
+  ConsumerOracleconsumer: load(ConsumerOracleconsumer, 'consumer.oracleconsumer'),
   
 }
 
