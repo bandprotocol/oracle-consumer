@@ -24,7 +24,11 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgSetRequestInterval = "op_weight_msg_set_request_interval"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSetRequestInterval int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -58,6 +62,17 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+
+	var weightMsgSetRequestInterval int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSetRequestInterval, &weightMsgSetRequestInterval, nil,
+		func(_ *rand.Rand) {
+			weightMsgSetRequestInterval = defaultWeightMsgSetRequestInterval
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSetRequestInterval,
+		oracleconsumersimulation.SimulateMsgSetRequestInterval(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 

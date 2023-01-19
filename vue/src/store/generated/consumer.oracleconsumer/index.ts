@@ -132,7 +132,33 @@ export default {
 		},
 		
 		
+		async sendMsgSetRequestInterval({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.ConsumerOracleconsumer.tx.sendMsgSetRequestInterval({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSetRequestInterval:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSetRequestInterval:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
+		async MsgSetRequestInterval({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.ConsumerOracleconsumer.tx.msgSetRequestInterval({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSetRequestInterval:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSetRequestInterval:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		
 	}
 }

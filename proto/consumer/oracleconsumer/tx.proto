@@ -1,13 +1,37 @@
 syntax = "proto3";
 package consumer.oracleconsumer;
 
-// this line is used by starport scaffolding # proto/tx/import
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
 
 option go_package = "consumer/x/oracleconsumer/types";
 
+// this line is used by starport scaffolding # proto/tx/import
+
+
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc SetRequestInterval(MsgSetRequestInterval) returns (MsgSetRequestIntervalResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgSetRequestInterval {
+  uint64 osId = 1;
+  bytes calldata = 2;
+  uint64 blockInterval = 3;
+  uint64 askCount = 4;
+  uint64 minCount = 5;
+  repeated cosmos.base.v1beta1.Coin fee_limit = 6 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  uint64 prepareGas = 7;
+  uint64 executeGas = 8;
+  string sender = 9;
+}
+
+message MsgSetRequestIntervalResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
