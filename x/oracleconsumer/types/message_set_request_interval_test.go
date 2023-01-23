@@ -12,18 +12,18 @@ import (
 func TestMsgSetRequestInterval_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetRequestInterval
+		msg  MsgCreateRequestInterval
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetRequestInterval{
+			msg: MsgCreateRequestInterval{
 				Sender: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetRequestInterval{
+			msg: MsgCreateRequestInterval{
 				Sender: sample.AccAddress(),
 			},
 		},

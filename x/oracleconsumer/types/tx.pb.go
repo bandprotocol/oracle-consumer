@@ -30,7 +30,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgSetRequestInterval struct {
+type MsgCreateRequestInterval struct {
 	OracleScriptId uint64                                   `protobuf:"varint,1,opt,name=oracle_script_id,json=oracleScriptId,proto3" json:"oracle_script_id,omitempty"`
 	Calldata       []byte                                   `protobuf:"bytes,2,opt,name=calldata,proto3" json:"calldata,omitempty"`
 	BlockInterval  uint64                                   `protobuf:"varint,3,opt,name=block_interval,json=blockInterval,proto3" json:"block_interval,omitempty"`
@@ -43,18 +43,18 @@ type MsgSetRequestInterval struct {
 	Sender         string                                   `protobuf:"bytes,10,opt,name=sender,proto3" json:"sender,omitempty"`
 }
 
-func (m *MsgSetRequestInterval) Reset()         { *m = MsgSetRequestInterval{} }
-func (m *MsgSetRequestInterval) String() string { return proto.CompactTextString(m) }
-func (*MsgSetRequestInterval) ProtoMessage()    {}
-func (*MsgSetRequestInterval) Descriptor() ([]byte, []int) {
+func (m *MsgCreateRequestInterval) Reset()         { *m = MsgCreateRequestInterval{} }
+func (m *MsgCreateRequestInterval) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateRequestInterval) ProtoMessage()    {}
+func (*MsgCreateRequestInterval) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d6011a1e590132c7, []int{0}
 }
-func (m *MsgSetRequestInterval) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateRequestInterval) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgSetRequestInterval) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateRequestInterval) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgSetRequestInterval.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateRequestInterval.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -64,104 +64,104 @@ func (m *MsgSetRequestInterval) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *MsgSetRequestInterval) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSetRequestInterval.Merge(m, src)
+func (m *MsgCreateRequestInterval) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateRequestInterval.Merge(m, src)
 }
-func (m *MsgSetRequestInterval) XXX_Size() int {
+func (m *MsgCreateRequestInterval) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgSetRequestInterval) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSetRequestInterval.DiscardUnknown(m)
+func (m *MsgCreateRequestInterval) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateRequestInterval.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgSetRequestInterval proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateRequestInterval proto.InternalMessageInfo
 
-func (m *MsgSetRequestInterval) GetOracleScriptId() uint64 {
+func (m *MsgCreateRequestInterval) GetOracleScriptId() uint64 {
 	if m != nil {
 		return m.OracleScriptId
 	}
 	return 0
 }
 
-func (m *MsgSetRequestInterval) GetCalldata() []byte {
+func (m *MsgCreateRequestInterval) GetCalldata() []byte {
 	if m != nil {
 		return m.Calldata
 	}
 	return nil
 }
 
-func (m *MsgSetRequestInterval) GetBlockInterval() uint64 {
+func (m *MsgCreateRequestInterval) GetBlockInterval() uint64 {
 	if m != nil {
 		return m.BlockInterval
 	}
 	return 0
 }
 
-func (m *MsgSetRequestInterval) GetAskCount() uint64 {
+func (m *MsgCreateRequestInterval) GetAskCount() uint64 {
 	if m != nil {
 		return m.AskCount
 	}
 	return 0
 }
 
-func (m *MsgSetRequestInterval) GetMinCount() uint64 {
+func (m *MsgCreateRequestInterval) GetMinCount() uint64 {
 	if m != nil {
 		return m.MinCount
 	}
 	return 0
 }
 
-func (m *MsgSetRequestInterval) GetFeeLimit() github_com_cosmos_cosmos_sdk_types.Coins {
+func (m *MsgCreateRequestInterval) GetFeeLimit() github_com_cosmos_cosmos_sdk_types.Coins {
 	if m != nil {
 		return m.FeeLimit
 	}
 	return nil
 }
 
-func (m *MsgSetRequestInterval) GetPrepareGas() uint64 {
+func (m *MsgCreateRequestInterval) GetPrepareGas() uint64 {
 	if m != nil {
 		return m.PrepareGas
 	}
 	return 0
 }
 
-func (m *MsgSetRequestInterval) GetExecuteGas() uint64 {
+func (m *MsgCreateRequestInterval) GetExecuteGas() uint64 {
 	if m != nil {
 		return m.ExecuteGas
 	}
 	return 0
 }
 
-func (m *MsgSetRequestInterval) GetSourceChannel() string {
+func (m *MsgCreateRequestInterval) GetSourceChannel() string {
 	if m != nil {
 		return m.SourceChannel
 	}
 	return ""
 }
 
-func (m *MsgSetRequestInterval) GetSender() string {
+func (m *MsgCreateRequestInterval) GetSender() string {
 	if m != nil {
 		return m.Sender
 	}
 	return ""
 }
 
-type MsgSetRequestIntervalResponse struct {
+type MsgCreateRequestIntervalResponse struct {
 	RequestIntervalId uint64 `protobuf:"varint,1,opt,name=request_interval_id,json=requestIntervalId,proto3" json:"request_interval_id,omitempty"`
 }
 
-func (m *MsgSetRequestIntervalResponse) Reset()         { *m = MsgSetRequestIntervalResponse{} }
-func (m *MsgSetRequestIntervalResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgSetRequestIntervalResponse) ProtoMessage()    {}
-func (*MsgSetRequestIntervalResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateRequestIntervalResponse) Reset()         { *m = MsgCreateRequestIntervalResponse{} }
+func (m *MsgCreateRequestIntervalResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateRequestIntervalResponse) ProtoMessage()    {}
+func (*MsgCreateRequestIntervalResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_d6011a1e590132c7, []int{1}
 }
-func (m *MsgSetRequestIntervalResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateRequestIntervalResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgSetRequestIntervalResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateRequestIntervalResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgSetRequestIntervalResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateRequestIntervalResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -171,19 +171,19 @@ func (m *MsgSetRequestIntervalResponse) XXX_Marshal(b []byte, deterministic bool
 		return b[:n], nil
 	}
 }
-func (m *MsgSetRequestIntervalResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSetRequestIntervalResponse.Merge(m, src)
+func (m *MsgCreateRequestIntervalResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateRequestIntervalResponse.Merge(m, src)
 }
-func (m *MsgSetRequestIntervalResponse) XXX_Size() int {
+func (m *MsgCreateRequestIntervalResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgSetRequestIntervalResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSetRequestIntervalResponse.DiscardUnknown(m)
+func (m *MsgCreateRequestIntervalResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateRequestIntervalResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgSetRequestIntervalResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateRequestIntervalResponse proto.InternalMessageInfo
 
-func (m *MsgSetRequestIntervalResponse) GetRequestIntervalId() uint64 {
+func (m *MsgCreateRequestIntervalResponse) GetRequestIntervalId() uint64 {
 	if m != nil {
 		return m.RequestIntervalId
 	}
@@ -191,44 +191,44 @@ func (m *MsgSetRequestIntervalResponse) GetRequestIntervalId() uint64 {
 }
 
 func init() {
-	proto.RegisterType((*MsgSetRequestInterval)(nil), "consumer.oracleconsumer.MsgSetRequestInterval")
-	proto.RegisterType((*MsgSetRequestIntervalResponse)(nil), "consumer.oracleconsumer.MsgSetRequestIntervalResponse")
+	proto.RegisterType((*MsgCreateRequestInterval)(nil), "consumer.oracleconsumer.MsgCreateRequestInterval")
+	proto.RegisterType((*MsgCreateRequestIntervalResponse)(nil), "consumer.oracleconsumer.MsgCreateRequestIntervalResponse")
 }
 
 func init() { proto.RegisterFile("consumer/oracleconsumer/tx.proto", fileDescriptor_d6011a1e590132c7) }
 
 var fileDescriptor_d6011a1e590132c7 = []byte{
-	// 480 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0xcf, 0x6e, 0xd3, 0x40,
-	0x10, 0xc6, 0x63, 0x52, 0x42, 0xb2, 0xa5, 0x11, 0x98, 0x7f, 0x26, 0x08, 0x27, 0xaa, 0x54, 0xc9,
-	0x17, 0xd6, 0xb4, 0x48, 0x48, 0x5c, 0x9b, 0x03, 0x8a, 0x44, 0x85, 0xe4, 0xde, 0xb8, 0x58, 0x9b,
-	0xf5, 0xd4, 0x59, 0xc5, 0xde, 0x35, 0x3b, 0xeb, 0x2a, 0x48, 0xdc, 0x78, 0x01, 0x5e, 0x03, 0x9e,
-	0xa4, 0xc7, 0x1e, 0x39, 0x01, 0x4a, 0x5e, 0x04, 0xd9, 0xeb, 0x1a, 0x55, 0x84, 0x43, 0x4f, 0xc9,
-	0x7c, 0xdf, 0x6f, 0x67, 0x67, 0x76, 0xc6, 0x64, 0xc2, 0x95, 0xc4, 0x32, 0x07, 0x1d, 0x2a, 0xcd,
-	0x78, 0x06, 0x6d, 0x68, 0x56, 0xb4, 0xd0, 0xca, 0x28, 0xf7, 0xc9, 0x95, 0x44, 0xaf, 0x13, 0xa3,
-	0x87, 0xa9, 0x4a, 0x55, 0xcd, 0x84, 0xd5, 0x3f, 0x8b, 0x8f, 0x7c, 0xae, 0x30, 0x57, 0x18, 0xce,
-	0x19, 0x42, 0x78, 0x7e, 0x38, 0x07, 0xc3, 0x0e, 0x43, 0xae, 0x84, 0xb4, 0xfe, 0xfe, 0xb7, 0x2e,
-	0x79, 0x74, 0x82, 0xe9, 0x29, 0x98, 0x08, 0x3e, 0x96, 0x80, 0x66, 0x26, 0x0d, 0xe8, 0x73, 0x96,
-	0xb9, 0x01, 0xb9, 0x67, 0x6f, 0x88, 0x91, 0x6b, 0x51, 0x98, 0x58, 0x24, 0x9e, 0x33, 0x71, 0x82,
-	0x9d, 0x68, 0x68, 0xf5, 0xd3, 0x5a, 0x9e, 0x25, 0xee, 0x88, 0xf4, 0x39, 0xcb, 0xb2, 0x84, 0x19,
-	0xe6, 0xdd, 0x9a, 0x38, 0xc1, 0xdd, 0xa8, 0x8d, 0xdd, 0x03, 0x32, 0x9c, 0x67, 0x8a, 0x2f, 0x63,
-	0xd1, 0xe4, 0xf5, 0xba, 0x75, 0x8e, 0xbd, 0x5a, 0x6d, 0x2f, 0x7b, 0x46, 0x06, 0x0c, 0x97, 0x31,
-	0x57, 0xa5, 0x34, 0xde, 0x4e, 0x4d, 0xf4, 0x19, 0x2e, 0xa7, 0x55, 0x5c, 0x99, 0xb9, 0x90, 0x8d,
-	0x79, 0xdb, 0x9a, 0xb9, 0x90, 0xd6, 0x5c, 0x90, 0xc1, 0x19, 0x40, 0x9c, 0x89, 0x5c, 0x18, 0xaf,
-	0x37, 0xe9, 0x06, 0xbb, 0x47, 0x4f, 0xa9, 0x6d, 0x9a, 0x56, 0x4d, 0xd3, 0xa6, 0x69, 0x3a, 0x55,
-	0x42, 0x1e, 0xbf, 0xbc, 0xf8, 0x39, 0xee, 0x7c, 0xff, 0x35, 0x0e, 0x52, 0x61, 0x16, 0xe5, 0x9c,
-	0x72, 0x95, 0x87, 0xcd, 0x0b, 0xd9, 0x9f, 0x17, 0x98, 0x2c, 0x43, 0xf3, 0xa9, 0x00, 0xac, 0x0f,
-	0x60, 0xd4, 0x3f, 0x03, 0x78, 0x57, 0x25, 0x77, 0xc7, 0x64, 0xb7, 0xd0, 0x50, 0x30, 0x0d, 0x71,
-	0xca, 0xd0, 0xbb, 0x53, 0x17, 0x42, 0x1a, 0xe9, 0x2d, 0xc3, 0x0a, 0x80, 0x15, 0xf0, 0xd2, 0x58,
-	0xa0, 0x6f, 0x81, 0x46, 0xaa, 0x80, 0x03, 0x32, 0x44, 0x55, 0x6a, 0x0e, 0x31, 0x5f, 0x30, 0x29,
-	0x21, 0xf3, 0x06, 0x13, 0x27, 0x18, 0x44, 0x7b, 0x56, 0x9d, 0x5a, 0xd1, 0x7d, 0x4c, 0x7a, 0x08,
-	0x32, 0x01, 0xed, 0x91, 0xda, 0x6e, 0xa2, 0xfd, 0xf7, 0xe4, 0xf9, 0xd6, 0x51, 0x45, 0x80, 0x85,
-	0x92, 0x08, 0x2e, 0x25, 0x0f, 0xb4, 0xb5, 0xda, 0xe7, 0xfe, 0x3b, 0xb5, 0xfb, 0xfa, 0xfa, 0xa9,
-	0x59, 0x72, 0xf4, 0xc5, 0x21, 0xdd, 0x13, 0x4c, 0xdd, 0xcf, 0xc4, 0xdd, 0xb2, 0x00, 0x94, 0xfe,
-	0x67, 0xd5, 0xe8, 0xd6, 0x2a, 0x46, 0xaf, 0x6f, 0xc6, 0x5f, 0x55, 0x7d, 0xfc, 0xe6, 0x62, 0xed,
-	0x3b, 0x97, 0x6b, 0xdf, 0xf9, 0xbd, 0xf6, 0x9d, 0xaf, 0x1b, 0xbf, 0x73, 0xb9, 0xf1, 0x3b, 0x3f,
-	0x36, 0x7e, 0xe7, 0xc3, 0xb8, 0x5d, 0xff, 0xd5, 0x3f, 0xdf, 0x43, 0x35, 0xa2, 0x79, 0xaf, 0x5e,
-	0xe2, 0x57, 0x7f, 0x02, 0x00, 0x00, 0xff, 0xff, 0x10, 0x8f, 0xd2, 0x5c, 0x37, 0x03, 0x00, 0x00,
+	// 479 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0x8e, 0x49, 0x29, 0xc9, 0x96, 0x46, 0x60, 0xfe, 0x4c, 0x90, 0x1c, 0xab, 0x52, 0x25, 0x5f,
+	0x58, 0x93, 0x72, 0xea, 0xb5, 0x39, 0xa0, 0x48, 0xf4, 0x62, 0x6e, 0x5c, 0xac, 0xcd, 0x7a, 0xea,
+	0xac, 0x62, 0xef, 0x9a, 0x9d, 0x75, 0x15, 0x1e, 0x80, 0x23, 0x12, 0xcf, 0x81, 0x78, 0x90, 0x1e,
+	0x7b, 0xe4, 0x04, 0x28, 0x79, 0x11, 0x64, 0xaf, 0x6b, 0x54, 0x41, 0x0e, 0x9c, 0xec, 0xef, 0x67,
+	0x66, 0x67, 0x76, 0x66, 0x49, 0xc0, 0x95, 0xc4, 0xaa, 0x00, 0x1d, 0x29, 0xcd, 0x78, 0x0e, 0x1d,
+	0x34, 0x6b, 0x5a, 0x6a, 0x65, 0x94, 0xfb, 0xec, 0x86, 0xa2, 0xb7, 0x1d, 0xe3, 0xc7, 0x99, 0xca,
+	0x54, 0xe3, 0x89, 0xea, 0x3f, 0x6b, 0x1f, 0xfb, 0x5c, 0x61, 0xa1, 0x30, 0x5a, 0x30, 0x84, 0xe8,
+	0x72, 0xba, 0x00, 0xc3, 0xa6, 0x11, 0x57, 0x42, 0x5a, 0xfd, 0xe8, 0x5b, 0x9f, 0x78, 0xe7, 0x98,
+	0xcd, 0x34, 0x30, 0x03, 0x31, 0x7c, 0xa8, 0x00, 0xcd, 0x5c, 0x1a, 0xd0, 0x97, 0x2c, 0x77, 0x43,
+	0xf2, 0xc0, 0x1e, 0x92, 0x20, 0xd7, 0xa2, 0x34, 0x89, 0x48, 0x3d, 0x27, 0x70, 0xc2, 0xbd, 0x78,
+	0x64, 0xf9, 0x77, 0x0d, 0x3d, 0x4f, 0xdd, 0x31, 0x19, 0x70, 0x96, 0xe7, 0x29, 0x33, 0xcc, 0xbb,
+	0x13, 0x38, 0xe1, 0xfd, 0xb8, 0xc3, 0xee, 0x31, 0x19, 0x2d, 0x72, 0xc5, 0x57, 0x89, 0x68, 0xf3,
+	0x7a, 0xfd, 0x26, 0xc7, 0x61, 0xc3, 0x76, 0x87, 0xbd, 0x20, 0x43, 0x86, 0xab, 0x84, 0xab, 0x4a,
+	0x1a, 0x6f, 0xaf, 0x71, 0x0c, 0x18, 0xae, 0x66, 0x35, 0xae, 0xc5, 0x42, 0xc8, 0x56, 0xbc, 0x6b,
+	0xc5, 0x42, 0x48, 0x2b, 0x2e, 0xc9, 0xf0, 0x02, 0x20, 0xc9, 0x45, 0x21, 0x8c, 0xb7, 0x1f, 0xf4,
+	0xc3, 0x83, 0x93, 0xe7, 0xd4, 0xf6, 0x4d, 0xeb, 0xbe, 0x69, 0xdb, 0x37, 0x9d, 0x29, 0x21, 0xcf,
+	0x5e, 0x5d, 0xfd, 0x98, 0xf4, 0xbe, 0xfe, 0x9c, 0x84, 0x99, 0x30, 0xcb, 0x6a, 0x41, 0xb9, 0x2a,
+	0xa2, 0xf6, 0x92, 0xec, 0xe7, 0x25, 0xa6, 0xab, 0xc8, 0x7c, 0x2c, 0x01, 0x9b, 0x00, 0x8c, 0x07,
+	0x17, 0x00, 0x6f, 0xeb, 0xe4, 0xee, 0x84, 0x1c, 0x94, 0x1a, 0x4a, 0xa6, 0x21, 0xc9, 0x18, 0x7a,
+	0xf7, 0x9a, 0x42, 0x48, 0x4b, 0xbd, 0x61, 0x58, 0x1b, 0x60, 0x0d, 0xbc, 0x32, 0xd6, 0x30, 0xb0,
+	0x86, 0x96, 0xaa, 0x0d, 0xc7, 0x64, 0x84, 0xaa, 0xd2, 0x1c, 0x12, 0xbe, 0x64, 0x52, 0x42, 0xee,
+	0x0d, 0x03, 0x27, 0x1c, 0xc6, 0x87, 0x96, 0x9d, 0x59, 0xd2, 0x7d, 0x4a, 0xf6, 0x11, 0x64, 0x0a,
+	0xda, 0x23, 0x8d, 0xdc, 0xa2, 0xa3, 0x98, 0x04, 0xbb, 0xa6, 0x15, 0x03, 0x96, 0x4a, 0x22, 0xb8,
+	0x94, 0x3c, 0xd2, 0x56, 0xea, 0x6e, 0xfc, 0xcf, 0xe0, 0x1e, 0xea, 0xdb, 0x51, 0xf3, 0xf4, 0xe4,
+	0xb3, 0x43, 0xfa, 0xe7, 0x98, 0xb9, 0x9f, 0x1c, 0xf2, 0xe4, 0xdf, 0x7b, 0x30, 0xa5, 0x3b, 0x96,
+	0x8e, 0xee, 0x2a, 0x66, 0x7c, 0xfa, 0xdf, 0x21, 0x37, 0xf5, 0x9f, 0x9d, 0x5e, 0x6d, 0x7c, 0xe7,
+	0x7a, 0xe3, 0x3b, 0xbf, 0x36, 0xbe, 0xf3, 0x65, 0xeb, 0xf7, 0xae, 0xb7, 0x7e, 0xef, 0xfb, 0xd6,
+	0xef, 0xbd, 0x9f, 0x74, 0xcf, 0x61, 0xfd, 0xd7, 0xfb, 0xa8, 0xe7, 0xb5, 0xd8, 0x6f, 0x96, 0xfa,
+	0xf5, 0xef, 0x00, 0x00, 0x00, 0xff, 0xff, 0x9b, 0xd2, 0xf4, 0x00, 0x47, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -243,7 +243,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	SetRequestInterval(ctx context.Context, in *MsgSetRequestInterval, opts ...grpc.CallOption) (*MsgSetRequestIntervalResponse, error)
+	CreateRequestInterval(ctx context.Context, in *MsgCreateRequestInterval, opts ...grpc.CallOption) (*MsgCreateRequestIntervalResponse, error)
 }
 
 type msgClient struct {
@@ -254,9 +254,9 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) SetRequestInterval(ctx context.Context, in *MsgSetRequestInterval, opts ...grpc.CallOption) (*MsgSetRequestIntervalResponse, error) {
-	out := new(MsgSetRequestIntervalResponse)
-	err := c.cc.Invoke(ctx, "/consumer.oracleconsumer.Msg/SetRequestInterval", in, out, opts...)
+func (c *msgClient) CreateRequestInterval(ctx context.Context, in *MsgCreateRequestInterval, opts ...grpc.CallOption) (*MsgCreateRequestIntervalResponse, error) {
+	out := new(MsgCreateRequestIntervalResponse)
+	err := c.cc.Invoke(ctx, "/consumer.oracleconsumer.Msg/CreateRequestInterval", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -265,35 +265,35 @@ func (c *msgClient) SetRequestInterval(ctx context.Context, in *MsgSetRequestInt
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	SetRequestInterval(context.Context, *MsgSetRequestInterval) (*MsgSetRequestIntervalResponse, error)
+	CreateRequestInterval(context.Context, *MsgCreateRequestInterval) (*MsgCreateRequestIntervalResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) SetRequestInterval(ctx context.Context, req *MsgSetRequestInterval) (*MsgSetRequestIntervalResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetRequestInterval not implemented")
+func (*UnimplementedMsgServer) CreateRequestInterval(ctx context.Context, req *MsgCreateRequestInterval) (*MsgCreateRequestIntervalResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRequestInterval not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
 }
 
-func _Msg_SetRequestInterval_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgSetRequestInterval)
+func _Msg_CreateRequestInterval_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateRequestInterval)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).SetRequestInterval(ctx, in)
+		return srv.(MsgServer).CreateRequestInterval(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/consumer.oracleconsumer.Msg/SetRequestInterval",
+		FullMethod: "/consumer.oracleconsumer.Msg/CreateRequestInterval",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).SetRequestInterval(ctx, req.(*MsgSetRequestInterval))
+		return srv.(MsgServer).CreateRequestInterval(ctx, req.(*MsgCreateRequestInterval))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -303,15 +303,15 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SetRequestInterval",
-			Handler:    _Msg_SetRequestInterval_Handler,
+			MethodName: "CreateRequestInterval",
+			Handler:    _Msg_CreateRequestInterval_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "consumer/oracleconsumer/tx.proto",
 }
 
-func (m *MsgSetRequestInterval) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateRequestInterval) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -321,12 +321,12 @@ func (m *MsgSetRequestInterval) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSetRequestInterval) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateRequestInterval) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSetRequestInterval) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateRequestInterval) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -399,7 +399,7 @@ func (m *MsgSetRequestInterval) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgSetRequestIntervalResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateRequestIntervalResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -409,12 +409,12 @@ func (m *MsgSetRequestIntervalResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSetRequestIntervalResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateRequestIntervalResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSetRequestIntervalResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateRequestIntervalResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -438,7 +438,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgSetRequestInterval) Size() (n int) {
+func (m *MsgCreateRequestInterval) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -483,7 +483,7 @@ func (m *MsgSetRequestInterval) Size() (n int) {
 	return n
 }
 
-func (m *MsgSetRequestIntervalResponse) Size() (n int) {
+func (m *MsgCreateRequestIntervalResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -501,7 +501,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *MsgSetRequestInterval) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateRequestInterval) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -524,10 +524,10 @@ func (m *MsgSetRequestInterval) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSetRequestInterval: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateRequestInterval: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSetRequestInterval: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateRequestInterval: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -797,7 +797,7 @@ func (m *MsgSetRequestInterval) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgSetRequestIntervalResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateRequestIntervalResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -820,10 +820,10 @@ func (m *MsgSetRequestIntervalResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSetRequestIntervalResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateRequestIntervalResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSetRequestIntervalResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateRequestIntervalResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

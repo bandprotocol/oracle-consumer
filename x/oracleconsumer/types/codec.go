@@ -8,13 +8,13 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgSetRequestInterval{}, "oracleconsumer/SetRequestInterval", nil)
+	cdc.RegisterConcrete(&MsgCreateRequestInterval{}, "oracleconsumer/SetRequestInterval", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSetRequestInterval{},
+		&MsgCreateRequestInterval{},
 	)
 	// this line is used by starport scaffolding # 3
 

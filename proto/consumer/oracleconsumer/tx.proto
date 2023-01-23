@@ -12,11 +12,11 @@ option go_package = "consumer/x/oracleconsumer/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc SetRequestInterval(MsgSetRequestInterval) returns (MsgSetRequestIntervalResponse);
+      rpc CreateRequestInterval(MsgCreateRequestInterval) returns (MsgCreateRequestIntervalResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgSetRequestInterval {
+message MsgCreateRequestInterval {
   uint64 oracle_script_id = 1;
   bytes calldata = 2;
   uint64 block_interval = 3;
@@ -32,6 +32,6 @@ message MsgSetRequestInterval {
   string sender = 10;
 }
 
-message MsgSetRequestIntervalResponse {
+message MsgCreateRequestIntervalResponse {
   uint64 request_interval_id = 1;
 }
