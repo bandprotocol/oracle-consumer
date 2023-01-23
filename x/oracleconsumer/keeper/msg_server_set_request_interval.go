@@ -11,8 +11,10 @@ import (
 func (k msgServer) CreateRequestInterval(goCtx context.Context, msg *types.MsgCreateRequestInterval) (*types.MsgCreateRequestIntervalResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	_, err := k.CreateRequestInterval(ctx, msg)
+	if err != nil {
+		return nil, err
+	}
 
 	return &types.MsgCreateRequestIntervalResponse{}, nil
 }
