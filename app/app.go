@@ -107,9 +107,10 @@ import (
 	consumermodule "consumer/x/consumer"
 	consumermodulekeeper "consumer/x/consumer/keeper"
 	consumermoduletypes "consumer/x/consumer/types"
-	oracleconsumermodule "consumer/x/oracleconsumer"
-	oracleconsumermodulekeeper "consumer/x/oracleconsumer/keeper"
-	oracleconsumermoduletypes "consumer/x/oracleconsumer/types"
+	pricefeedmodule "consumer/x/pricefeed"
+	pricefeedmodulekeeper "consumer/x/pricefeed/keeper"
+	pricefeedmoduletypes "consumer/x/pricefeed/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "consumer/app/params"
@@ -169,7 +170,7 @@ var (
 		ica.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		consumermodule.AppModuleBasic{},
-		oracleconsumermodule.AppModuleBasic{},
+		pricefeedmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -245,7 +246,7 @@ type App struct {
 
 	ConsumerKeeper             consumermodulekeeper.Keeper
 	ScopedOracleconsumerKeeper capabilitykeeper.ScopedKeeper
-	OracleconsumerKeeper       oracleconsumermodulekeeper.Keeper
+	OracleconsumerKeeper       pricefeedmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -291,7 +292,7 @@ func New(
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
 		consumermoduletypes.StoreKey,
-		oracleconsumermoduletypes.StoreKey,
+		pricefeedmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -517,20 +518,20 @@ func New(
 	)
 	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper, app.AccountKeeper, app.BankKeeper)
 
-	scopedOracleconsumerKeeper := app.CapabilityKeeper.ScopeToModule(oracleconsumermoduletypes.ModuleName)
+	scopedOracleconsumerKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedmoduletypes.ModuleName)
 	app.ScopedOracleconsumerKeeper = scopedOracleconsumerKeeper
-	app.OracleconsumerKeeper = *oracleconsumermodulekeeper.NewKeeper(
+	app.OracleconsumerKeeper = *pricefeedmodulekeeper.NewKeeper(
 		appCodec,
-		keys[oracleconsumermoduletypes.StoreKey],
-		keys[oracleconsumermoduletypes.MemStoreKey],
-		app.GetSubspace(oracleconsumermoduletypes.ModuleName),
+		keys[pricefeedmoduletypes.StoreKey],
+		keys[pricefeedmoduletypes.MemStoreKey],
+		app.GetSubspace(pricefeedmoduletypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedOracleconsumerKeeper,
 	)
-	oracleconsumerModule := oracleconsumermodule.NewAppModule(appCodec, app.OracleconsumerKeeper, app.AccountKeeper, app.BankKeeper)
+	oracleconsumerModule := pricefeedmodule.NewAppModule(appCodec, app.OracleconsumerKeeper, app.AccountKeeper, app.BankKeeper)
 
-	oracleconsumerIBCModule := oracleconsumermodule.NewIBCModule(app.OracleconsumerKeeper)
+	oracleconsumerIBCModule := pricefeedmodule.NewIBCModule(app.OracleconsumerKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Sealing prevents other modules from creating scoped sub-keepers
@@ -540,7 +541,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
-	ibcRouter.AddRoute(oracleconsumermoduletypes.ModuleName, oracleconsumerIBCModule)
+	ibcRouter.AddRoute(pricefeedmoduletypes.ModuleName, oracleconsumerIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -609,7 +610,7 @@ func New(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		consumermoduletypes.ModuleName,
-		oracleconsumermoduletypes.ModuleName,
+		pricefeedmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -635,7 +636,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		consumermoduletypes.ModuleName,
-		oracleconsumermoduletypes.ModuleName,
+		pricefeedmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -666,7 +667,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		consumermoduletypes.ModuleName,
-		oracleconsumermoduletypes.ModuleName,
+		pricefeedmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -897,7 +898,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(consumermoduletypes.ModuleName)
-	paramsKeeper.Subspace(oracleconsumermoduletypes.ModuleName)
+	paramsKeeper.Subspace(pricefeedmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

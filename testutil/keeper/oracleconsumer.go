@@ -3,8 +3,8 @@ package keeper
 import (
 	"testing"
 
-	"consumer/x/oracleconsumer/keeper"
-	"consumer/x/oracleconsumer/types"
+	"consumer/x/pricefeed/keeper"
+	"consumer/x/pricefeed/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"

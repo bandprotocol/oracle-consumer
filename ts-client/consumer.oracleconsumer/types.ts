@@ -1,11 +1,5 @@
-import { OracleconsumerPacketData } from "./types/consumer/oracleconsumer/packet"
-import { NoData } from "./types/consumer/oracleconsumer/packet"
-import { Params } from "./types/consumer/oracleconsumer/params"
+import { OracleconsumerPacketData } from './types/consumer/pricefeed/packet'
+import { NoData } from './types/consumer/pricefeed/packet'
+import { Params } from './types/consumer/pricefeed/params'
 
-
-export {     
-    OracleconsumerPacketData,
-    NoData,
-    Params,
-    
- }
+export { OracleconsumerPacketData, NoData, Params }

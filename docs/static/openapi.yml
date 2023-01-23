@@ -40,7 +40,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /consumer/oracleconsumer/params:
+  /consumer/pricefeed/params:
     get:
       summary: Parameters queries the parameters of the module.
       operationId: ConsumerOracleconsumerParams
@@ -45088,12 +45088,12 @@ definitions:
                   "@type": "type.googleapis.com/google.protobuf.Duration",
                   "value": "1.212s"
                 }
-  consumer.oracleconsumer.MsgSetRequestIntervalResponse:
+  consumer.pricefeed.MsgSetRequestIntervalResponse:
     type: object
-  consumer.oracleconsumer.Params:
+  consumer.pricefeed.Params:
     type: object
     description: Params defines the parameters for the module.
-  consumer.oracleconsumer.QueryParamsResponse:
+  consumer.pricefeed.QueryParamsResponse:
     type: object
     properties:
       params:
