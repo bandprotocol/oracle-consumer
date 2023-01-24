@@ -17,46 +17,21 @@ var _ = strconv.Itoa(0)
 
 func CmdSetRequestInterval() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-request-interval [os-id] [calldata] [block-interval] [ask-count] [min-count] [fee-limit] [prepare-gas] [execute-gas]",
+		Use:   "set-request-interval [symbol] [oracle-script-id] [fee-limit] [block-interval]",
 		Short: "Broadcast message SetRequestInterval",
 		Args:  cobra.ExactArgs(9),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argOsId, err := strconv.ParseUint(args[0], 10, 64)
+			argOracleScriptId, err := strconv.ParseUint(args[1], 10, 64)
 			if err != nil {
 				return fmt.Errorf("unable to parse request ID: %w", err)
 			}
 
-			argCalldata, err := cmd.Flags().GetBytesHex(args[1])
+			argFeeLimit, err := sdk.ParseCoinsNormalized(args[2])
 			if err != nil {
 				return err
 			}
 
-			argBlockInterval, err := strconv.ParseUint(args[2], 10, 64)
-			if err != nil {
-				return fmt.Errorf("unable to parse request ID: %w", err)
-			}
-
-			argAskCount, err := strconv.ParseUint(args[3], 10, 64)
-			if err != nil {
-				return fmt.Errorf("unable to parse request ID: %w", err)
-			}
-
-			argMinCount, err := strconv.ParseUint(args[4], 10, 64)
-			if err != nil {
-				return fmt.Errorf("unable to parse request ID: %w", err)
-			}
-
-			argFeeLimit, err := sdk.ParseCoinsNormalized(args[5])
-			if err != nil {
-				return err
-			}
-
-			argPrepareGas, err := strconv.ParseUint(args[6], 10, 64)
-			if err != nil {
-				return fmt.Errorf("unable to parse request ID: %w", err)
-			}
-
-			argExecuteGas, err := strconv.ParseUint(args[7], 10, 64)
+			argBlockInterval, err := strconv.ParseUint(args[3], 10, 64)
 			if err != nil {
 				return fmt.Errorf("unable to parse request ID: %w", err)
 			}
@@ -67,14 +42,10 @@ func CmdSetRequestInterval() *cobra.Command {
 			}
 
 			msg := types.NewMsgSetRequestInterval(
-				argOsId,
-				argCalldata,
-				argBlockInterval,
-				argAskCount,
-				argMinCount,
+				args[0],
+				argOracleScriptId,
 				argFeeLimit,
-				argPrepareGas,
-				argExecuteGas,
+				argBlockInterval,
 				clientCtx.GetFromAddress().String(),
 			)
 			if err := msg.ValidateBasic(); err != nil {
