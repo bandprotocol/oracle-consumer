@@ -5,8 +5,6 @@ package types
 
 import (
 	fmt "fmt"
-	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
-	types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
@@ -26,15 +24,9 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type RequestInterval struct {
-	OracleScriptId uint64                                   `protobuf:"varint,1,opt,name=oracle_script_id,json=oracleScriptId,proto3" json:"oracle_script_id,omitempty"`
-	Calldata       []byte                                   `protobuf:"bytes,2,opt,name=calldata,proto3" json:"calldata,omitempty"`
-	BlockInterval  uint64                                   `protobuf:"varint,3,opt,name=block_interval,json=blockInterval,proto3" json:"block_interval,omitempty"`
-	AskCount       uint64                                   `protobuf:"varint,4,opt,name=ask_count,json=askCount,proto3" json:"ask_count,omitempty"`
-	MinCount       uint64                                   `protobuf:"varint,5,opt,name=min_count,json=minCount,proto3" json:"min_count,omitempty"`
-	FeeLimit       github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,6,rep,name=fee_limit,json=feeLimit,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"fee_limit"`
-	PrepareGas     uint64                                   `protobuf:"varint,7,opt,name=prepare_gas,json=prepareGas,proto3" json:"prepare_gas,omitempty"`
-	ExecuteGas     uint64                                   `protobuf:"varint,8,opt,name=execute_gas,json=executeGas,proto3" json:"execute_gas,omitempty"`
-	SourceChannel  string                                   `protobuf:"bytes,9,opt,name=source_channel,json=sourceChannel,proto3" json:"source_channel,omitempty"`
+	Symbol         string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	OracleScriptId uint64 `protobuf:"varint,2,opt,name=oracle_script_id,json=oracleScriptId,proto3" json:"oracle_script_id,omitempty"`
+	BlockInterval  uint64 `protobuf:"varint,3,opt,name=block_interval,json=blockInterval,proto3" json:"block_interval,omitempty"`
 }
 
 func (m *RequestInterval) Reset()         { *m = RequestInterval{} }
@@ -70,18 +62,18 @@ func (m *RequestInterval) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RequestInterval proto.InternalMessageInfo
 
+func (m *RequestInterval) GetSymbol() string {
+	if m != nil {
+		return m.Symbol
+	}
+	return ""
+}
+
 func (m *RequestInterval) GetOracleScriptId() uint64 {
 	if m != nil {
 		return m.OracleScriptId
 	}
 	return 0
-}
-
-func (m *RequestInterval) GetCalldata() []byte {
-	if m != nil {
-		return m.Calldata
-	}
-	return nil
 }
 
 func (m *RequestInterval) GetBlockInterval() uint64 {
@@ -91,48 +83,6 @@ func (m *RequestInterval) GetBlockInterval() uint64 {
 	return 0
 }
 
-func (m *RequestInterval) GetAskCount() uint64 {
-	if m != nil {
-		return m.AskCount
-	}
-	return 0
-}
-
-func (m *RequestInterval) GetMinCount() uint64 {
-	if m != nil {
-		return m.MinCount
-	}
-	return 0
-}
-
-func (m *RequestInterval) GetFeeLimit() github_com_cosmos_cosmos_sdk_types.Coins {
-	if m != nil {
-		return m.FeeLimit
-	}
-	return nil
-}
-
-func (m *RequestInterval) GetPrepareGas() uint64 {
-	if m != nil {
-		return m.PrepareGas
-	}
-	return 0
-}
-
-func (m *RequestInterval) GetExecuteGas() uint64 {
-	if m != nil {
-		return m.ExecuteGas
-	}
-	return 0
-}
-
-func (m *RequestInterval) GetSourceChannel() string {
-	if m != nil {
-		return m.SourceChannel
-	}
-	return ""
-}
-
 func init() {
 	proto.RegisterType((*RequestInterval)(nil), "consumer.pricefeed.RequestInterval")
 }
@@ -140,33 +90,21 @@ func init() {
 func init() { proto.RegisterFile("consumer/pricefeed/oracle.proto", fileDescriptor_afe39f7b31fac89b) }
 
 var fileDescriptor_afe39f7b31fac89b = []byte{
-	// 402 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x92, 0x4f, 0x8f, 0x94, 0x30,
-	0x18, 0xc6, 0xc1, 0x59, 0x57, 0xe8, 0xba, 0xa3, 0x21, 0x1e, 0x10, 0x13, 0x20, 0x26, 0x9b, 0x70,
-	0x91, 0xba, 0xea, 0x27, 0xd8, 0x39, 0x98, 0x4d, 0x3c, 0xe1, 0xcd, 0x0b, 0x29, 0xe5, 0x1d, 0xa6,
-	0x01, 0x5a, 0x6c, 0xcb, 0x66, 0xfd, 0x0c, 0x5e, 0xfc, 0x1c, 0x7e, 0x92, 0x39, 0xce, 0xd1, 0x93,
-	0x9a, 0x99, 0x2f, 0x62, 0x68, 0x91, 0xec, 0x09, 0xde, 0xe7, 0xf9, 0xf5, 0xfd, 0xd3, 0xbe, 0x28,
-	0xa1, 0x82, 0xab, 0xb1, 0x07, 0x89, 0x07, 0xc9, 0x28, 0x6c, 0x01, 0x6a, 0x2c, 0x24, 0xa1, 0x1d,
-	0xe4, 0x83, 0x14, 0x5a, 0x04, 0xc1, 0x7f, 0x20, 0x5f, 0x80, 0xe8, 0x45, 0x23, 0x1a, 0x61, 0x6c,
-	0x3c, 0xfd, 0x59, 0x32, 0x8a, 0xa9, 0x50, 0xbd, 0x50, 0xb8, 0x22, 0x0a, 0xf0, 0xdd, 0x75, 0x05,
-	0x9a, 0x5c, 0x63, 0x2a, 0x18, 0xb7, 0xfe, 0xeb, 0xef, 0x2b, 0xf4, 0xac, 0x80, 0xaf, 0x23, 0x28,
-	0x7d, 0xcb, 0x35, 0xc8, 0x3b, 0xd2, 0x05, 0x19, 0x7a, 0x6e, 0xab, 0x95, 0x8a, 0x4a, 0x36, 0xe8,
-	0x92, 0xd5, 0xa1, 0x9b, 0xba, 0xd9, 0x59, 0xb1, 0xb6, 0xfa, 0x67, 0x23, 0xdf, 0xd6, 0x41, 0x84,
-	0x3c, 0x4a, 0xba, 0xae, 0x26, 0x9a, 0x84, 0x8f, 0x52, 0x37, 0x7b, 0x5a, 0x2c, 0x71, 0x70, 0x85,
-	0xd6, 0x55, 0x27, 0x68, 0x5b, 0xb2, 0x39, 0x6f, 0xb8, 0x32, 0x39, 0x2e, 0x8d, 0xba, 0x14, 0x7b,
-	0x85, 0x7c, 0xa2, 0xda, 0x92, 0x8a, 0x91, 0xeb, 0xf0, 0xcc, 0x10, 0x1e, 0x51, 0xed, 0x66, 0x8a,
-	0x27, 0xb3, 0x67, 0x7c, 0x36, 0x1f, 0x5b, 0xb3, 0x67, 0xdc, 0x9a, 0x3b, 0xe4, 0x6f, 0x01, 0xca,
-	0x8e, 0xf5, 0x4c, 0x87, 0xe7, 0xe9, 0x2a, 0xbb, 0x78, 0xf7, 0x32, 0xb7, 0xe3, 0xe6, 0xd3, 0xb8,
-	0xf9, 0x3c, 0x6e, 0xbe, 0x11, 0x8c, 0xdf, 0xbc, 0xdd, 0xff, 0x4e, 0x9c, 0x9f, 0x7f, 0x92, 0xac,
-	0x61, 0x7a, 0x37, 0x56, 0x39, 0x15, 0x3d, 0x9e, 0xef, 0xc6, 0x7e, 0xde, 0xa8, 0xba, 0xc5, 0xfa,
-	0xdb, 0x00, 0xca, 0x1c, 0x50, 0x85, 0xb7, 0x05, 0xf8, 0x34, 0x25, 0x0f, 0x12, 0x74, 0x31, 0x48,
-	0x18, 0x88, 0x84, 0xb2, 0x21, 0x2a, 0x7c, 0x62, 0x1a, 0x41, 0xb3, 0xf4, 0x91, 0xa8, 0x09, 0x80,
-	0x7b, 0xa0, 0xa3, 0xb6, 0x80, 0x67, 0x81, 0x59, 0x9a, 0x80, 0x2b, 0xb4, 0x56, 0x62, 0x94, 0x14,
-	0x4a, 0xba, 0x23, 0x9c, 0x43, 0x17, 0xfa, 0xa9, 0x9b, 0xf9, 0xc5, 0xa5, 0x55, 0x37, 0x56, 0xbc,
-	0xf9, 0xb0, 0x3f, 0xc6, 0xee, 0xe1, 0x18, 0xbb, 0x7f, 0x8f, 0xb1, 0xfb, 0xe3, 0x14, 0x3b, 0x87,
-	0x53, 0xec, 0xfc, 0x3a, 0xc5, 0xce, 0x97, 0x68, 0x59, 0x89, 0xfb, 0x07, 0x4b, 0x61, 0xda, 0xad,
-	0xce, 0xcd, 0x53, 0xbe, 0xff, 0x17, 0x00, 0x00, 0xff, 0xff, 0x19, 0x88, 0x72, 0x57, 0x37, 0x02,
-	0x00, 0x00,
+	// 213 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x4f, 0xce, 0xcf, 0x2b,
+	0x2e, 0xcd, 0x4d, 0x2d, 0xd2, 0x2f, 0x28, 0xca, 0x4c, 0x4e, 0x4d, 0x4b, 0x4d, 0x4d, 0xd1, 0xcf,
+	0x2f, 0x4a, 0x4c, 0xce, 0x49, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0x82, 0x29, 0xd0,
+	0x83, 0x2b, 0x90, 0x12, 0x49, 0xcf, 0x4f, 0xcf, 0x07, 0x4b, 0xeb, 0x83, 0x58, 0x10, 0x95, 0x4a,
+	0x55, 0x5c, 0xfc, 0x41, 0xa9, 0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x9e, 0x79, 0x25, 0xa9, 0x45, 0x65,
+	0x89, 0x39, 0x42, 0x62, 0x5c, 0x6c, 0xc5, 0x95, 0xb9, 0x49, 0xf9, 0x39, 0x12, 0x8c, 0x0a, 0x8c,
+	0x1a, 0x9c, 0x41, 0x50, 0x9e, 0x90, 0x06, 0x97, 0x00, 0xc4, 0x92, 0xf8, 0xe2, 0xe4, 0xa2, 0xcc,
+	0x82, 0x92, 0xf8, 0xcc, 0x14, 0x09, 0x26, 0x05, 0x46, 0x0d, 0x96, 0x20, 0x3e, 0x88, 0x78, 0x30,
+	0x58, 0xd8, 0x33, 0x45, 0x48, 0x95, 0x8b, 0x2f, 0x29, 0x27, 0x3f, 0x39, 0x3b, 0x3e, 0x13, 0x6a,
+	0xa6, 0x04, 0x33, 0x58, 0x1d, 0x2f, 0x58, 0x14, 0x66, 0x91, 0x93, 0xc9, 0x89, 0x47, 0x72, 0x8c,
+	0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72,
+	0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x49, 0xc1, 0x3d, 0x58, 0x81, 0xe4, 0xc5, 0x92, 0xca, 0x82,
+	0xd4, 0xe2, 0x24, 0x36, 0xb0, 0xc3, 0x8d, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0xb1, 0x11, 0xec,
+	0x65, 0x05, 0x01, 0x00, 0x00,
 }
 
 func (m *RequestInterval) Marshal() (dAtA []byte, err error) {
@@ -189,63 +127,22 @@ func (m *RequestInterval) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.SourceChannel) > 0 {
-		i -= len(m.SourceChannel)
-		copy(dAtA[i:], m.SourceChannel)
-		i = encodeVarintOracle(dAtA, i, uint64(len(m.SourceChannel)))
-		i--
-		dAtA[i] = 0x4a
-	}
-	if m.ExecuteGas != 0 {
-		i = encodeVarintOracle(dAtA, i, uint64(m.ExecuteGas))
-		i--
-		dAtA[i] = 0x40
-	}
-	if m.PrepareGas != 0 {
-		i = encodeVarintOracle(dAtA, i, uint64(m.PrepareGas))
-		i--
-		dAtA[i] = 0x38
-	}
-	if len(m.FeeLimit) > 0 {
-		for iNdEx := len(m.FeeLimit) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.FeeLimit[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintOracle(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x32
-		}
-	}
-	if m.MinCount != 0 {
-		i = encodeVarintOracle(dAtA, i, uint64(m.MinCount))
-		i--
-		dAtA[i] = 0x28
-	}
-	if m.AskCount != 0 {
-		i = encodeVarintOracle(dAtA, i, uint64(m.AskCount))
-		i--
-		dAtA[i] = 0x20
-	}
 	if m.BlockInterval != 0 {
 		i = encodeVarintOracle(dAtA, i, uint64(m.BlockInterval))
 		i--
 		dAtA[i] = 0x18
 	}
-	if len(m.Calldata) > 0 {
-		i -= len(m.Calldata)
-		copy(dAtA[i:], m.Calldata)
-		i = encodeVarintOracle(dAtA, i, uint64(len(m.Calldata)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.OracleScriptId != 0 {
 		i = encodeVarintOracle(dAtA, i, uint64(m.OracleScriptId))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0x10
+	}
+	if len(m.Symbol) > 0 {
+		i -= len(m.Symbol)
+		copy(dAtA[i:], m.Symbol)
+		i = encodeVarintOracle(dAtA, i, uint64(len(m.Symbol)))
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -267,37 +164,15 @@ func (m *RequestInterval) Size() (n int) {
 	}
 	var l int
 	_ = l
+	l = len(m.Symbol)
+	if l > 0 {
+		n += 1 + l + sovOracle(uint64(l))
+	}
 	if m.OracleScriptId != 0 {
 		n += 1 + sovOracle(uint64(m.OracleScriptId))
 	}
-	l = len(m.Calldata)
-	if l > 0 {
-		n += 1 + l + sovOracle(uint64(l))
-	}
 	if m.BlockInterval != 0 {
 		n += 1 + sovOracle(uint64(m.BlockInterval))
-	}
-	if m.AskCount != 0 {
-		n += 1 + sovOracle(uint64(m.AskCount))
-	}
-	if m.MinCount != 0 {
-		n += 1 + sovOracle(uint64(m.MinCount))
-	}
-	if len(m.FeeLimit) > 0 {
-		for _, e := range m.FeeLimit {
-			l = e.Size()
-			n += 1 + l + sovOracle(uint64(l))
-		}
-	}
-	if m.PrepareGas != 0 {
-		n += 1 + sovOracle(uint64(m.PrepareGas))
-	}
-	if m.ExecuteGas != 0 {
-		n += 1 + sovOracle(uint64(m.ExecuteGas))
-	}
-	l = len(m.SourceChannel)
-	if l > 0 {
-		n += 1 + l + sovOracle(uint64(l))
 	}
 	return n
 }
@@ -338,190 +213,8 @@ func (m *RequestInterval) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OracleScriptId", wireType)
-			}
-			m.OracleScriptId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOracle
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.OracleScriptId |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Calldata", wireType)
-			}
-			var byteLen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOracle
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				byteLen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if byteLen < 0 {
-				return ErrInvalidLengthOracle
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthOracle
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Calldata = append(m.Calldata[:0], dAtA[iNdEx:postIndex]...)
-			if m.Calldata == nil {
-				m.Calldata = []byte{}
-			}
-			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BlockInterval", wireType)
-			}
-			m.BlockInterval = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOracle
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.BlockInterval |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 4:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AskCount", wireType)
-			}
-			m.AskCount = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOracle
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.AskCount |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MinCount", wireType)
-			}
-			m.MinCount = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOracle
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.MinCount |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FeeLimit", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOracle
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthOracle
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthOracle
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.FeeLimit = append(m.FeeLimit, types.Coin{})
-			if err := m.FeeLimit[len(m.FeeLimit)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 7:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PrepareGas", wireType)
-			}
-			m.PrepareGas = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOracle
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.PrepareGas |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 8:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ExecuteGas", wireType)
-			}
-			m.ExecuteGas = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowOracle
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.ExecuteGas |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 9:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SourceChannel", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Symbol", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -549,8 +242,46 @@ func (m *RequestInterval) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.SourceChannel = string(dAtA[iNdEx:postIndex])
+			m.Symbol = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OracleScriptId", wireType)
+			}
+			m.OracleScriptId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowOracle
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.OracleScriptId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BlockInterval", wireType)
+			}
+			m.BlockInterval = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowOracle
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.BlockInterval |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipOracle(dAtA[iNdEx:])

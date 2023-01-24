@@ -43,7 +43,7 @@ paths:
   /consumer/pricefeed/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: ConsumerOracleconsumerParams
+      operationId: ConsumerPricefeedParams
       responses:
         '200':
           description: A successful response.
@@ -53,6 +53,48 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  ask_count:
+                    type: string
+                    format: uint64
+                  min_count:
+                    type: string
+                    format: uint64
+                  min_ds_count:
+                    type: string
+                    format: uint64
+                  prepare_gas_a:
+                    type: string
+                    format: uint64
+                  prepare_gas_b:
+                    type: string
+                    format: uint64
+                  execute_gas_a:
+                    type: string
+                    format: uint64
+                  execute_gas_b:
+                    type: string
+                    format: uint64
+                  source_channel:
+                    type: string
+                    format: uint64
+                  fee_limit:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        Coin defines a token with a denomination and an amount.
+
+
+                        NOTE: The amount field is an Int which implements the
+                        custom method
+
+                        signatures required by gogoproto.
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -74,6 +116,49 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      tags:
+        - Query
+  /consumer/pricefeed/{symbol}:
+    get:
+      operationId: ConsumerPricefeedRequestInterval
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              oracle_script_id:
+                type: string
+                format: uint64
+              block_interval:
+                type: string
+                format: uint64
+            description: >-
+              QueryCountsResponse is response type for the Query/Count RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   /cosmos/auth/v1beta1/accounts:
@@ -45088,10 +45173,49 @@ definitions:
                   "@type": "type.googleapis.com/google.protobuf.Duration",
                   "value": "1.212s"
                 }
-  consumer.pricefeed.MsgSetRequestIntervalResponse:
+  consumer.pricefeed.MsgCreateRequestIntervalResponse:
     type: object
   consumer.pricefeed.Params:
     type: object
+    properties:
+      ask_count:
+        type: string
+        format: uint64
+      min_count:
+        type: string
+        format: uint64
+      min_ds_count:
+        type: string
+        format: uint64
+      prepare_gas_a:
+        type: string
+        format: uint64
+      prepare_gas_b:
+        type: string
+        format: uint64
+      execute_gas_a:
+        type: string
+        format: uint64
+      execute_gas_b:
+        type: string
+        format: uint64
+      source_channel:
+        type: string
+        format: uint64
+      fee_limit:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+          description: |-
+            Coin defines a token with a denomination and an amount.
+
+            NOTE: The amount field is an Int which implements the custom method
+            signatures required by gogoproto.
     description: Params defines the parameters for the module.
   consumer.pricefeed.QueryParamsResponse:
     type: object
@@ -45099,7 +45223,59 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          ask_count:
+            type: string
+            format: uint64
+          min_count:
+            type: string
+            format: uint64
+          min_ds_count:
+            type: string
+            format: uint64
+          prepare_gas_a:
+            type: string
+            format: uint64
+          prepare_gas_b:
+            type: string
+            format: uint64
+          execute_gas_a:
+            type: string
+            format: uint64
+          execute_gas_b:
+            type: string
+            format: uint64
+          source_channel:
+            type: string
+            format: uint64
+          fee_limit:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  consumer.pricefeed.QueryRequestIntervalResponse:
+    type: object
+    properties:
+      oracle_script_id:
+        type: string
+        format: uint64
+      block_interval:
+        type: string
+        format: uint64
+    description: QueryCountsResponse is response type for the Query/Count RPC method.
   cosmos.base.v1beta1.Coin:
     type: object
     properties:

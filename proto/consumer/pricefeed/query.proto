@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "consumer/pricefeed/params.proto";
+import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "consumer/x/pricefeed/types";
@@ -14,6 +15,9 @@ service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/consumer/pricefeed/params";
+  }
+  rpc RequestInterval(QueryRequestInterval) returns (QueryRequestIntervalResponse) {
+    option (google.api.http).get = "/consumer/pricefeed/{symbol}";
   }
   // this line is used by starport scaffolding # 2
 }
@@ -27,4 +31,14 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-// this line is used by starport scaffolding # 3
+message QueryRequestInterval {
+  string symbol = 1;
+}
+
+// QueryCountsResponse is response type for the Query/Count RPC method.
+message QueryRequestIntervalResponse {
+  uint64 oracle_script_id = 1;
+  uint64 block_interval = 2;
+}
+
+

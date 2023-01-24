@@ -6,6 +6,7 @@ package types
 import (
 	context "context"
 	fmt "fmt"
+	_ "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
@@ -113,33 +114,140 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
+type QueryRequestInterval struct {
+	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
+}
+
+func (m *QueryRequestInterval) Reset()         { *m = QueryRequestInterval{} }
+func (m *QueryRequestInterval) String() string { return proto.CompactTextString(m) }
+func (*QueryRequestInterval) ProtoMessage()    {}
+func (*QueryRequestInterval) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d76169d2461fc862, []int{2}
+}
+func (m *QueryRequestInterval) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryRequestInterval) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryRequestInterval.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryRequestInterval) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryRequestInterval.Merge(m, src)
+}
+func (m *QueryRequestInterval) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryRequestInterval) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryRequestInterval.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryRequestInterval proto.InternalMessageInfo
+
+func (m *QueryRequestInterval) GetSymbol() string {
+	if m != nil {
+		return m.Symbol
+	}
+	return ""
+}
+
+// QueryCountsResponse is response type for the Query/Count RPC method.
+type QueryRequestIntervalResponse struct {
+	OracleScriptId uint64 `protobuf:"varint,1,opt,name=oracle_script_id,json=oracleScriptId,proto3" json:"oracle_script_id,omitempty"`
+	BlockInterval  uint64 `protobuf:"varint,2,opt,name=block_interval,json=blockInterval,proto3" json:"block_interval,omitempty"`
+}
+
+func (m *QueryRequestIntervalResponse) Reset()         { *m = QueryRequestIntervalResponse{} }
+func (m *QueryRequestIntervalResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryRequestIntervalResponse) ProtoMessage()    {}
+func (*QueryRequestIntervalResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d76169d2461fc862, []int{3}
+}
+func (m *QueryRequestIntervalResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryRequestIntervalResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryRequestIntervalResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryRequestIntervalResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryRequestIntervalResponse.Merge(m, src)
+}
+func (m *QueryRequestIntervalResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryRequestIntervalResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryRequestIntervalResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryRequestIntervalResponse proto.InternalMessageInfo
+
+func (m *QueryRequestIntervalResponse) GetOracleScriptId() uint64 {
+	if m != nil {
+		return m.OracleScriptId
+	}
+	return 0
+}
+
+func (m *QueryRequestIntervalResponse) GetBlockInterval() uint64 {
+	if m != nil {
+		return m.BlockInterval
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "consumer.pricefeed.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "consumer.pricefeed.QueryParamsResponse")
+	proto.RegisterType((*QueryRequestInterval)(nil), "consumer.pricefeed.QueryRequestInterval")
+	proto.RegisterType((*QueryRequestIntervalResponse)(nil), "consumer.pricefeed.QueryRequestIntervalResponse")
 }
 
 func init() { proto.RegisterFile("consumer/pricefeed/query.proto", fileDescriptor_d76169d2461fc862) }
 
 var fileDescriptor_d76169d2461fc862 = []byte{
-	// 288 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x4b, 0xce, 0xcf, 0x2b,
-	0x2e, 0xcd, 0x4d, 0x2d, 0xd2, 0x2f, 0x28, 0xca, 0x4c, 0x4e, 0x4d, 0x4b, 0x4d, 0x4d, 0xd1, 0x2f,
-	0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0x82, 0xc9, 0xeb, 0xc1,
-	0xe5, 0xa5, 0x44, 0xd2, 0xf3, 0xd3, 0xf3, 0xc1, 0xd2, 0xfa, 0x20, 0x16, 0x44, 0xa5, 0x94, 0x4c,
-	0x7a, 0x7e, 0x7e, 0x7a, 0x4e, 0xaa, 0x7e, 0x62, 0x41, 0xa6, 0x7e, 0x62, 0x5e, 0x5e, 0x7e, 0x49,
-	0x62, 0x49, 0x66, 0x7e, 0x5e, 0x31, 0x54, 0x56, 0x2b, 0x39, 0xbf, 0x38, 0x37, 0xbf, 0x58, 0x3f,
-	0x29, 0xb1, 0x38, 0x15, 0x62, 0x81, 0x7e, 0x99, 0x61, 0x52, 0x6a, 0x49, 0xa2, 0xa1, 0x7e, 0x41,
-	0x62, 0x7a, 0x66, 0x1e, 0x58, 0x31, 0x54, 0xad, 0x3c, 0x16, 0x37, 0x15, 0x24, 0x16, 0x25, 0xe6,
-	0x42, 0x0d, 0x53, 0x12, 0xe1, 0x12, 0x0a, 0x04, 0x19, 0x11, 0x00, 0x16, 0x0c, 0x4a, 0x2d, 0x2c,
-	0x4d, 0x2d, 0x2e, 0x51, 0xf2, 0xe7, 0x12, 0x46, 0x11, 0x2d, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e, 0x15,
-	0xb2, 0xe0, 0x62, 0x83, 0x68, 0x96, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x36, 0x92, 0xd2, 0xc3, 0xf4,
-	0x92, 0x1e, 0x44, 0x8f, 0x13, 0xcb, 0x89, 0x7b, 0xf2, 0x0c, 0x41, 0x50, 0xf5, 0x46, 0x6d, 0x8c,
-	0x5c, 0xac, 0x60, 0x13, 0x85, 0x6a, 0xb9, 0xd8, 0x20, 0x2a, 0x84, 0xd4, 0xb0, 0xe9, 0xc6, 0x74,
-	0x8c, 0x94, 0x3a, 0x41, 0x75, 0x10, 0xe7, 0x29, 0x29, 0x35, 0x5d, 0x7e, 0x32, 0x99, 0x49, 0x46,
-	0x48, 0x4a, 0x1f, 0xa7, 0xaf, 0x9d, 0x4c, 0x4e, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1,
-	0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e,
-	0x21, 0x4a, 0x0a, 0xae, 0xa9, 0x02, 0x49, 0x5b, 0x49, 0x65, 0x41, 0x6a, 0x71, 0x12, 0x1b, 0x38,
-	0xb0, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0xe0, 0xd3, 0xdd, 0x14, 0xe3, 0x01, 0x00, 0x00,
+	// 416 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0x3f, 0x8f, 0xd3, 0x30,
+	0x18, 0xc6, 0x93, 0xea, 0x88, 0x84, 0x11, 0x07, 0x32, 0x15, 0x3a, 0x45, 0x91, 0x0f, 0x45, 0xfc,
+	0xa9, 0x18, 0x62, 0xee, 0x60, 0x60, 0xbe, 0xed, 0x26, 0x20, 0x6c, 0x2c, 0x95, 0x93, 0x9a, 0xc8,
+	0x22, 0xc9, 0xeb, 0xb3, 0xdd, 0x13, 0x15, 0xba, 0x85, 0x4f, 0x80, 0x74, 0x2b, 0x1f, 0xa8, 0x63,
+	0x25, 0x16, 0x26, 0x84, 0x5a, 0x3e, 0x08, 0xaa, 0x9d, 0x44, 0xa5, 0x4d, 0xc5, 0x6d, 0xc9, 0xfb,
+	0x3e, 0xef, 0xef, 0x79, 0x5e, 0xdb, 0x88, 0xe4, 0x50, 0xeb, 0x69, 0xc5, 0x15, 0x95, 0x4a, 0xe4,
+	0xfc, 0x23, 0xe7, 0x13, 0x7a, 0x31, 0xe5, 0x6a, 0x96, 0x48, 0x05, 0x06, 0x30, 0x6e, 0xfb, 0x49,
+	0xd7, 0x0f, 0x87, 0x05, 0x14, 0x60, 0xdb, 0x74, 0xfd, 0xe5, 0x94, 0x61, 0x54, 0x00, 0x14, 0x25,
+	0xa7, 0x4c, 0x0a, 0xca, 0xea, 0x1a, 0x0c, 0x33, 0x02, 0x6a, 0xdd, 0x74, 0x9f, 0xe7, 0xa0, 0x2b,
+	0xd0, 0x34, 0x63, 0x9a, 0x3b, 0x03, 0x7a, 0x79, 0x92, 0x71, 0xc3, 0x4e, 0xa8, 0x64, 0x85, 0xa8,
+	0xad, 0xb8, 0xd1, 0x1e, 0xf7, 0x64, 0x92, 0x4c, 0xb1, 0xaa, 0x85, 0x91, 0x4d, 0x58, 0x8b, 0xc9,
+	0x41, 0x34, 0x80, 0x78, 0x88, 0xf0, 0xbb, 0xb5, 0xc5, 0x5b, 0x3b, 0x94, 0xf2, 0x8b, 0x29, 0xd7,
+	0x26, 0x7e, 0x83, 0x1e, 0xfc, 0x53, 0xd5, 0x12, 0x6a, 0xcd, 0xf1, 0x6b, 0x14, 0x38, 0xf8, 0x91,
+	0xff, 0xc8, 0x1f, 0xdd, 0x39, 0x0d, 0x93, 0xdd, 0x95, 0x13, 0x37, 0x73, 0x76, 0x30, 0xff, 0x75,
+	0xec, 0xa5, 0x8d, 0x3e, 0x4e, 0xd0, 0xd0, 0x02, 0x1b, 0x83, 0xf3, 0xda, 0x70, 0x75, 0xc9, 0x4a,
+	0xfc, 0x10, 0x05, 0x7a, 0x56, 0x65, 0x50, 0x5a, 0xe2, 0xed, 0xb4, 0xf9, 0x8b, 0x01, 0x45, 0x7d,
+	0xfa, 0x2e, 0xc9, 0x08, 0xdd, 0x07, 0xc5, 0xf2, 0x92, 0x8f, 0x75, 0xae, 0x84, 0x34, 0x63, 0x31,
+	0xb1, 0x84, 0x83, 0xf4, 0xd0, 0xd5, 0xdf, 0xdb, 0xf2, 0xf9, 0x04, 0x3f, 0x41, 0x87, 0x59, 0x09,
+	0xf9, 0xa7, 0xb1, 0x68, 0x18, 0x47, 0x03, 0xab, 0xbb, 0x6b, 0xab, 0x2d, 0xf8, 0xf4, 0xfb, 0x00,
+	0xdd, 0xb2, 0x8e, 0xf8, 0x0a, 0x05, 0x6e, 0x05, 0xfc, 0xb4, 0x6f, 0xbd, 0xdd, 0xd3, 0x0a, 0x9f,
+	0xfd, 0x57, 0xe7, 0x52, 0xc7, 0xf1, 0xd7, 0x1f, 0x7f, 0xae, 0x07, 0x11, 0x0e, 0xe9, 0xde, 0x6b,
+	0xc3, 0xd7, 0x3e, 0xba, 0xb7, 0x7d, 0x4a, 0xa3, 0xbd, 0x06, 0x5b, 0xca, 0xf0, 0xc5, 0x4d, 0x95,
+	0x5d, 0xa6, 0xc7, 0x36, 0x13, 0xc1, 0x51, 0x5f, 0xa6, 0x2f, 0xee, 0x3a, 0xae, 0xce, 0x5e, 0xcd,
+	0x97, 0xc4, 0x5f, 0x2c, 0x89, 0xff, 0x7b, 0x49, 0xfc, 0x6f, 0x2b, 0xe2, 0x2d, 0x56, 0xc4, 0xfb,
+	0xb9, 0x22, 0xde, 0x87, 0xb0, 0x1b, 0xfb, 0xbc, 0x31, 0x68, 0x66, 0x92, 0xeb, 0x2c, 0xb0, 0x6f,
+	0xec, 0xe5, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x8a, 0x43, 0x1d, 0xca, 0x3a, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -156,6 +264,7 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	RequestInterval(ctx context.Context, in *QueryRequestInterval, opts ...grpc.CallOption) (*QueryRequestIntervalResponse, error)
 }
 
 type queryClient struct {
@@ -175,10 +284,20 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) RequestInterval(ctx context.Context, in *QueryRequestInterval, opts ...grpc.CallOption) (*QueryRequestIntervalResponse, error) {
+	out := new(QueryRequestIntervalResponse)
+	err := c.cc.Invoke(ctx, "/consumer.pricefeed.Query/RequestInterval", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	RequestInterval(context.Context, *QueryRequestInterval) (*QueryRequestIntervalResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -187,6 +306,9 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (*UnimplementedQueryServer) RequestInterval(ctx context.Context, req *QueryRequestInterval) (*QueryRequestIntervalResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestInterval not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -211,6 +333,24 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_RequestInterval_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRequestInterval)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).RequestInterval(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/consumer.pricefeed.Query/RequestInterval",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).RequestInterval(ctx, req.(*QueryRequestInterval))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "consumer.pricefeed.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -218,6 +358,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "RequestInterval",
+			Handler:    _Query_RequestInterval_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -280,6 +424,69 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryRequestInterval) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryRequestInterval) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryRequestInterval) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Symbol) > 0 {
+		i -= len(m.Symbol)
+		copy(dAtA[i:], m.Symbol)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Symbol)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryRequestIntervalResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryRequestIntervalResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryRequestIntervalResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.BlockInterval != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.BlockInterval))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.OracleScriptId != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.OracleScriptId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -308,6 +515,34 @@ func (m *QueryParamsResponse) Size() (n int) {
 	_ = l
 	l = m.Params.Size()
 	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryRequestInterval) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Symbol)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryRequestIntervalResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.OracleScriptId != 0 {
+		n += 1 + sovQuery(uint64(m.OracleScriptId))
+	}
+	if m.BlockInterval != 0 {
+		n += 1 + sovQuery(uint64(m.BlockInterval))
+	}
 	return n
 }
 
@@ -429,6 +664,176 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryRequestInterval) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryRequestInterval: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryRequestInterval: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Symbol", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Symbol = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryRequestIntervalResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryRequestIntervalResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryRequestIntervalResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OracleScriptId", wireType)
+			}
+			m.OracleScriptId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.OracleScriptId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BlockInterval", wireType)
+			}
+			m.BlockInterval = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.BlockInterval |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])

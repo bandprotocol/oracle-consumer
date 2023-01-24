@@ -9,13 +9,12 @@ const TypeMsgSetRequestInterval = "set_request_interval"
 
 var _ sdk.Msg = &MsgCreateRequestInterval{}
 
-func NewMsgSetRequestInterval(symbol string, oracleScriptId uint64, feeLimit sdk.Coins, blockInterval uint64, sender string) *MsgCreateRequestInterval {
+func NewMsgSetRequestInterval(symbol string, oracleScriptId uint64, blockInterval uint64, sender sdk.AccAddress) *MsgCreateRequestInterval {
 	return &MsgCreateRequestInterval{
 		Symbol:         symbol,
 		OracleScriptId: oracleScriptId,
-		FeeLimit:       feeLimit,
 		BlockInterval:  blockInterval,
-		Sender:         sender,
+		Sender:         sender.String(),
 	}
 }
 

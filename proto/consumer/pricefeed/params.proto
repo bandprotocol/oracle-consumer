@@ -2,6 +2,7 @@ syntax = "proto3";
 package consumer.pricefeed;
 
 import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "consumer/x/pricefeed/types";
 
@@ -16,4 +17,9 @@ message Params {
   uint64 prepare_gas_b = 5;
   uint64 execute_gas_a = 6;
   uint64 execute_gas_b = 7;
+  uint64 source_channel = 8;
+  repeated cosmos.base.v1beta1.Coin fee_limit = 9 [
+      (gogoproto.nullable) = false,
+      (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
 }

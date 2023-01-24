@@ -21,9 +21,9 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 
 var _ types.MsgServer = msgServer{}
 
-func (k Keeper) CreateRequestInterval(goCtx context.Context, msg *types.RequestInterval) (*types.MsgCreateRequestIntervalResponse, error) {
+func (k msgServer) CreateRequestInterval(goCtx context.Context, msg *types.MsgCreateRequestInterval) (*types.MsgCreateRequestIntervalResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	id := k.AddRequestInterval(ctx, types.NewRequestInterval(msg.OracleScriptId, msg.Calldata, msg.BlockInterval, msg.AskCount, msg.MinCount, msg.FeeLimit, msg.PrepareGas, msg.ExecuteGas, msg.SourceChannel))
-	return &types.MsgCreateRequestIntervalResponse{RequestIntervalId: id}, nil
+	k.SetRequestInterval(ctx, types.NewRequestInterval(msg.Symbol, msg.OracleScriptId, msg.BlockInterval))
+	return &types.MsgCreateRequestIntervalResponse{}, nil
 }

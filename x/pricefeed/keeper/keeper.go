@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"encoding/binary"
 	"fmt"
 
 	"consumer/x/pricefeed/types"
@@ -9,6 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/ignite/cli/ignite/pkg/cosmosibckeeper"
 	"github.com/tendermint/tendermint/libs/log"
@@ -54,31 +54,18 @@ func NewKeeper(
 	}
 }
 
-func (k Keeper) SetRequestIntervalCount(ctx sdk.Context, count uint64) {
-	bz := make([]byte, 8)
-	binary.BigEndian.PutUint64(bz, count)
-	ctx.KVStore(k.storeKey).Set(types.RequestIntervalCountStoreKey, bz)
+func (k Keeper) SetRequestInterval(ctx sdk.Context, requestInterval types.RequestInterval) {
+	ctx.KVStore(k.storeKey).Set(types.RequestIntervalStoreKey(requestInterval.Symbol), k.cdc.MustMarshal(&requestInterval))
 }
 
-func (k Keeper) GetRequestIntervalCount(ctx sdk.Context) uint64 {
-	bz := ctx.KVStore(k.storeKey).Get(types.RequestIntervalCountStoreKey)
-	return binary.BigEndian.Uint64(bz)
-}
-
-func (k Keeper) GetNextRequestIntervalID(ctx sdk.Context) uint64 {
-	requestNumber := k.GetRequestIntervalCount(ctx)
-	k.SetRequestIntervalCount(ctx, requestNumber+1)
-	return requestNumber + 1
-}
-
-func (k Keeper) SetRequestInterval(ctx sdk.Context, id uint64, requestInterval types.RequestInterval) {
-	ctx.KVStore(k.storeKey).Set(types.RequestIntervalStoreKey(id), k.cdc.MustMarshal(&requestInterval))
-}
-
-func (k Keeper) AddRequestInterval(ctx sdk.Context, requestInterval types.RequestInterval) uint64 {
-	id := k.GetNextRequestIntervalID(ctx)
-	k.SetRequestInterval(ctx, id, requestInterval)
-	return id
+func (k Keeper) GetRequestInterval(ctx sdk.Context, symbol string) (types.RequestInterval, error) {
+	bz := ctx.KVStore(k.storeKey).Get(types.RequestIntervalStoreKey(symbol))
+	if bz == nil {
+		return types.RequestInterval{}, sdkerrors.Wrapf(types.ErrRequestIntervalNotFound, "symbol: %s", symbol)
+	}
+	var requestInterval types.RequestInterval
+	k.cdc.MustUnmarshal(bz, &requestInterval)
+	return requestInterval, nil
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
