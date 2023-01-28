@@ -143,22 +143,11 @@ func (im IBCModule) OnRecvPacket(
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
 	ack := channeltypes.NewResultAcknowledgement(nil)
-	fmt.Print("\n\n*********************************************\n")
-	fmt.Printf("OnRecvPacket %+v\n", ack)
-	fmt.Print("*********************************************\n")
 	var data bandtypes.OracleResponsePacketData
 	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &data); err != nil {
 		ack = channeltypes.NewErrorAcknowledgement(err)
-		fmt.Print("\n\n*********************************************\n")
-		fmt.Printf("recv1 %+v\n", ack)
-		fmt.Print("*********************************************\n")
-		panic(err)
 	}
 
-	fmt.Print("\n\n*********************************************\n")
-	fmt.Printf("recv2 %+v\n", ack)
-	fmt.Printf("recv2 success %t\n", ack.Success())
-	fmt.Print("*********************************************\n")
 	if ack.Success() {
 		fmt.Println("Receive result packet", hex.EncodeToString(data.Result))
 		im.keeper.RecvIbcOracleResponsePacket(ctx, data)
