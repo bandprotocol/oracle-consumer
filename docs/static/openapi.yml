@@ -54,6 +54,9 @@ paths:
                 description: params holds all the parameters of this module.
                 type: object
                 properties:
+                  multiplier:
+                    type: string
+                    format: uint64
                   ask_count:
                     type: string
                     format: uint64
@@ -77,7 +80,6 @@ paths:
                     format: uint64
                   source_channel:
                     type: string
-                    format: uint64
                   fee_limit:
                     type: array
                     items:
@@ -45178,6 +45180,9 @@ definitions:
   consumer.pricefeed.Params:
     type: object
     properties:
+      multiplier:
+        type: string
+        format: uint64
       ask_count:
         type: string
         format: uint64
@@ -45201,7 +45206,6 @@ definitions:
         format: uint64
       source_channel:
         type: string
-        format: uint64
       fee_limit:
         type: array
         items:
@@ -45224,6 +45228,9 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
         properties:
+          multiplier:
+            type: string
+            format: uint64
           ask_count:
             type: string
             format: uint64
@@ -45247,7 +45254,6 @@ definitions:
             format: uint64
           source_channel:
             type: string
-            format: uint64
           fee_limit:
             type: array
             items:

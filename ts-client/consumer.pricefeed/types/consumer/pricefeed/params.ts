@@ -7,6 +7,7 @@ export const protobufPackage = "consumer.pricefeed";
 
 /** Params defines the parameters for the module. */
 export interface Params {
+  multiplier: number;
   askCount: number;
   minCount: number;
   minDsCount: number;
@@ -14,12 +15,13 @@ export interface Params {
   prepareGasB: number;
   executeGasA: number;
   executeGasB: number;
-  sourceChannel: number;
+  sourceChannel: string;
   feeLimit: Coin[];
 }
 
 function createBaseParams(): Params {
   return {
+    multiplier: 0,
     askCount: 0,
     minCount: 0,
     minDsCount: 0,
@@ -27,39 +29,42 @@ function createBaseParams(): Params {
     prepareGasB: 0,
     executeGasA: 0,
     executeGasB: 0,
-    sourceChannel: 0,
+    sourceChannel: "",
     feeLimit: [],
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.multiplier !== 0) {
+      writer.uint32(8).uint64(message.multiplier);
+    }
     if (message.askCount !== 0) {
-      writer.uint32(8).uint64(message.askCount);
+      writer.uint32(16).uint64(message.askCount);
     }
     if (message.minCount !== 0) {
-      writer.uint32(16).uint64(message.minCount);
+      writer.uint32(24).uint64(message.minCount);
     }
     if (message.minDsCount !== 0) {
-      writer.uint32(24).uint64(message.minDsCount);
+      writer.uint32(32).uint64(message.minDsCount);
     }
     if (message.prepareGasA !== 0) {
-      writer.uint32(32).uint64(message.prepareGasA);
+      writer.uint32(40).uint64(message.prepareGasA);
     }
     if (message.prepareGasB !== 0) {
-      writer.uint32(40).uint64(message.prepareGasB);
+      writer.uint32(48).uint64(message.prepareGasB);
     }
     if (message.executeGasA !== 0) {
-      writer.uint32(48).uint64(message.executeGasA);
+      writer.uint32(56).uint64(message.executeGasA);
     }
     if (message.executeGasB !== 0) {
-      writer.uint32(56).uint64(message.executeGasB);
+      writer.uint32(64).uint64(message.executeGasB);
     }
-    if (message.sourceChannel !== 0) {
-      writer.uint32(64).uint64(message.sourceChannel);
+    if (message.sourceChannel !== "") {
+      writer.uint32(74).string(message.sourceChannel);
     }
     for (const v of message.feeLimit) {
-      Coin.encode(v!, writer.uint32(74).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -72,30 +77,33 @@ export const Params = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.askCount = longToNumber(reader.uint64() as Long);
+          message.multiplier = longToNumber(reader.uint64() as Long);
           break;
         case 2:
-          message.minCount = longToNumber(reader.uint64() as Long);
+          message.askCount = longToNumber(reader.uint64() as Long);
           break;
         case 3:
-          message.minDsCount = longToNumber(reader.uint64() as Long);
+          message.minCount = longToNumber(reader.uint64() as Long);
           break;
         case 4:
-          message.prepareGasA = longToNumber(reader.uint64() as Long);
+          message.minDsCount = longToNumber(reader.uint64() as Long);
           break;
         case 5:
-          message.prepareGasB = longToNumber(reader.uint64() as Long);
+          message.prepareGasA = longToNumber(reader.uint64() as Long);
           break;
         case 6:
-          message.executeGasA = longToNumber(reader.uint64() as Long);
+          message.prepareGasB = longToNumber(reader.uint64() as Long);
           break;
         case 7:
-          message.executeGasB = longToNumber(reader.uint64() as Long);
+          message.executeGasA = longToNumber(reader.uint64() as Long);
           break;
         case 8:
-          message.sourceChannel = longToNumber(reader.uint64() as Long);
+          message.executeGasB = longToNumber(reader.uint64() as Long);
           break;
         case 9:
+          message.sourceChannel = reader.string();
+          break;
+        case 10:
           message.feeLimit.push(Coin.decode(reader, reader.uint32()));
           break;
         default:
@@ -108,6 +116,7 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
+      multiplier: isSet(object.multiplier) ? Number(object.multiplier) : 0,
       askCount: isSet(object.askCount) ? Number(object.askCount) : 0,
       minCount: isSet(object.minCount) ? Number(object.minCount) : 0,
       minDsCount: isSet(object.minDsCount) ? Number(object.minDsCount) : 0,
@@ -115,13 +124,14 @@ export const Params = {
       prepareGasB: isSet(object.prepareGasB) ? Number(object.prepareGasB) : 0,
       executeGasA: isSet(object.executeGasA) ? Number(object.executeGasA) : 0,
       executeGasB: isSet(object.executeGasB) ? Number(object.executeGasB) : 0,
-      sourceChannel: isSet(object.sourceChannel) ? Number(object.sourceChannel) : 0,
+      sourceChannel: isSet(object.sourceChannel) ? String(object.sourceChannel) : "",
       feeLimit: Array.isArray(object?.feeLimit) ? object.feeLimit.map((e: any) => Coin.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
+    message.multiplier !== undefined && (obj.multiplier = Math.round(message.multiplier));
     message.askCount !== undefined && (obj.askCount = Math.round(message.askCount));
     message.minCount !== undefined && (obj.minCount = Math.round(message.minCount));
     message.minDsCount !== undefined && (obj.minDsCount = Math.round(message.minDsCount));
@@ -129,7 +139,7 @@ export const Params = {
     message.prepareGasB !== undefined && (obj.prepareGasB = Math.round(message.prepareGasB));
     message.executeGasA !== undefined && (obj.executeGasA = Math.round(message.executeGasA));
     message.executeGasB !== undefined && (obj.executeGasB = Math.round(message.executeGasB));
-    message.sourceChannel !== undefined && (obj.sourceChannel = Math.round(message.sourceChannel));
+    message.sourceChannel !== undefined && (obj.sourceChannel = message.sourceChannel);
     if (message.feeLimit) {
       obj.feeLimit = message.feeLimit.map((e) => e ? Coin.toJSON(e) : undefined);
     } else {
@@ -140,6 +150,7 @@ export const Params = {
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
+    message.multiplier = object.multiplier ?? 0;
     message.askCount = object.askCount ?? 0;
     message.minCount = object.minCount ?? 0;
     message.minDsCount = object.minDsCount ?? 0;
@@ -147,7 +158,7 @@ export const Params = {
     message.prepareGasB = object.prepareGasB ?? 0;
     message.executeGasA = object.executeGasA ?? 0;
     message.executeGasB = object.executeGasB ?? 0;
-    message.sourceChannel = object.sourceChannel ?? 0;
+    message.sourceChannel = object.sourceChannel ?? "";
     message.feeLimit = object.feeLimit?.map((e) => Coin.fromPartial(e)) || [];
     return message;
   },

@@ -1,10 +1,13 @@
 package pricefeed
 
 import (
+	"encoding/hex"
 	"fmt"
 
 	"consumer/x/pricefeed/keeper"
 	"consumer/x/pricefeed/types"
+
+	bandtypes "consumer/types/band"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -139,24 +142,28 @@ func (im IBCModule) OnRecvPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
-	var ack channeltypes.Acknowledgement
-
-	// this line is used by starport scaffolding # oracle/packet/module/recv
-
-	var modulePacketData types.OracleconsumerPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
+	ack := channeltypes.NewResultAcknowledgement(nil)
+	fmt.Print("\n\n*********************************************\n")
+	fmt.Printf("OnRecvPacket %+v\n", ack)
+	fmt.Print("*********************************************\n")
+	var data bandtypes.OracleResponsePacketData
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &data); err != nil {
+		ack = channeltypes.NewErrorAcknowledgement(err)
+		fmt.Print("\n\n*********************************************\n")
+		fmt.Printf("recv1 %+v\n", ack)
+		fmt.Print("*********************************************\n")
+		panic(err)
 	}
 
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/recv
-	default:
-		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return channeltypes.NewErrorAcknowledgement(err)
+	fmt.Print("\n\n*********************************************\n")
+	fmt.Printf("recv2 %+v\n", ack)
+	fmt.Printf("recv2 success %t\n", ack.Success())
+	fmt.Print("*********************************************\n")
+	if ack.Success() {
+		fmt.Println("Receive result packet", hex.EncodeToString(data.Result))
+		im.keeper.RecvIbcOracleResponsePacket(ctx, data)
 	}
 
-	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
 	return ack
 }
 
@@ -172,33 +179,15 @@ func (im IBCModule) OnAcknowledgementPacket(
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
 
-	// this line is used by starport scaffolding # oracle/packet/module/ack
-
-	var modulePacketData types.OracleconsumerPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
-	}
-
 	var eventType string
-
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/ack
-	default:
-		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
-	}
-
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			eventType,
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-			sdk.NewAttribute(types.AttributeKeyAck, fmt.Sprintf("%v", ack)),
-		),
-	)
 
 	switch resp := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Result:
+		var oracleAck bandtypes.OracleRequestPacketAcknowledgement
+		types.ModuleCdc.MustUnmarshalJSON(resp.Result, &oracleAck)
+		fmt.Print("\n\n*********************************************\n")
+		fmt.Printf("got requestID %d\n", oracleAck.RequestID)
+		fmt.Print("*********************************************\n")
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				eventType,
@@ -226,14 +215,6 @@ func (im IBCModule) OnTimeoutPacket(
 	var modulePacketData types.OracleconsumerPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
-	}
-
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/timeout
-	default:
-		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 	}
 
 	return nil

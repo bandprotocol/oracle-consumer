@@ -7,8 +7,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-const SRC_PORT = "oracle_consumer"
-
 type msgServer struct {
 	Keeper
 }

@@ -16,6 +16,9 @@ export type PricefeedMsgCreateRequestIntervalResponse = object;
  */
 export interface PricefeedParams {
   /** @format uint64 */
+  multiplier?: string;
+
+  /** @format uint64 */
   ask_count?: string;
 
   /** @format uint64 */
@@ -35,8 +38,6 @@ export interface PricefeedParams {
 
   /** @format uint64 */
   execute_gas_b?: string;
-
-  /** @format uint64 */
   source_channel?: string;
   fee_limit?: V1Beta1Coin[];
 }

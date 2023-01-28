@@ -21,7 +21,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 			panic("could not claim port capability: " + err.Error())
 		}
 	}
-	k.SetParams(ctx, genState.Params)
+	k.SetParams(ctx, types.DefaultParams())
 }
 
 // ExportGenesis returns the module's exported genesis
