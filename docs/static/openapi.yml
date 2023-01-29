@@ -40,6 +40,51 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /consumer/consumer/price/{symbol}:
+    get:
+      operationId: ConsumerConsumerPrice
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              symbol:
+                type: string
+              price:
+                type: string
+                format: uint64
+              resolve_time:
+                type: string
+                format: int64
+            description: >-
+              QueryCountsResponse is response type for the Query/Count RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /consumer/pricefeed/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -54,9 +99,6 @@ paths:
                 description: params holds all the parameters of this module.
                 type: object
                 properties:
-                  multiplier:
-                    type: string
-                    format: uint64
                   ask_count:
                     type: string
                     format: uint64
@@ -44852,6 +44894,18 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  consumer.consumer.QueryPriceResponse:
+    type: object
+    properties:
+      symbol:
+        type: string
+      price:
+        type: string
+        format: uint64
+      resolve_time:
+        type: string
+        format: int64
+    description: QueryCountsResponse is response type for the Query/Count RPC method.
   google.protobuf.Any:
     type: object
     properties:
@@ -45180,9 +45234,6 @@ definitions:
   consumer.pricefeed.Params:
     type: object
     properties:
-      multiplier:
-        type: string
-        format: uint64
       ask_count:
         type: string
         format: uint64
@@ -45228,9 +45279,6 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
         properties:
-          multiplier:
-            type: string
-            format: uint64
           ask_count:
             type: string
             format: uint64

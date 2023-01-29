@@ -22,30 +22,30 @@ import (
 	tmdb "github.com/tendermint/tm-db"
 )
 
-// oracleconsumerChannelKeeper is a stub of cosmosibckeeper.ChannelKeeper.
-type oracleconsumerChannelKeeper struct{}
+// priceFeedChannelKeeper is a stub of cosmosibckeeper.ChannelKeeper.
+type priceFeedChannelKeeper struct{}
 
-func (oracleconsumerChannelKeeper) GetChannel(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool) {
+func (priceFeedChannelKeeper) GetChannel(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool) {
 	return channeltypes.Channel{}, false
 }
-func (oracleconsumerChannelKeeper) GetNextSequenceSend(ctx sdk.Context, portID, channelID string) (uint64, bool) {
+func (priceFeedChannelKeeper) GetNextSequenceSend(ctx sdk.Context, portID, channelID string) (uint64, bool) {
 	return 0, false
 }
-func (oracleconsumerChannelKeeper) SendPacket(ctx sdk.Context, channelCap *capabilitytypes.Capability, packet ibcexported.PacketI) error {
+func (priceFeedChannelKeeper) SendPacket(ctx sdk.Context, channelCap *capabilitytypes.Capability, packet ibcexported.PacketI) error {
 	return nil
 }
-func (oracleconsumerChannelKeeper) ChanCloseInit(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error {
+func (priceFeedChannelKeeper) ChanCloseInit(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error {
 	return nil
 }
 
-// oracleconsumerportKeeper is a stub of cosmosibckeeper.PortKeeper
-type oracleconsumerPortKeeper struct{}
+// priceFeedportKeeper is a stub of cosmosibckeeper.PortKeeper
+type priceFeedPortKeeper struct{}
 
-func (oracleconsumerPortKeeper) BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability {
+func (priceFeedPortKeeper) BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability {
 	return &capabilitytypes.Capability{}
 }
 
-func OracleconsumerKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func PriceFeedKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	logger := log.NewNopLogger()
 
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
@@ -65,16 +65,16 @@ func OracleconsumerKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		types.Amino,
 		storeKey,
 		memStoreKey,
-		"OracleconsumerParams",
+		"PriceFeedParams",
 	)
 	k := keeper.NewKeeper(
 		appCodec,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		oracleconsumerChannelKeeper{},
-		oracleconsumerPortKeeper{},
-		capabilityKeeper.ScopeToModule("OracleconsumerScopedKeeper"),
+		priceFeedChannelKeeper{},
+		priceFeedPortKeeper{},
+		capabilityKeeper.ScopeToModule("PriceFeedScopedKeeper"),
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, logger)

@@ -1,4 +1,4 @@
-package calldata
+package band
 
 import (
 	"consumer/obi"
@@ -8,15 +8,15 @@ type Calldata interface {
 }
 
 type DefaultCalldata struct {
-	Symbols    []string
-	Multiplier uint64
+	Symbols            []string
+	MinimumSourceCount uint64
 }
 
-func EncodeCalldata(symbols []string, multiplier uint64) ([]byte, error) {
-	return obi.Encode(DefaultCalldata{symbols, multiplier})
+func EncodeCalldata(symbols []string, minimumSourceCount uint64) ([]byte, error) {
+	return obi.Encode(DefaultCalldata{symbols, minimumSourceCount})
 }
 
-func DecodeCalldata(calldata []byte, symbolType string) (DefaultCalldata, error) {
+func DecodeCalldata(calldata []byte) (DefaultCalldata, error) {
 	decodedDefaultCalldata, err := decodeDefaultCalldata(calldata)
 	if err != nil {
 		return DefaultCalldata{}, err

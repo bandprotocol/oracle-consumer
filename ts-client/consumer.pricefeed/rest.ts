@@ -16,9 +16,6 @@ export type PricefeedMsgCreateRequestIntervalResponse = object;
  */
 export interface PricefeedParams {
   /** @format uint64 */
-  multiplier?: string;
-
-  /** @format uint64 */
   ask_count?: string;
 
   /** @format uint64 */

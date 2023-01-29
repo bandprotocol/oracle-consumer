@@ -10,7 +10,7 @@ import (
 )
 
 func TestGetParams(t *testing.T) {
-	k, ctx := testkeeper.OracleconsumerKeeper(t)
+	k, ctx := testkeeper.PriceFeedKeeper(t)
 	params := types.DefaultParams()
 
 	k.SetParams(ctx, params)

@@ -15,7 +15,9 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/consumer/consumer/params";
   }
-  // this line is used by starport scaffolding # 2
+  rpc Price(QueryPriceRequest) returns (QueryPriceResponse) {
+    option (google.api.http).get = "/consumer/consumer/price/{symbol}";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -27,4 +29,14 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-// this line is used by starport scaffolding # 3
+message QueryPriceRequest {
+  string symbol = 1;
+}
+
+// QueryCountsResponse is response type for the Query/Count RPC method.
+message QueryPriceResponse {
+  string symbol = 1;
+  uint64 price = 2;
+  int64 resolve_time =3;
+}
+

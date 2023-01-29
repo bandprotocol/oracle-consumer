@@ -12,7 +12,7 @@ import (
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
-	k, ctx := keepertest.OracleconsumerKeeper(t)
+	k, ctx := keepertest.PriceFeedKeeper(t)
 
 	return keeper.NewMsgServerImpl(*k), sdk.WrapSDKContext(ctx)
 }

@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"consumer/x/pricefeed/types"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -18,6 +16,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 
 	bandtypes "consumer/types/band"
+	"consumer/x/pricefeed/types"
 )
 
 const SRC_PORT = "pricefeed"
@@ -90,6 +89,21 @@ func (k Keeper) GetAllRequestInterval(ctx sdk.Context) ([]types.RequestInterval,
 	return requestIntervals, nil
 }
 
+func (k Keeper) SetPriceFeed(ctx sdk.Context, priceFeed types.PriceFeed) {
+	ctx.KVStore(k.storeKey).Set(types.PriceFeedPrefix, k.cdc.MustMarshal(&priceFeed))
+}
+
+func (k Keeper) GetPriceFeed(ctx sdk.Context, symbol string) (*types.PriceFeed, error) {
+	pf := &types.PriceFeed{}
+	bz := ctx.KVStore(k.storeKey).Get(types.PriceFeedPrefixKey(symbol))
+
+	if err := k.cdc.Unmarshal(bz, pf); err != nil {
+		return nil, err
+	}
+
+	return pf, nil
+}
+
 func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, oracleRequestPacket bandtypes.OracleRequestPacketData) error {
 	channel, found := k.ChannelKeeper.GetChannel(ctx, SRC_PORT, sourceChannel)
 	if !found {
@@ -133,9 +147,22 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 	return nil
 }
 
-func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, data bandtypes.OracleResponsePacketData) {
+func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) {
+	result, err := bandtypes.DecodeResult(res.Result)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	for _, r := range result {
+		k.SetPriceFeed(ctx, types.PriceFeed{
+			Symbol:      r.Symbol,
+			Price:       r.Rate,
+			ResolveTime: res.ResolveTime,
+		})
+	}
+
 	fmt.Print("\n\n*********************************************\n")
-	fmt.Printf("%+v got data from BandChain\n", data)
+	fmt.Printf("%+v got result from BandChain\n", result)
 	fmt.Print("*********************************************\n")
 }
 

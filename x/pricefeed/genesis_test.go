@@ -18,7 +18,7 @@ func TestGenesis(t *testing.T) {
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
-	k, ctx := keepertest.OracleconsumerKeeper(t)
+	k, ctx := keepertest.PriceFeedKeeper(t)
 	pricefeed.InitGenesis(ctx, *k, genesisState)
 	got := pricefeed.ExportGenesis(ctx, *k)
 	require.NotNil(t, got)

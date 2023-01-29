@@ -3,29 +3,29 @@ import _m0 from 'protobufjs/minimal'
 
 export const protobufPackage = 'consumer.pricefeed'
 
-export interface OracleconsumerPacketData {
+export interface PriceFeedPacketData {
   /** this line is used by starport scaffolding # ibc/packet/proto/field */
   noData: NoData | undefined
 }
 
 export interface NoData {}
 
-function createBaseOracleconsumerPacketData(): OracleconsumerPacketData {
+function createBasePriceFeedPacketData(): PriceFeedPacketData {
   return { noData: undefined }
 }
 
-export const OracleconsumerPacketData = {
-  encode(message: OracleconsumerPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const PriceFeedPacketData = {
+  encode(message: PriceFeedPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.noData !== undefined) {
       NoData.encode(message.noData, writer.uint32(10).fork()).ldelim()
     }
     return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): OracleconsumerPacketData {
+  decode(input: _m0.Reader | Uint8Array, length?: number): PriceFeedPacketData {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseOracleconsumerPacketData()
+    const message = createBasePriceFeedPacketData()
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -40,18 +40,18 @@ export const OracleconsumerPacketData = {
     return message
   },
 
-  fromJSON(object: any): OracleconsumerPacketData {
+  fromJSON(object: any): PriceFeedPacketData {
     return { noData: isSet(object.noData) ? NoData.fromJSON(object.noData) : undefined }
   },
 
-  toJSON(message: OracleconsumerPacketData): unknown {
+  toJSON(message: PriceFeedPacketData): unknown {
     const obj: any = {}
     message.noData !== undefined && (obj.noData = message.noData ? NoData.toJSON(message.noData) : undefined)
     return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<OracleconsumerPacketData>, I>>(object: I): OracleconsumerPacketData {
-    const message = createBaseOracleconsumerPacketData()
+  fromPartial<I extends Exact<DeepPartial<PriceFeedPacketData>, I>>(object: I): PriceFeedPacketData {
+    const message = createBasePriceFeedPacketData()
     message.noData =
       object.noData !== undefined && object.noData !== null ? NoData.fromPartial(object.noData) : undefined
     return message

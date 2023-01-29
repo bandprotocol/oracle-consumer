@@ -3,20 +3,23 @@ package keeper
 import (
 	"fmt"
 
+	"github.com/tendermint/tendermint/libs/log"
+
 	"consumer/x/consumer/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/tendermint/tendermint/libs/log"
 )
 
 type (
 	Keeper struct {
-		cdc        codec.BinaryCodec
-		storeKey   storetypes.StoreKey
-		memKey     storetypes.StoreKey
-		paramstore paramtypes.Subspace
+		cdc             codec.BinaryCodec
+		storeKey        storetypes.StoreKey
+		memKey          storetypes.StoreKey
+		paramstore      paramtypes.Subspace
+		PriceFeedKeeper types.PriceFeedKeeper
 	}
 )
 
@@ -25,7 +28,7 @@ func NewKeeper(
 	storeKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
-
+	priceFeedKeeper types.PriceFeedKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -34,10 +37,11 @@ func NewKeeper(
 
 	return &Keeper{
 
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
+		cdc:             cdc,
+		storeKey:        storeKey,
+		memKey:          memKey,
+		paramstore:      ps,
+		PriceFeedKeeper: priceFeedKeeper,
 	}
 }
 

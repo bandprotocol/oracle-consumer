@@ -10,6 +10,12 @@ export interface RequestInterval {
   blockInterval: number;
 }
 
+export interface PriceFeed {
+  symbol: string;
+  price: number;
+  resolveTime: number;
+}
+
 function createBaseRequestInterval(): RequestInterval {
   return { symbol: "", oracleScriptId: 0, blockInterval: 0 };
 }
@@ -73,6 +79,73 @@ export const RequestInterval = {
     message.symbol = object.symbol ?? "";
     message.oracleScriptId = object.oracleScriptId ?? 0;
     message.blockInterval = object.blockInterval ?? 0;
+    return message;
+  },
+};
+
+function createBasePriceFeed(): PriceFeed {
+  return { symbol: "", price: 0, resolveTime: 0 };
+}
+
+export const PriceFeed = {
+  encode(message: PriceFeed, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.symbol !== "") {
+      writer.uint32(10).string(message.symbol);
+    }
+    if (message.price !== 0) {
+      writer.uint32(16).uint64(message.price);
+    }
+    if (message.resolveTime !== 0) {
+      writer.uint32(24).int64(message.resolveTime);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PriceFeed {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePriceFeed();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.symbol = reader.string();
+          break;
+        case 2:
+          message.price = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.resolveTime = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PriceFeed {
+    return {
+      symbol: isSet(object.symbol) ? String(object.symbol) : "",
+      price: isSet(object.price) ? Number(object.price) : 0,
+      resolveTime: isSet(object.resolveTime) ? Number(object.resolveTime) : 0,
+    };
+  },
+
+  toJSON(message: PriceFeed): unknown {
+    const obj: any = {};
+    message.symbol !== undefined && (obj.symbol = message.symbol);
+    message.price !== undefined && (obj.price = Math.round(message.price));
+    message.resolveTime !== undefined && (obj.resolveTime = Math.round(message.resolveTime));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PriceFeed>, I>>(object: I): PriceFeed {
+    const message = createBasePriceFeed();
+    message.symbol = object.symbol ?? "";
+    message.price = object.price ?? 0;
+    message.resolveTime = object.resolveTime ?? 0;
     return message;
   },
 };

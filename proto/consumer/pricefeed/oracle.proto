@@ -11,3 +11,9 @@ message RequestInterval {
   uint64 oracle_script_id = 2;
   uint64 block_interval = 3;
 }
+
+message PriceFeed {
+  string symbol = 1;
+  uint64 price = 2;
+  int64 resolve_time =3;
+}

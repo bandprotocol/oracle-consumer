@@ -244,9 +244,9 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
-	ConsumerKeeper             consumermodulekeeper.Keeper
-	ScopedOracleconsumerKeeper capabilitykeeper.ScopedKeeper
-	OracleconsumerKeeper       pricefeedmodulekeeper.Keeper
+	ConsumerKeeper        consumermodulekeeper.Keeper
+	scopedPriceFeedKeeper capabilitykeeper.ScopedKeeper
+	PriceFeedKeeper       pricefeedmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -515,23 +515,24 @@ func New(
 		keys[consumermoduletypes.StoreKey],
 		keys[consumermoduletypes.MemStoreKey],
 		app.GetSubspace(consumermoduletypes.ModuleName),
+		app.PriceFeedKeeper,
 	)
 	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper, app.AccountKeeper, app.BankKeeper)
 
-	scopedOracleconsumerKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedmoduletypes.ModuleName)
-	app.ScopedOracleconsumerKeeper = scopedOracleconsumerKeeper
-	app.OracleconsumerKeeper = *pricefeedmodulekeeper.NewKeeper(
+	scopedPriceFeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedmoduletypes.ModuleName)
+	app.scopedPriceFeedKeeper = scopedPriceFeedKeeper
+	app.PriceFeedKeeper = *pricefeedmodulekeeper.NewKeeper(
 		appCodec,
 		keys[pricefeedmoduletypes.StoreKey],
 		keys[pricefeedmoduletypes.MemStoreKey],
 		app.GetSubspace(pricefeedmoduletypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
-		scopedOracleconsumerKeeper,
+		scopedPriceFeedKeeper,
 	)
-	oracleconsumerModule := pricefeedmodule.NewAppModule(appCodec, app.OracleconsumerKeeper, app.AccountKeeper, app.BankKeeper)
+	priceFeedModule := pricefeedmodule.NewAppModule(appCodec, app.PriceFeedKeeper, app.AccountKeeper, app.BankKeeper)
 
-	oracleconsumerIBCModule := pricefeedmodule.NewIBCModule(app.OracleconsumerKeeper)
+	priceFeedIBCModule := pricefeedmodule.NewIBCModule(app.PriceFeedKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Sealing prevents other modules from creating scoped sub-keepers
@@ -541,7 +542,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
-	ibcRouter.AddRoute(pricefeedmoduletypes.ModuleName, oracleconsumerIBCModule)
+	ibcRouter.AddRoute(pricefeedmoduletypes.ModuleName, priceFeedIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -579,7 +580,7 @@ func New(
 		transferModule,
 		icaModule,
 		consumerModule,
-		oracleconsumerModule,
+		priceFeedModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -698,7 +699,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		consumerModule,
-		oracleconsumerModule,
+		priceFeedModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()

@@ -1,10 +1,10 @@
 import { Client, registry, MissingWalletError } from 'consumer-client-ts'
 
-import { OracleconsumerPacketData } from 'consumer-client-ts/consumer.pricefeed/types'
+import { PriceFeedPacketData } from 'consumer-client-ts/consumer.pricefeed/types'
 import { NoData } from 'consumer-client-ts/consumer.pricefeed/types'
 import { Params } from 'consumer-client-ts/consumer.pricefeed/types'
 
-export { OracleconsumerPacketData, NoData, Params }
+export { PriceFeedPacketData, NoData, Params }
 
 function initClient(vuexGetters) {
   return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -38,7 +38,7 @@ const getDefaultState = () => {
     Params: {},
 
     _Structure: {
-      OracleconsumerPacketData: getStructure(OracleconsumerPacketData.fromPartial({})),
+      PriceFeedPacketData: getStructure(PriceFeedPacketData.fromPartial({})),
       NoData: getStructure(NoData.fromPartial({})),
       Params: getStructure(Params.fromPartial({})),
     },
@@ -117,7 +117,7 @@ export default {
       try {
         const key = params ?? {}
         const client = initClient(rootGetters)
-        let value = (await client.ConsumerOracleconsumer.query.queryParams()).data
+        let value = (await client.ConsumerPriceFeed.query.queryParams()).data
 
         commit('QUERY', { query: 'Params', key: { params: { ...key }, query }, value })
         if (subscribe)
@@ -131,7 +131,7 @@ export default {
     async sendMsgSetRequestInterval({ rootGetters }, { value, fee = [], memo = '' }) {
       try {
         const client = await initClient(rootGetters)
-        const result = await client.ConsumerOracleconsumer.tx.sendMsgSetRequestInterval({
+        const result = await client.ConsumerPriceFeed.tx.sendMsgSetRequestInterval({
           value,
           fee: { amount: fee, gas: '200000' },
           memo,
@@ -151,7 +151,7 @@ export default {
     async MsgSetRequestInterval({ rootGetters }, { value }) {
       try {
         const client = initClient(rootGetters)
-        const msg = await client.ConsumerOracleconsumer.tx.msgSetRequestInterval({ value })
+        const msg = await client.ConsumerPriceFeed.tx.msgSetRequestInterval({ value })
         return msg
       } catch (e) {
         if (e == MissingWalletError) {

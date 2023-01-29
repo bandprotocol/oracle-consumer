@@ -10,7 +10,6 @@ import (
 )
 
 const (
-	DefaultMultiplier    = uint64(1000000000)
 	DefaultAskCount      = uint64(16)
 	DefaultMinCount      = uint64(10)
 	DefaultMinDsCount    = uint64(3)
@@ -26,7 +25,6 @@ var (
 )
 
 var (
-	KeyMultiplier    = []byte("Multiplier")
 	KeyAskCount      = []byte("AskCount")
 	KeyMinCount      = []byte("MinCount")
 	KeyMinDsCount    = []byte("MinDsCount")
@@ -46,9 +44,8 @@ func ParamKeyTable() paramtypes.KeyTable {
 }
 
 // NewParams creates a new Params instance
-func NewParams(multiplier, askCount, minCount, minDsCount, prepareGasA, prepareGasB, executeGasA, executeGasB uint64, sourceChannel string, feeLimit sdk.Coins) Params {
+func NewParams(askCount, minCount, minDsCount, prepareGasA, prepareGasB, executeGasA, executeGasB uint64, sourceChannel string, feeLimit sdk.Coins) Params {
 	return Params{
-		Multiplier:    multiplier,
 		AskCount:      askCount,
 		MinCount:      minCount,
 		MinDsCount:    minDsCount,
@@ -63,13 +60,12 @@ func NewParams(multiplier, askCount, minCount, minDsCount, prepareGasA, prepareG
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultMultiplier, DefaultAskCount, DefaultMinCount, DefaultMinDsCount, DefaultPrepareGasA, DefaultPrepareGasB, DefaultExecuteGasA, DefaultExecuteGasB, DefaultSourceChannel, DefaultFeeLimit)
+	return NewParams(DefaultAskCount, DefaultMinCount, DefaultMinDsCount, DefaultPrepareGasA, DefaultPrepareGasB, DefaultExecuteGasA, DefaultExecuteGasB, DefaultSourceChannel, DefaultFeeLimit)
 }
 
 // ParamSetPairs get the params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
-		paramtypes.NewParamSetPair(KeyMultiplier, &p.Multiplier, validateUint64("multiplier", true)),
 		paramtypes.NewParamSetPair(KeyAskCount, &p.AskCount, validateUint64("ask count", true)),
 		paramtypes.NewParamSetPair(KeyMinCount, &p.MinCount, validateUint64("min count", true)),
 		paramtypes.NewParamSetPair(KeyMinDsCount, &p.MinDsCount, validateUint64("min ds count", true)),

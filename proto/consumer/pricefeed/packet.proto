@@ -5,7 +5,7 @@ package consumer.pricefeed;
 
 option go_package = "consumer/x/pricefeed/types";
 
-message OracleconsumerPacketData {
+message PriceFeedPacketData {
     oneof packet {
         NoData noData = 1;
         // this line is used by starport scaffolding # ibc/packet/proto/field

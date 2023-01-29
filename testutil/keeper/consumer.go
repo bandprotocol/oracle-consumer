@@ -5,6 +5,7 @@ import (
 
 	"consumer/x/consumer/keeper"
 	"consumer/x/consumer/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -36,11 +37,15 @@ func ConsumerKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		"ConsumerParams",
 	)
+
+	priceFeedKeeper, _ := PriceFeedKeeper(t)
+
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
+		priceFeedKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

@@ -9,7 +9,6 @@ import (
 // GetParams get all parameters as types.Params
 func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 	return types.NewParams(
-		k.Multiplier(ctx),
 		k.AskCount(ctx),
 		k.MinCount(ctx),
 		k.MinDsCount(ctx),
@@ -25,11 +24,6 @@ func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 // SetParams set the params
 func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
 	k.paramstore.SetParamSet(ctx, &params)
-}
-
-func (k Keeper) Multiplier(ctx sdk.Context) (res uint64) {
-	k.paramstore.Get(ctx, types.KeyMultiplier, &res)
-	return
 }
 
 func (k Keeper) AskCount(ctx sdk.Context) (res uint64) {

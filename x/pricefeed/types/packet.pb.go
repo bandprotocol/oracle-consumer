@@ -22,24 +22,24 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type OracleconsumerPacketData struct {
+type PriceFeedPacketData struct {
 	// Types that are valid to be assigned to Packet:
-	//	*OracleconsumerPacketData_NoData
-	Packet isOracleconsumerPacketData_Packet `protobuf_oneof:"packet"`
+	//	*PriceFeedPacketData_NoData
+	Packet isPriceFeedPacketData_Packet `protobuf_oneof:"packet"`
 }
 
-func (m *OracleconsumerPacketData) Reset()         { *m = OracleconsumerPacketData{} }
-func (m *OracleconsumerPacketData) String() string { return proto.CompactTextString(m) }
-func (*OracleconsumerPacketData) ProtoMessage()    {}
-func (*OracleconsumerPacketData) Descriptor() ([]byte, []int) {
+func (m *PriceFeedPacketData) Reset()         { *m = PriceFeedPacketData{} }
+func (m *PriceFeedPacketData) String() string { return proto.CompactTextString(m) }
+func (*PriceFeedPacketData) ProtoMessage()    {}
+func (*PriceFeedPacketData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_ff238136aa8eb26f, []int{0}
 }
-func (m *OracleconsumerPacketData) XXX_Unmarshal(b []byte) error {
+func (m *PriceFeedPacketData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *OracleconsumerPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *PriceFeedPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_OracleconsumerPacketData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_PriceFeedPacketData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -49,48 +49,48 @@ func (m *OracleconsumerPacketData) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *OracleconsumerPacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_OracleconsumerPacketData.Merge(m, src)
+func (m *PriceFeedPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PriceFeedPacketData.Merge(m, src)
 }
-func (m *OracleconsumerPacketData) XXX_Size() int {
+func (m *PriceFeedPacketData) XXX_Size() int {
 	return m.Size()
 }
-func (m *OracleconsumerPacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_OracleconsumerPacketData.DiscardUnknown(m)
+func (m *PriceFeedPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_PriceFeedPacketData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_OracleconsumerPacketData proto.InternalMessageInfo
+var xxx_messageInfo_PriceFeedPacketData proto.InternalMessageInfo
 
-type isOracleconsumerPacketData_Packet interface {
-	isOracleconsumerPacketData_Packet()
+type isPriceFeedPacketData_Packet interface {
+	isPriceFeedPacketData_Packet()
 	MarshalTo([]byte) (int, error)
 	Size() int
 }
 
-type OracleconsumerPacketData_NoData struct {
+type PriceFeedPacketData_NoData struct {
 	NoData *NoData `protobuf:"bytes,1,opt,name=noData,proto3,oneof" json:"noData,omitempty"`
 }
 
-func (*OracleconsumerPacketData_NoData) isOracleconsumerPacketData_Packet() {}
+func (*PriceFeedPacketData_NoData) isPriceFeedPacketData_Packet() {}
 
-func (m *OracleconsumerPacketData) GetPacket() isOracleconsumerPacketData_Packet {
+func (m *PriceFeedPacketData) GetPacket() isPriceFeedPacketData_Packet {
 	if m != nil {
 		return m.Packet
 	}
 	return nil
 }
 
-func (m *OracleconsumerPacketData) GetNoData() *NoData {
-	if x, ok := m.GetPacket().(*OracleconsumerPacketData_NoData); ok {
+func (m *PriceFeedPacketData) GetNoData() *NoData {
+	if x, ok := m.GetPacket().(*PriceFeedPacketData_NoData); ok {
 		return x.NoData
 	}
 	return nil
 }
 
 // XXX_OneofWrappers is for the internal use of the proto package.
-func (*OracleconsumerPacketData) XXX_OneofWrappers() []interface{} {
+func (*PriceFeedPacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
-		(*OracleconsumerPacketData_NoData)(nil),
+		(*PriceFeedPacketData_NoData)(nil),
 	}
 }
 
@@ -131,28 +131,28 @@ func (m *NoData) XXX_DiscardUnknown() {
 var xxx_messageInfo_NoData proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*OracleconsumerPacketData)(nil), "consumer.pricefeed.OracleconsumerPacketData")
+	proto.RegisterType((*PriceFeedPacketData)(nil), "consumer.pricefeed.PriceFeedPacketData")
 	proto.RegisterType((*NoData)(nil), "consumer.pricefeed.NoData")
 }
 
 func init() { proto.RegisterFile("consumer/pricefeed/packet.proto", fileDescriptor_ff238136aa8eb26f) }
 
 var fileDescriptor_ff238136aa8eb26f = []byte{
-	// 168 bytes of a gzipped FileDescriptorProto
+	// 167 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x4f, 0xce, 0xcf, 0x2b,
 	0x2e, 0xcd, 0x4d, 0x2d, 0xd2, 0x2f, 0x28, 0xca, 0x4c, 0x4e, 0x4d, 0x4b, 0x4d, 0x4d, 0xd1, 0x2f,
 	0x48, 0x4c, 0xce, 0x4e, 0x2d, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0x82, 0x29, 0xd0,
-	0x83, 0x2b, 0x50, 0x8a, 0xe2, 0x92, 0xf0, 0x2f, 0x4a, 0x4c, 0xce, 0x49, 0x85, 0xc9, 0x05, 0x80,
-	0x75, 0xb8, 0x24, 0x96, 0x24, 0x0a, 0x99, 0x70, 0xb1, 0xe5, 0xe5, 0x83, 0x58, 0x12, 0x8c, 0x0a,
-	0x8c, 0x1a, 0xdc, 0x46, 0x52, 0x7a, 0x98, 0x06, 0xe8, 0xf9, 0x81, 0x55, 0x78, 0x30, 0x04, 0x41,
-	0xd5, 0x3a, 0x71, 0x70, 0xb1, 0x41, 0x6c, 0x55, 0xe2, 0xe0, 0x62, 0x83, 0xc8, 0x3a, 0x99, 0x9c,
-	0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31,
-	0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x14, 0xdc, 0xd1, 0x15, 0x48, 0xce,
-	0x2e, 0xa9, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0x3b, 0xdb, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff,
-	0xba, 0xbf, 0xd9, 0xd2, 0xd9, 0x00, 0x00, 0x00,
+	0x83, 0x2b, 0x50, 0x0a, 0xe5, 0x12, 0x0e, 0x00, 0x71, 0xdc, 0x52, 0x53, 0x53, 0x02, 0xc0, 0x8a,
+	0x5d, 0x12, 0x4b, 0x12, 0x85, 0x4c, 0xb8, 0xd8, 0xf2, 0xf2, 0x41, 0x2c, 0x09, 0x46, 0x05, 0x46,
+	0x0d, 0x6e, 0x23, 0x29, 0x3d, 0x4c, 0xbd, 0x7a, 0x7e, 0x60, 0x15, 0x1e, 0x0c, 0x41, 0x50, 0xb5,
+	0x4e, 0x1c, 0x5c, 0x6c, 0x10, 0x0b, 0x95, 0x38, 0xb8, 0xd8, 0x20, 0xb2, 0x4e, 0x26, 0x27, 0x1e,
+	0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17,
+	0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0x25, 0x05, 0x77, 0x6f, 0x05, 0x92, 0x8b, 0x4b,
+	0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x2e, 0x36, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0xc7,
+	0x09, 0x06, 0x0d, 0xd4, 0x00, 0x00, 0x00,
 }
 
-func (m *OracleconsumerPacketData) Marshal() (dAtA []byte, err error) {
+func (m *PriceFeedPacketData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -162,12 +162,12 @@ func (m *OracleconsumerPacketData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *OracleconsumerPacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *PriceFeedPacketData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *OracleconsumerPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *PriceFeedPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -184,12 +184,12 @@ func (m *OracleconsumerPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *OracleconsumerPacketData_NoData) MarshalTo(dAtA []byte) (int, error) {
+func (m *PriceFeedPacketData_NoData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *OracleconsumerPacketData_NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *PriceFeedPacketData_NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.NoData != nil {
 		{
@@ -239,7 +239,7 @@ func encodeVarintPacket(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *OracleconsumerPacketData) Size() (n int) {
+func (m *PriceFeedPacketData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -251,7 +251,7 @@ func (m *OracleconsumerPacketData) Size() (n int) {
 	return n
 }
 
-func (m *OracleconsumerPacketData_NoData) Size() (n int) {
+func (m *PriceFeedPacketData_NoData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -278,7 +278,7 @@ func sovPacket(x uint64) (n int) {
 func sozPacket(x uint64) (n int) {
 	return sovPacket(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *OracleconsumerPacketData) Unmarshal(dAtA []byte) error {
+func (m *PriceFeedPacketData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -301,10 +301,10 @@ func (m *OracleconsumerPacketData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: OracleconsumerPacketData: wiretype end group for non-group")
+			return fmt.Errorf("proto: PriceFeedPacketData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: OracleconsumerPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: PriceFeedPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -340,7 +340,7 @@ func (m *OracleconsumerPacketData) Unmarshal(dAtA []byte) error {
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Packet = &OracleconsumerPacketData_NoData{v}
+			m.Packet = &PriceFeedPacketData_NoData{v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

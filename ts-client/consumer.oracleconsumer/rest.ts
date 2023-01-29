@@ -9,19 +9,19 @@
  * ---------------------------------------------------------------
  */
 
-export type OracleconsumerMsgSetRequestIntervalResponse = object
+export type PriceFeedMsgSetRequestIntervalResponse = object
 
 /**
  * Params defines the parameters for the module.
  */
-export type OracleconsumerParams = object
+export type PriceFeedParams = object
 
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
-export interface OracleconsumerQueryParamsResponse {
+export interface PriceFeedQueryParamsResponse {
   /** params holds all the parameters of this module. */
-  params?: OracleconsumerParams
+  params?: PriceFeedParams
 }
 
 export interface ProtobufAny {
@@ -180,7 +180,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @request GET:/consumer/pricefeed/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<OracleconsumerQueryParamsResponse, RpcStatus>({
+    this.request<PriceFeedQueryParamsResponse, RpcStatus>({
       path: `/consumer/pricefeed/params`,
       method: 'GET',
       format: 'json',

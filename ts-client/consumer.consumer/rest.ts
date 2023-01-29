@@ -22,6 +22,19 @@ export interface ConsumerQueryParamsResponse {
   params?: ConsumerParams;
 }
 
+/**
+ * QueryCountsResponse is response type for the Query/Count RPC method.
+ */
+export interface ConsumerQueryPriceResponse {
+  symbol?: string;
+
+  /** @format uint64 */
+  price?: string;
+
+  /** @format int64 */
+  resolve_time?: string;
+}
+
 export interface ProtobufAny {
   "@type"?: string;
 }
@@ -169,6 +182,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<ConsumerQueryParamsResponse, RpcStatus>({
       path: `/consumer/consumer/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPrice
+   * @request GET:/consumer/consumer/price/{symbol}
+   */
+  queryPrice = (symbol: string, params: RequestParams = {}) =>
+    this.request<ConsumerQueryPriceResponse, RpcStatus>({
+      path: `/consumer/consumer/price/${symbol}`,
       method: "GET",
       format: "json",
       ...params,

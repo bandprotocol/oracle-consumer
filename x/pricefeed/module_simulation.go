@@ -4,7 +4,7 @@ import (
 	"math/rand"
 
 	"consumer/testutil/sample"
-	oracleconsumersimulation "consumer/x/pricefeed/simulation"
+	priceFeedsimulation "consumer/x/pricefeed/simulation"
 	"consumer/x/pricefeed/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -18,7 +18,7 @@ import (
 // avoid unused import issue
 var (
 	_ = sample.AccAddress
-	_ = oracleconsumersimulation.FindAccount
+	_ = priceFeedsimulation.FindAccount
 	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
@@ -38,12 +38,12 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	for i, acc := range simState.Accounts {
 		accs[i] = acc.Address.String()
 	}
-	oracleconsumerGenesis := types.GenesisState{
+	priceFeedGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
 		PortId: types.PortID,
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
-	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&oracleconsumerGenesis)
+	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&priceFeedGenesis)
 }
 
 // ProposalContents doesn't return any content functions for governance proposals
@@ -72,7 +72,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSetRequestInterval,
-		oracleconsumersimulation.SimulateMsgSetRequestInterval(am.accountKeeper, am.bankKeeper, am.keeper),
+		priceFeedsimulation.SimulateMsgSetRequestInterval(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

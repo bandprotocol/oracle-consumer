@@ -6,9 +6,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"consumer/calldata"
 	bandtypes "consumer/types/band"
 	"consumer/x/pricefeed/keeper"
+	"consumer/x/pricefeed/types"
 )
 
 func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
@@ -36,14 +36,13 @@ func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keep
 	}
 
 	for osID, symbols := range symbolsOsMap {
-		calldataByte, err := calldata.EncodeCalldata(symbols, params.Multiplier)
+		calldataByte, err := bandtypes.EncodeCalldata(symbols, params.MinDsCount)
 		if err != nil {
-			panic(err)
 			fmt.Printf("request data error: %s", err.Error())
 		}
 
-		prepareGas := calculateGas(params.PrepareGasA, params.PrepareGasB, uint64(len(symbols)))
-		executeGas := calculateGas(params.ExecuteGasA, params.ExecuteGasB, uint64(len(symbols)))
+		prepareGas := types.CalculateGas(params.PrepareGasA, params.PrepareGasB, uint64(len(symbols)))
+		executeGas := types.CalculateGas(params.ExecuteGasA, params.ExecuteGasB, uint64(len(symbols)))
 
 		oracleRequestPacket := bandtypes.NewOracleRequestPacketData("consumer", osID, calldataByte, params.AskCount, params.MinCount, params.FeeLimit, prepareGas, executeGas)
 		err = k.RequestBandChainData(ctx, "channel-5", oracleRequestPacket)

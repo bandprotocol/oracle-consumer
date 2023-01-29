@@ -107,7 +107,7 @@ class SDKModule {
 const Module = (test: IgniteClient) => {
   return {
     module: {
-      ConsumerOracleconsumer: new SDKModule(test),
+      ConsumerPriceFeed: new SDKModule(test),
     },
     registry: msgTypes,
   }
