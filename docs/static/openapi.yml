@@ -162,6 +162,48 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /consumer/pricefeed/price/{symbol}:
+    get:
+      operationId: ConsumerPricefeedPrice
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              symbol:
+                type: string
+              price:
+                type: string
+                format: uint64
+              resolve_time:
+                type: string
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /consumer/pricefeed/{symbol}:
     get:
       operationId: ConsumerPricefeedRequestInterval
@@ -45320,6 +45362,17 @@ definitions:
 
                 signatures required by gogoproto.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  consumer.pricefeed.QueryPriceResponse:
+    type: object
+    properties:
+      symbol:
+        type: string
+      price:
+        type: string
+        format: uint64
+      resolve_time:
+        type: string
+        format: int64
   consumer.pricefeed.QueryRequestIntervalResponse:
     type: object
     properties:

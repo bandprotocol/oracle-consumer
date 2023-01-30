@@ -9,10 +9,10 @@ type Calldata interface {
 
 type DefaultCalldata struct {
 	Symbols            []string
-	MinimumSourceCount uint64
+	MinimumSourceCount uint8
 }
 
-func EncodeCalldata(symbols []string, minimumSourceCount uint64) ([]byte, error) {
+func EncodeCalldata(symbols []string, minimumSourceCount uint8) ([]byte, error) {
 	return obi.Encode(DefaultCalldata{symbols, minimumSourceCount})
 }
 

@@ -19,7 +19,9 @@ service Query {
   rpc RequestInterval(QueryRequestInterval) returns (QueryRequestIntervalResponse) {
     option (google.api.http).get = "/consumer/pricefeed/{symbol}";
   }
-  // this line is used by starport scaffolding # 2
+  rpc Price(QueryPrice) returns (QueryPriceResponse) {
+    option (google.api.http).get = "/consumer/pricefeed/price/{symbol}";
+  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -41,4 +43,13 @@ message QueryRequestIntervalResponse {
   uint64 block_interval = 2;
 }
 
+message QueryPrice {
+  string symbol = 1;
+}
+
+message QueryPriceResponse {
+  string symbol = 1;
+  uint64 price = 2;
+  int64 resolve_time =3;
+}
 

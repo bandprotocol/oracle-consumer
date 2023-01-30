@@ -25,6 +25,16 @@ export interface QueryRequestIntervalResponse {
   blockInterval: number;
 }
 
+export interface QueryPrice {
+  symbol: string;
+}
+
+export interface QueryPriceResponse {
+  symbol: string;
+  price: number;
+  resolveTime: number;
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -218,11 +228,126 @@ export const QueryRequestIntervalResponse = {
   },
 };
 
+function createBaseQueryPrice(): QueryPrice {
+  return { symbol: "" };
+}
+
+export const QueryPrice = {
+  encode(message: QueryPrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.symbol !== "") {
+      writer.uint32(10).string(message.symbol);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPrice {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPrice();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.symbol = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryPrice {
+    return { symbol: isSet(object.symbol) ? String(object.symbol) : "" };
+  },
+
+  toJSON(message: QueryPrice): unknown {
+    const obj: any = {};
+    message.symbol !== undefined && (obj.symbol = message.symbol);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPrice>, I>>(object: I): QueryPrice {
+    const message = createBaseQueryPrice();
+    message.symbol = object.symbol ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryPriceResponse(): QueryPriceResponse {
+  return { symbol: "", price: 0, resolveTime: 0 };
+}
+
+export const QueryPriceResponse = {
+  encode(message: QueryPriceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.symbol !== "") {
+      writer.uint32(10).string(message.symbol);
+    }
+    if (message.price !== 0) {
+      writer.uint32(16).uint64(message.price);
+    }
+    if (message.resolveTime !== 0) {
+      writer.uint32(24).int64(message.resolveTime);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPriceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPriceResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.symbol = reader.string();
+          break;
+        case 2:
+          message.price = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.resolveTime = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryPriceResponse {
+    return {
+      symbol: isSet(object.symbol) ? String(object.symbol) : "",
+      price: isSet(object.price) ? Number(object.price) : 0,
+      resolveTime: isSet(object.resolveTime) ? Number(object.resolveTime) : 0,
+    };
+  },
+
+  toJSON(message: QueryPriceResponse): unknown {
+    const obj: any = {};
+    message.symbol !== undefined && (obj.symbol = message.symbol);
+    message.price !== undefined && (obj.price = Math.round(message.price));
+    message.resolveTime !== undefined && (obj.resolveTime = Math.round(message.resolveTime));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPriceResponse>, I>>(object: I): QueryPriceResponse {
+    const message = createBaseQueryPriceResponse();
+    message.symbol = object.symbol ?? "";
+    message.price = object.price ?? 0;
+    message.resolveTime = object.resolveTime ?? 0;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   RequestInterval(request: QueryRequestInterval): Promise<QueryRequestIntervalResponse>;
+  Price(request: QueryPrice): Promise<QueryPriceResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -231,6 +356,7 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
     this.RequestInterval = this.RequestInterval.bind(this);
+    this.Price = this.Price.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -242,6 +368,12 @@ export class QueryClientImpl implements Query {
     const data = QueryRequestInterval.encode(request).finish();
     const promise = this.rpc.request("consumer.pricefeed.Query", "RequestInterval", data);
     return promise.then((data) => QueryRequestIntervalResponse.decode(new _m0.Reader(data)));
+  }
+
+  Price(request: QueryPrice): Promise<QueryPriceResponse> {
+    const data = QueryPrice.encode(request).finish();
+    const promise = this.rpc.request("consumer.pricefeed.Query", "Price", data);
+    return promise.then((data) => QueryPriceResponse.decode(new _m0.Reader(data)));
   }
 }
 

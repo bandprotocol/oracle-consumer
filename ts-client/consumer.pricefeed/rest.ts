@@ -47,6 +47,16 @@ export interface PricefeedQueryParamsResponse {
   params?: PricefeedParams;
 }
 
+export interface PricefeedQueryPriceResponse {
+  symbol?: string;
+
+  /** @format uint64 */
+  price?: string;
+
+  /** @format int64 */
+  resolve_time?: string;
+}
+
 /**
  * QueryCountsResponse is response type for the Query/Count RPC method.
  */
@@ -216,6 +226,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<PricefeedQueryParamsResponse, RpcStatus>({
       path: `/consumer/pricefeed/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPrice
+   * @request GET:/consumer/pricefeed/price/{symbol}
+   */
+  queryPrice = (symbol: string, params: RequestParams = {}) =>
+    this.request<PricefeedQueryPriceResponse, RpcStatus>({
+      path: `/consumer/pricefeed/price/${symbol}`,
       method: "GET",
       format: "json",
       ...params,
