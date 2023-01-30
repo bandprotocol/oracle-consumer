@@ -90,12 +90,12 @@ func (k Keeper) GetAllRequestInterval(ctx sdk.Context) ([]types.RequestInterval,
 }
 
 func (k Keeper) SetPriceFeed(ctx sdk.Context, priceFeed types.PriceFeed) {
-	ctx.KVStore(k.storeKey).Set(types.PriceFeedPrefix, k.cdc.MustMarshal(&priceFeed))
+	ctx.KVStore(k.storeKey).Set(types.PriceFeedStoreKey(priceFeed.Symbol), k.cdc.MustMarshal(&priceFeed))
 }
 
 func (k Keeper) GetPriceFeed(ctx sdk.Context, symbol string) (*types.PriceFeed, error) {
 	pf := &types.PriceFeed{}
-	bz := ctx.KVStore(k.storeKey).Get(types.PriceFeedPrefixKey(symbol))
+	bz := ctx.KVStore(k.storeKey).Get(types.PriceFeedStoreKey(symbol))
 
 	if err := k.cdc.Unmarshal(bz, pf); err != nil {
 		return nil, err

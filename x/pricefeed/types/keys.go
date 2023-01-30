@@ -28,7 +28,7 @@ var (
 
 	RequestIntervalStoreKeyPrefix = []byte{0x01}
 
-	PriceFeedPrefix = []byte{0x02}
+	PriceFeedStoreKeyPrefix = []byte{0x02}
 )
 
 func KeyPrefix(p string) []byte {
@@ -39,6 +39,6 @@ func RequestIntervalStoreKey(requestSymbol string) []byte {
 	return append(RequestIntervalStoreKeyPrefix, []byte(requestSymbol)...)
 }
 
-func PriceFeedPrefixKey(symbol string) []byte {
-	return append(PriceFeedPrefix, []byte(symbol)...)
+func PriceFeedStoreKey(symbol string) []byte {
+	return append(PriceFeedStoreKeyPrefix, []byte(symbol)...)
 }

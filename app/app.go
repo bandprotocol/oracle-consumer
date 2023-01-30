@@ -510,15 +510,6 @@ func New(
 		govConfig,
 	)
 
-	app.ConsumerKeeper = *consumermodulekeeper.NewKeeper(
-		appCodec,
-		keys[consumermoduletypes.StoreKey],
-		keys[consumermoduletypes.MemStoreKey],
-		app.GetSubspace(consumermoduletypes.ModuleName),
-		app.PriceFeedKeeper,
-	)
-	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper, app.AccountKeeper, app.BankKeeper)
-
 	scopedPriceFeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedmoduletypes.ModuleName)
 	app.scopedPriceFeedKeeper = scopedPriceFeedKeeper
 	app.PriceFeedKeeper = *pricefeedmodulekeeper.NewKeeper(
@@ -534,6 +525,15 @@ func New(
 
 	priceFeedIBCModule := pricefeedmodule.NewIBCModule(app.PriceFeedKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
+
+	app.ConsumerKeeper = *consumermodulekeeper.NewKeeper(
+		appCodec,
+		keys[consumermoduletypes.StoreKey],
+		keys[consumermoduletypes.MemStoreKey],
+		app.GetSubspace(consumermoduletypes.ModuleName),
+		app.PriceFeedKeeper,
+	)
+	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// Sealing prevents other modules from creating scoped sub-keepers
 	app.CapabilityKeeper.Seal()
