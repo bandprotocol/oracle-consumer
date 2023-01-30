@@ -12,8 +12,8 @@ import (
 
 func CmdQueryPriceFeed() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "pricefeed [symbol]",
-		Short: "get latest price by symbol",
+		Use:   "price [symbol]",
+		Short: "shows the latest price by symbol",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)

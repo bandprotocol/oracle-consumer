@@ -37,14 +37,14 @@ func (k Querier) RequestInterval(c context.Context, req *types.QueryRequestInter
 func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPriceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
-	price, err := k.GetPriceFeed(ctx, req.Symbol)
+	p, err := k.GetPrice(ctx, req.Symbol)
 
 	if err != nil {
 		return nil, err
 	}
 	return &types.QueryPriceResponse{
-		Symbol:      price.Symbol,
-		Price:       price.Price,
-		ResolveTime: price.ResolveTime,
+		Symbol:      p.Symbol,
+		Price:       p.Price,
+		ResolveTime: p.ResolveTime,
 	}, nil
 }

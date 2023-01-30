@@ -13,7 +13,7 @@ var _ types.QueryServer = Keeper{}
 func (k Keeper) Price(c context.Context, req *types.QueryPriceRequest) (*types.QueryPriceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
-	pf, err := k.PriceFeedKeeper.GetPriceFeed(ctx, req.Symbol)
+	pf, err := k.PriceFeedKeeper.GetPrice(ctx, req.Symbol)
 	if err != nil {
 		return nil, err
 	}

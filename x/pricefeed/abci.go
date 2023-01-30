@@ -44,10 +44,10 @@ func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keep
 		prepareGas := types.CalculateGas(params.PrepareGasA, params.PrepareGasB, uint64(len(symbols)))
 		executeGas := types.CalculateGas(params.ExecuteGasA, params.ExecuteGasB, uint64(len(symbols)))
 
-		oracleRequestPacket := bandtypes.NewOracleRequestPacketData("consumer", osID, calldataByte, params.AskCount, params.MinCount, params.FeeLimit, prepareGas, executeGas)
-		err = k.RequestBandChainData(ctx, "channel-0", oracleRequestPacket)
+		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(types.ModuleName, osID, calldataByte, params.AskCount, params.MinCount, params.FeeLimit, prepareGas, executeGas)
+
+		err = k.RequestBandChainData(ctx, params.SourceChannel, oracleRequestPacket)
 		if err != nil {
-			panic(err)
 			fmt.Printf("request data error: %s", err.Error())
 		}
 	}

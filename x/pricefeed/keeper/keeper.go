@@ -89,13 +89,13 @@ func (k Keeper) GetAllRequestInterval(ctx sdk.Context) ([]types.RequestInterval,
 	return requestIntervals, nil
 }
 
-func (k Keeper) SetPriceFeed(ctx sdk.Context, priceFeed types.PriceFeed) {
-	ctx.KVStore(k.storeKey).Set(types.PriceFeedStoreKey(priceFeed.Symbol), k.cdc.MustMarshal(&priceFeed))
+func (k Keeper) SetPrice(ctx sdk.Context, priceFeed types.PriceFeed) {
+	ctx.KVStore(k.storeKey).Set(types.PriceStoreKey(priceFeed.Symbol), k.cdc.MustMarshal(&priceFeed))
 }
 
-func (k Keeper) GetPriceFeed(ctx sdk.Context, symbol string) (*types.PriceFeed, error) {
+func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (*types.PriceFeed, error) {
 	pf := &types.PriceFeed{}
-	bz := ctx.KVStore(k.storeKey).Get(types.PriceFeedStoreKey(symbol))
+	bz := ctx.KVStore(k.storeKey).Get(types.PriceStoreKey(symbol))
 
 	if err := k.cdc.Unmarshal(bz, pf); err != nil {
 		return nil, err
@@ -154,7 +154,7 @@ func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.Oracl
 	}
 
 	for _, r := range result {
-		k.SetPriceFeed(ctx, types.PriceFeed{
+		k.SetPrice(ctx, types.PriceFeed{
 			Symbol:      r.Symbol,
 			Price:       r.Rate,
 			ResolveTime: res.ResolveTime,
