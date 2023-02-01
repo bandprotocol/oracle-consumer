@@ -2,12 +2,15 @@ import { Client, registry, MissingWalletError } from 'consumer-client-ts'
 
 import { RequestInterval } from "consumer-client-ts/consumer.pricefeed/types"
 import { PriceFeed } from "consumer-client-ts/consumer.pricefeed/types"
+import { UpdateSymbolRequestProposal } from "consumer-client-ts/consumer.pricefeed/types"
+import { SymbolRequests } from "consumer-client-ts/consumer.pricefeed/types"
+import { SymbolRequest } from "consumer-client-ts/consumer.pricefeed/types"
 import { PriceFeedPacketData } from "consumer-client-ts/consumer.pricefeed/types"
 import { NoData } from "consumer-client-ts/consumer.pricefeed/types"
 import { Params } from "consumer-client-ts/consumer.pricefeed/types"
 
 
-export { RequestInterval, PriceFeed, PriceFeedPacketData, NoData, Params };
+export { RequestInterval, PriceFeed, UpdateSymbolRequestProposal, SymbolRequests, SymbolRequest, PriceFeedPacketData, NoData, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -45,6 +48,9 @@ const getDefaultState = () => {
 				_Structure: {
 						RequestInterval: getStructure(RequestInterval.fromPartial({})),
 						PriceFeed: getStructure(PriceFeed.fromPartial({})),
+						UpdateSymbolRequestProposal: getStructure(UpdateSymbolRequestProposal.fromPartial({})),
+						SymbolRequests: getStructure(SymbolRequests.fromPartial({})),
+						SymbolRequest: getStructure(SymbolRequest.fromPartial({})),
 						PriceFeedPacketData: getStructure(PriceFeedPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),

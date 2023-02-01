@@ -3,9 +3,7 @@ package consumer.pricefeed;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
 import "consumer/pricefeed/params.proto";
-import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "consumer/x/pricefeed/types";

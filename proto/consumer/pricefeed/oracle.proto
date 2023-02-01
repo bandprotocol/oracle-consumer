@@ -1,10 +1,12 @@
 syntax = "proto3";
 package consumer.pricefeed;
 
-import "gogoproto/gogo.proto";
-
-
 option go_package = "consumer/x/pricefeed/types";
+option (gogoproto.equal_all) = true;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
 
 message RequestInterval {
   string symbol = 1;
@@ -15,5 +17,30 @@ message RequestInterval {
 message PriceFeed {
   string symbol = 1;
   uint64 price = 2;
-  int64 resolve_time =3;
+  int64 resolve_time = 3;
+}
+
+message UpdateSymbolRequestProposal {
+  option (gogoproto.goproto_getters)         = false;
+  option (gogoproto.goproto_stringer)        = false;
+  option (cosmos_proto.implements_interface) = "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1.Content";
+  
+  string title       = 1;
+
+  // description of the proposal
+  string description = 2;
+
+  repeated SymbolRequest symbols = 3 [(gogoproto.nullable) = false];
+}
+
+// message SymbolRequests {
+//   repeated SymbolRequest Symbols = 1;
+// }
+
+message SymbolRequest {
+  option (gogoproto.goproto_stringer) = false;
+
+  string symbol = 1;
+  uint64 oracleScriptId = 2;
+  uint64 block_interval = 3;
 }

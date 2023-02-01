@@ -1,9 +1,6 @@
 syntax = "proto3";
 package consumer.pricefeed;
 
-import "gogoproto/gogo.proto";
-
-
 option go_package = "consumer/x/pricefeed/types";
 
 // this line is used by starport scaffolding # proto/tx/import

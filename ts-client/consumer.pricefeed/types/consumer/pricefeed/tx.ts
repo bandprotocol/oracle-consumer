@@ -133,7 +133,6 @@ export const MsgCreateRequestIntervalResponse = {
 
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateRequestInterval(request: MsgCreateRequestInterval): Promise<MsgCreateRequestIntervalResponse>;
 }
 
