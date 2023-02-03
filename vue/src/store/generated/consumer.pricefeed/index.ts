@@ -1,16 +1,16 @@
 import { Client, registry, MissingWalletError } from 'consumer-client-ts'
 
 import { RequestInterval } from "consumer-client-ts/consumer.pricefeed/types"
-import { PriceFeed } from "consumer-client-ts/consumer.pricefeed/types"
+import { Price } from "consumer-client-ts/consumer.pricefeed/types"
+import { Symbol } from "consumer-client-ts/consumer.pricefeed/types"
+import { Symbols } from "consumer-client-ts/consumer.pricefeed/types"
 import { UpdateSymbolRequestProposal } from "consumer-client-ts/consumer.pricefeed/types"
-import { SymbolRequests } from "consumer-client-ts/consumer.pricefeed/types"
-import { SymbolRequest } from "consumer-client-ts/consumer.pricefeed/types"
 import { PriceFeedPacketData } from "consumer-client-ts/consumer.pricefeed/types"
 import { NoData } from "consumer-client-ts/consumer.pricefeed/types"
 import { Params } from "consumer-client-ts/consumer.pricefeed/types"
 
 
-export { RequestInterval, PriceFeed, UpdateSymbolRequestProposal, SymbolRequests, SymbolRequest, PriceFeedPacketData, NoData, Params };
+export { RequestInterval, Price, Symbol, Symbols, UpdateSymbolRequestProposal, PriceFeedPacketData, NoData, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -43,14 +43,15 @@ const getDefaultState = () => {
 	return {
 				Params: {},
 				RequestInterval: {},
+				Symbols: {},
 				Price: {},
 				
 				_Structure: {
 						RequestInterval: getStructure(RequestInterval.fromPartial({})),
-						PriceFeed: getStructure(PriceFeed.fromPartial({})),
+						Price: getStructure(Price.fromPartial({})),
+						Symbol: getStructure(Symbol.fromPartial({})),
+						Symbols: getStructure(Symbols.fromPartial({})),
 						UpdateSymbolRequestProposal: getStructure(UpdateSymbolRequestProposal.fromPartial({})),
-						SymbolRequests: getStructure(SymbolRequests.fromPartial({})),
-						SymbolRequest: getStructure(SymbolRequest.fromPartial({})),
 						PriceFeedPacketData: getStructure(PriceFeedPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
@@ -93,6 +94,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.RequestInterval[JSON.stringify(params)] ?? {}
+		},
+				getSymbols: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Symbols[JSON.stringify(params)] ?? {}
 		},
 				getPrice: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
@@ -173,6 +180,28 @@ export default {
 				return getters['getRequestInterval']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryRequestInterval API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QuerySymbols({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.ConsumerPricefeed.query.querySymbols()).data
+				
+					
+				commit('QUERY', { query: 'Symbols', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySymbols', payload: { options: { all }, params: {...key},query }})
+				return getters['getSymbols']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QuerySymbols API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

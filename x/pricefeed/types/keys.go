@@ -23,6 +23,8 @@ const (
 var (
 	GlobalStoreKeyPrefix = []byte{0x00}
 
+	SymbolsStoreKey = append(GlobalStoreKeyPrefix, []byte("Symbols")...)
+
 	// PortKey defines the key to store the port ID in store
 	PortKey = KeyPrefix("pricefeed-port-")
 

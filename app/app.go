@@ -108,6 +108,7 @@ import (
 	consumermodulekeeper "consumer/x/consumer/keeper"
 	consumermoduletypes "consumer/x/consumer/types"
 	pricefeedmodule "consumer/x/pricefeed"
+	pricefeedclient "consumer/x/pricefeed/client"
 	pricefeedmodulekeeper "consumer/x/pricefeed/keeper"
 	pricefeedmoduletypes "consumer/x/pricefeed/types"
 
@@ -135,6 +136,7 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		upgradeclient.LegacyCancelProposalHandler,
 		ibcclientclient.UpdateClientProposalHandler,
 		ibcclientclient.UpgradeProposalHandler,
+		pricefeedclient.ProposalHandler,
 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
 
@@ -490,26 +492,6 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	govRouter := govv1beta1.NewRouter()
-	govRouter.
-		AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler).
-		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
-		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
-		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
-		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper))
-	govConfig := govtypes.DefaultConfig()
-	app.GovKeeper = govkeeper.NewKeeper(
-		appCodec,
-		keys[govtypes.StoreKey],
-		app.GetSubspace(govtypes.ModuleName),
-		app.AccountKeeper,
-		app.BankKeeper,
-		&stakingKeeper,
-		govRouter,
-		app.MsgServiceRouter(),
-		govConfig,
-	)
-
 	scopedPriceFeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedmoduletypes.ModuleName)
 	app.scopedPriceFeedKeeper = scopedPriceFeedKeeper
 	app.PriceFeedKeeper = *pricefeedmodulekeeper.NewKeeper(
@@ -534,6 +516,27 @@ func New(
 		app.PriceFeedKeeper,
 	)
 	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper, app.AccountKeeper, app.BankKeeper)
+
+	govRouter := govv1beta1.NewRouter()
+	govRouter.
+		AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler).
+		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
+		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
+		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
+		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
+		AddRoute(pricefeedmoduletypes.RouterKey, pricefeedmodule.NewUpdateSymbolRequestProposalHandler(app.PriceFeedKeeper))
+	govConfig := govtypes.DefaultConfig()
+	app.GovKeeper = govkeeper.NewKeeper(
+		appCodec,
+		keys[govtypes.StoreKey],
+		app.GetSubspace(govtypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		&stakingKeeper,
+		govRouter,
+		app.MsgServiceRouter(),
+		govConfig,
+	)
 
 	// Sealing prevents other modules from creating scoped sub-keepers
 	app.CapabilityKeeper.Seal()

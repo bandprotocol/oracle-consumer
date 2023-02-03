@@ -34,6 +34,19 @@ func (k Querier) RequestInterval(c context.Context, req *types.QueryRequestInter
 	}, nil
 }
 
+func (k Querier) Symbols(c context.Context, req *types.QuerySymbols) (*types.QuerySymbolsResponse, error) {
+	ctx := sdk.UnwrapSDKContext(c)
+
+	s, err := k.GetSymbols(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+	return &types.QuerySymbolsResponse{
+		Symbols: &s,
+	}, nil
+}
+
 func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPriceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 

@@ -26,17 +26,14 @@ message QueryParamsRequest {}
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
   // params holds all the parameters of this module.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
 }
 
-message QueryPriceRequest {
-  string symbol = 1;
-}
+message QueryPriceRequest { string symbol = 1; }
 
 // QueryCountsResponse is response type for the Query/Count RPC method.
 message QueryPriceResponse {
   string symbol = 1;
   uint64 price = 2;
-  int64 resolve_time =3;
+  int64 resolve_time = 3;
 }
-

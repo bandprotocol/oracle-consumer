@@ -4,6 +4,7 @@ package consumer.pricefeed;
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "consumer/pricefeed/params.proto";
+import "consumer/pricefeed/oracle.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "consumer/x/pricefeed/types";
@@ -17,6 +18,9 @@ service Query {
   rpc RequestInterval(QueryRequestInterval) returns (QueryRequestIntervalResponse) {
     option (google.api.http).get = "/consumer/pricefeed/{symbol}";
   }
+  rpc Symbols(QuerySymbols) returns (QuerySymbolsResponse) {
+    option (google.api.http).get = "/consumer/pricefeed/symbols";
+  }
   rpc Price(QueryPrice) returns (QueryPriceResponse) {
     option (google.api.http).get = "/consumer/pricefeed/price/{symbol}";
   }
@@ -28,12 +32,10 @@ message QueryParamsRequest {}
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
   // params holds all the parameters of this module.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
 }
 
-message QueryRequestInterval {
-  string symbol = 1;
-}
+message QueryRequestInterval { string symbol = 1; }
 
 // QueryCountsResponse is response type for the Query/Count RPC method.
 message QueryRequestIntervalResponse {
@@ -41,13 +43,17 @@ message QueryRequestIntervalResponse {
   uint64 block_interval = 2;
 }
 
-message QueryPrice {
-  string symbol = 1;
+message QuerySymbols {}
+
+message QuerySymbolsResponse {
+  Symbols symbols = 1;
 }
+
+
+message QueryPrice { string symbol = 1; }
 
 message QueryPriceResponse {
   string symbol = 1;
   uint64 price = 2;
-  int64 resolve_time =3;
+  int64 resolve_time = 3;
 }
-

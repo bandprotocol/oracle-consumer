@@ -7,6 +7,11 @@ accounts:
 validators:
   - name: alice
     bonded: "100000000stake"
+genesis:
+  app_state:
+    gov:
+      voting_params:
+        voting_period: "40s"
 client:
   openapi:
     path: "docs/static/openapi.yml"

@@ -89,12 +89,29 @@ func (k Keeper) GetAllRequestInterval(ctx sdk.Context) ([]types.RequestInterval,
 	return requestIntervals, nil
 }
 
-func (k Keeper) SetPrice(ctx sdk.Context, priceFeed types.PriceFeed) {
-	ctx.KVStore(k.storeKey).Set(types.PriceStoreKey(priceFeed.Symbol), k.cdc.MustMarshal(&priceFeed))
+func (k Keeper) SetSymbols(ctx sdk.Context, symbols types.Symbols) {
+	fmt.Print("\n\n*********************************************\n")
+	fmt.Printf("eiei\n")
+	fmt.Print("*********************************************\n")
+	ctx.KVStore(k.storeKey).Set(types.SymbolsStoreKey, k.cdc.MustMarshal(&symbols))
 }
 
-func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (*types.PriceFeed, error) {
-	pf := &types.PriceFeed{}
+func (k Keeper) GetSymbols(ctx sdk.Context) (types.Symbols, error) {
+	bz := ctx.KVStore(k.storeKey).Get(types.SymbolsStoreKey)
+	if bz == nil {
+		return types.Symbols{}, sdkerrors.Wrap(types.ErrSymbolsNotFound, "")
+	}
+	var symbols types.Symbols
+	k.cdc.MustUnmarshal(bz, &symbols)
+	return symbols, nil
+}
+
+func (k Keeper) SetPrice(ctx sdk.Context, price types.Price) {
+	ctx.KVStore(k.storeKey).Set(types.PriceStoreKey(price.Symbol), k.cdc.MustMarshal(&price))
+}
+
+func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (*types.Price, error) {
+	pf := &types.Price{}
 	bz := ctx.KVStore(k.storeKey).Get(types.PriceStoreKey(symbol))
 
 	if err := k.cdc.Unmarshal(bz, pf); err != nil {
@@ -154,7 +171,7 @@ func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.Oracl
 	}
 
 	for _, r := range result {
-		k.SetPrice(ctx, types.PriceFeed{
+		k.SetPrice(ctx, types.Price{
 			Symbol:      r.Symbol,
 			Price:       r.Rate,
 			ResolveTime: res.ResolveTime,

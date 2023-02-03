@@ -204,6 +204,51 @@ paths:
           type: string
       tags:
         - Query
+  /consumer/pricefeed/symbols:
+    get:
+      operationId: ConsumerPricefeedSymbols
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              symbols:
+                type: object
+                properties:
+                  symbols:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        symbol:
+                          type: string
+                        oracle_script_id:
+                          type: string
+                          format: uint64
+                        block_interval:
+                          type: string
+                          format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /consumer/pricefeed/{symbol}:
     get:
       operationId: ConsumerPricefeedRequestInterval
@@ -45383,6 +45428,52 @@ definitions:
         type: string
         format: uint64
     description: QueryCountsResponse is response type for the Query/Count RPC method.
+  consumer.pricefeed.QuerySymbolsResponse:
+    type: object
+    properties:
+      symbols:
+        type: object
+        properties:
+          symbols:
+            type: array
+            items:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                oracle_script_id:
+                  type: string
+                  format: uint64
+                block_interval:
+                  type: string
+                  format: uint64
+  consumer.pricefeed.Symbol:
+    type: object
+    properties:
+      symbol:
+        type: string
+      oracle_script_id:
+        type: string
+        format: uint64
+      block_interval:
+        type: string
+        format: uint64
+  consumer.pricefeed.Symbols:
+    type: object
+    properties:
+      symbols:
+        type: array
+        items:
+          type: object
+          properties:
+            symbol:
+              type: string
+            oracle_script_id:
+              type: string
+              format: uint64
+            block_interval:
+              type: string
+              format: uint64
   cosmos.base.v1beta1.Coin:
     type: object
     properties:

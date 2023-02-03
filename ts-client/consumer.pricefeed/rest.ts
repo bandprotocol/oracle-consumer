@@ -68,6 +68,24 @@ export interface PricefeedQueryRequestIntervalResponse {
   block_interval?: string;
 }
 
+export interface PricefeedQuerySymbolsResponse {
+  symbols?: PricefeedSymbols;
+}
+
+export interface PricefeedSymbol {
+  symbol?: string;
+
+  /** @format uint64 */
+  oracle_script_id?: string;
+
+  /** @format uint64 */
+  block_interval?: string;
+}
+
+export interface PricefeedSymbols {
+  symbols?: PricefeedSymbol[];
+}
+
 export interface ProtobufAny {
   "@type"?: string;
 }
@@ -241,6 +259,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryPrice = (symbol: string, params: RequestParams = {}) =>
     this.request<PricefeedQueryPriceResponse, RpcStatus>({
       path: `/consumer/pricefeed/price/${symbol}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySymbols
+   * @request GET:/consumer/pricefeed/symbols
+   */
+  querySymbols = (params: RequestParams = {}) =>
+    this.request<PricefeedQuerySymbolsResponse, RpcStatus>({
+      path: `/consumer/pricefeed/symbols`,
       method: "GET",
       format: "json",
       ...params,

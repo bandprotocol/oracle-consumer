@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Symbols } from "./oracle";
 import { Params } from "./params";
 
 export const protobufPackage = "consumer.pricefeed";
@@ -23,6 +24,13 @@ export interface QueryRequestInterval {
 export interface QueryRequestIntervalResponse {
   oracleScriptId: number;
   blockInterval: number;
+}
+
+export interface QuerySymbols {
+}
+
+export interface QuerySymbolsResponse {
+  symbols: Symbols | undefined;
 }
 
 export interface QueryPrice {
@@ -228,6 +236,94 @@ export const QueryRequestIntervalResponse = {
   },
 };
 
+function createBaseQuerySymbols(): QuerySymbols {
+  return {};
+}
+
+export const QuerySymbols = {
+  encode(_: QuerySymbols, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySymbols {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySymbols();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QuerySymbols {
+    return {};
+  },
+
+  toJSON(_: QuerySymbols): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QuerySymbols>, I>>(_: I): QuerySymbols {
+    const message = createBaseQuerySymbols();
+    return message;
+  },
+};
+
+function createBaseQuerySymbolsResponse(): QuerySymbolsResponse {
+  return { symbols: undefined };
+}
+
+export const QuerySymbolsResponse = {
+  encode(message: QuerySymbolsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.symbols !== undefined) {
+      Symbols.encode(message.symbols, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySymbolsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySymbolsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.symbols = Symbols.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QuerySymbolsResponse {
+    return { symbols: isSet(object.symbols) ? Symbols.fromJSON(object.symbols) : undefined };
+  },
+
+  toJSON(message: QuerySymbolsResponse): unknown {
+    const obj: any = {};
+    message.symbols !== undefined && (obj.symbols = message.symbols ? Symbols.toJSON(message.symbols) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QuerySymbolsResponse>, I>>(object: I): QuerySymbolsResponse {
+    const message = createBaseQuerySymbolsResponse();
+    message.symbols = (object.symbols !== undefined && object.symbols !== null)
+      ? Symbols.fromPartial(object.symbols)
+      : undefined;
+    return message;
+  },
+};
+
 function createBaseQueryPrice(): QueryPrice {
   return { symbol: "" };
 }
@@ -347,6 +443,7 @@ export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   RequestInterval(request: QueryRequestInterval): Promise<QueryRequestIntervalResponse>;
+  Symbols(request: QuerySymbols): Promise<QuerySymbolsResponse>;
   Price(request: QueryPrice): Promise<QueryPriceResponse>;
 }
 
@@ -356,6 +453,7 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
     this.RequestInterval = this.RequestInterval.bind(this);
+    this.Symbols = this.Symbols.bind(this);
     this.Price = this.Price.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
@@ -368,6 +466,12 @@ export class QueryClientImpl implements Query {
     const data = QueryRequestInterval.encode(request).finish();
     const promise = this.rpc.request("consumer.pricefeed.Query", "RequestInterval", data);
     return promise.then((data) => QueryRequestIntervalResponse.decode(new _m0.Reader(data)));
+  }
+
+  Symbols(request: QuerySymbols): Promise<QuerySymbolsResponse> {
+    const data = QuerySymbols.encode(request).finish();
+    const promise = this.rpc.request("consumer.pricefeed.Query", "Symbols", data);
+    return promise.then((data) => QuerySymbolsResponse.decode(new _m0.Reader(data)));
   }
 
   Price(request: QueryPrice): Promise<QueryPriceResponse> {

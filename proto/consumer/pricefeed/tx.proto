@@ -5,10 +5,10 @@ option go_package = "consumer/x/pricefeed/types";
 
 // this line is used by starport scaffolding # proto/tx/import
 
-
 // Msg defines the Msg service.
 service Msg {
-  rpc CreateRequestInterval(MsgCreateRequestInterval) returns (MsgCreateRequestIntervalResponse);
+  rpc CreateRequestInterval(MsgCreateRequestInterval)
+      returns (MsgCreateRequestIntervalResponse);
 }
 
 message MsgCreateRequestInterval {

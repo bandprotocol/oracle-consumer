@@ -5,64 +5,43 @@ import (
 )
 
 const (
-	// ProposalTypeChange defines the type for a ParameterChangeProposal
-	ProposalTypeChange = "ParameterChange"
+	// UpdateSymbolRequest defines the type for a UpdateSymbolRequestProposal
+	UpdateSymbolRequest = "UpdateSymbolRequest"
 )
 
-// Assert ParameterChangeProposal implements govtypes.Content at compile-time
+// Assert UpdateSymbolRequestProposal implements govtypes.Content at compile-time
 var _ govtypes.Content = &UpdateSymbolRequestProposal{}
 
 func init() {
-	govtypes.RegisterProposalType(ProposalTypeChange)
+	govtypes.RegisterProposalType(UpdateSymbolRequest)
 }
 
-func NewParameterChangeProposal(title, description string, changes []ParamChange) *ParameterChangeProposal {
-	return &ParameterChangeProposal{title, description, changes}
+func NewUpdateSymbolRequestProposal(title, description string, symbols Symbols) *UpdateSymbolRequestProposal {
+	return &UpdateSymbolRequestProposal{title, description, symbols.Symbols}
 }
 
-// GetTitle returns the title of a parameter change proposal.
-func (pcp *ParameterChangeProposal) GetTitle() string { return pcp.Title }
+// String implements the Stringer interface.
+func (usrp UpdateSymbolRequestProposal) String() string {
+	return "ABV"
+}
 
-// GetDescription returns the description of a parameter change proposal.
-func (pcp *ParameterChangeProposal) GetDescription() string { return pcp.Description }
+// GetTitle returns the title of a update symbol request proposal.
+func (usrp *UpdateSymbolRequestProposal) GetTitle() string { return usrp.Title }
 
-// ProposalRoute returns the routing key of a parameter change proposal.
-func (pcp *ParameterChangeProposal) ProposalRoute() string { return RouterKey }
+// GetDescription returns the description of a update symbol request proposal.
+func (usrp *UpdateSymbolRequestProposal) GetDescription() string { return usrp.Description }
 
-// ProposalType returns the type of a parameter change proposal.
-func (pcp *ParameterChangeProposal) ProposalType() string { return ProposalTypeChange }
+// ProposalRoute returns the routing key of a update symbol request proposal.
+func (usrp *UpdateSymbolRequestProposal) ProposalRoute() string { return RouterKey }
 
-// ValidateBasic validates the parameter change proposal
-func (pcp *ParameterChangeProposal) ValidateBasic() error {
-	err := govtypes.ValidateAbstract(pcp)
+// ProposalType returns the type of a update symbol request proposal.
+func (usrp *UpdateSymbolRequestProposal) ProposalType() string { return UpdateSymbolRequest }
+
+// ValidateBasic validates the update symbol request proposal.
+func (usrp *UpdateSymbolRequestProposal) ValidateBasic() error {
+	err := govtypes.ValidateAbstract(usrp)
 	if err != nil {
 		return err
-	}
-
-	return ValidateChanges(pcp.Changes)
-}
-
-func NewParamChange(subspace, key, value string) ParamChange {
-	return ParamChange{subspace, key, value}
-}
-
-// ValidateChanges performs basic validation checks over a set of ParamChange. It
-// returns an error if any ParamChange is invalid.
-func ValidateChanges(changes []ParamChange) error {
-	if len(changes) == 0 {
-		return ErrEmptyChanges
-	}
-
-	for _, pc := range changes {
-		if len(pc.Subspace) == 0 {
-			return ErrEmptySubspace
-		}
-		if len(pc.Key) == 0 {
-			return ErrEmptyKey
-		}
-		if len(pc.Value) == 0 {
-			return ErrEmptyValue
-		}
 	}
 
 	return nil

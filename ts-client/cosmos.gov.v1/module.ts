@@ -7,16 +7,16 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgVoteWeighted } from "./types/cosmos/gov/v1/tx";
-import { MsgVote } from "./types/cosmos/gov/v1/tx";
 import { MsgDeposit } from "./types/cosmos/gov/v1/tx";
+import { MsgVote } from "./types/cosmos/gov/v1/tx";
+import { MsgVoteWeighted } from "./types/cosmos/gov/v1/tx";
 import { MsgSubmitProposal } from "./types/cosmos/gov/v1/tx";
 
 
-export { MsgVoteWeighted, MsgVote, MsgDeposit, MsgSubmitProposal };
+export { MsgDeposit, MsgVote, MsgVoteWeighted, MsgSubmitProposal };
 
-type sendMsgVoteWeightedParams = {
-  value: MsgVoteWeighted,
+type sendMsgDepositParams = {
+  value: MsgDeposit,
   fee?: StdFee,
   memo?: string
 };
@@ -27,8 +27,8 @@ type sendMsgVoteParams = {
   memo?: string
 };
 
-type sendMsgDepositParams = {
-  value: MsgDeposit,
+type sendMsgVoteWeightedParams = {
+  value: MsgVoteWeighted,
   fee?: StdFee,
   memo?: string
 };
@@ -40,16 +40,16 @@ type sendMsgSubmitProposalParams = {
 };
 
 
-type msgVoteWeightedParams = {
-  value: MsgVoteWeighted,
+type msgDepositParams = {
+  value: MsgDeposit,
 };
 
 type msgVoteParams = {
   value: MsgVote,
 };
 
-type msgDepositParams = {
-  value: MsgDeposit,
+type msgVoteWeightedParams = {
+  value: MsgVoteWeighted,
 };
 
 type msgSubmitProposalParams = {
@@ -74,17 +74,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgVoteWeighted({ value, fee, memo }: sendMsgVoteWeightedParams): Promise<DeliverTxResponse> {
+		async sendMsgDeposit({ value, fee, memo }: sendMsgDepositParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgVoteWeighted: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgDeposit: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgVoteWeighted({ value: MsgVoteWeighted.fromPartial(value) })
+				let msg = this.msgDeposit({ value: MsgDeposit.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgVoteWeighted: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgDeposit: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -102,17 +102,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgDeposit({ value, fee, memo }: sendMsgDepositParams): Promise<DeliverTxResponse> {
+		async sendMsgVoteWeighted({ value, fee, memo }: sendMsgVoteWeightedParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgDeposit: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgVoteWeighted: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgDeposit({ value: MsgDeposit.fromPartial(value) })
+				let msg = this.msgVoteWeighted({ value: MsgVoteWeighted.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDeposit: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgVoteWeighted: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -131,11 +131,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 		},
 		
 		
-		msgVoteWeighted({ value }: msgVoteWeightedParams): EncodeObject {
+		msgDeposit({ value }: msgDepositParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.gov.v1.MsgVoteWeighted", value: MsgVoteWeighted.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.gov.v1.MsgDeposit", value: MsgDeposit.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgVoteWeighted: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgDeposit: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -147,11 +147,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgDeposit({ value }: msgDepositParams): EncodeObject {
+		msgVoteWeighted({ value }: msgVoteWeightedParams): EncodeObject {
 			try {
-				return { typeUrl: "/cosmos.gov.v1.MsgDeposit", value: MsgDeposit.fromPartial( value ) }  
+				return { typeUrl: "/cosmos.gov.v1.MsgVoteWeighted", value: MsgVoteWeighted.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgDeposit: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgVoteWeighted: Could not create message: ' + e.message)
 			}
 		},
 		

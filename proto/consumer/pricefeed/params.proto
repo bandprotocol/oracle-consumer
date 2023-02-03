@@ -9,7 +9,7 @@ option go_package = "consumer/x/pricefeed/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+
   uint64 ask_count = 1;
   uint64 min_count = 2;
   uint64 min_ds_count = 3;
@@ -19,7 +19,7 @@ message Params {
   uint64 execute_gas_b = 7;
   string source_channel = 8;
   repeated cosmos.base.v1beta1.Coin fee_limit = 9 [
-      (gogoproto.nullable) = false,
-      (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
   ];
 }

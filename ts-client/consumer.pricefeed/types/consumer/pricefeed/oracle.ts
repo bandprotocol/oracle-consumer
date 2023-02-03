@@ -10,30 +10,26 @@ export interface RequestInterval {
   blockInterval: number;
 }
 
-export interface PriceFeed {
+export interface Price {
   symbol: string;
   price: number;
   resolveTime: number;
 }
 
-export interface UpdateSymbolRequestProposal {
-  /** title of the proposal */
-  title:
-    | string
-    | undefined;
-  /** description of the proposal */
-  description: string | undefined;
-  Symbols: SymbolRequests | undefined;
-}
-
-export interface SymbolRequests {
-  Symbols: SymbolRequest[];
-}
-
-export interface SymbolRequest {
+export interface Symbol {
   symbol: string;
   oracleScriptId: number;
   blockInterval: number;
+}
+
+export interface Symbols {
+  symbols: Symbol[];
+}
+
+export interface UpdateSymbolRequestProposal {
+  title: string;
+  description: string;
+  symbols: Symbol[];
 }
 
 function createBaseRequestInterval(): RequestInterval {
@@ -103,12 +99,12 @@ export const RequestInterval = {
   },
 };
 
-function createBasePriceFeed(): PriceFeed {
+function createBasePrice(): Price {
   return { symbol: "", price: 0, resolveTime: 0 };
 }
 
-export const PriceFeed = {
-  encode(message: PriceFeed, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const Price = {
+  encode(message: Price, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.symbol !== "") {
       writer.uint32(10).string(message.symbol);
     }
@@ -121,10 +117,10 @@ export const PriceFeed = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): PriceFeed {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Price {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePriceFeed();
+    const message = createBasePrice();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -145,7 +141,7 @@ export const PriceFeed = {
     return message;
   },
 
-  fromJSON(object: any): PriceFeed {
+  fromJSON(object: any): Price {
     return {
       symbol: isSet(object.symbol) ? String(object.symbol) : "",
       price: isSet(object.price) ? Number(object.price) : 0,
@@ -153,7 +149,7 @@ export const PriceFeed = {
     };
   },
 
-  toJSON(message: PriceFeed): unknown {
+  toJSON(message: Price): unknown {
     const obj: any = {};
     message.symbol !== undefined && (obj.symbol = message.symbol);
     message.price !== undefined && (obj.price = Math.round(message.price));
@@ -161,8 +157,8 @@ export const PriceFeed = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<PriceFeed>, I>>(object: I): PriceFeed {
-    const message = createBasePriceFeed();
+  fromPartial<I extends Exact<DeepPartial<Price>, I>>(object: I): Price {
+    const message = createBasePrice();
     message.symbol = object.symbol ?? "";
     message.price = object.price ?? 0;
     message.resolveTime = object.resolveTime ?? 0;
@@ -170,133 +166,12 @@ export const PriceFeed = {
   },
 };
 
-function createBaseUpdateSymbolRequestProposal(): UpdateSymbolRequestProposal {
-  return { title: undefined, description: undefined, Symbols: undefined };
-}
-
-export const UpdateSymbolRequestProposal = {
-  encode(message: UpdateSymbolRequestProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.title !== undefined) {
-      writer.uint32(10).string(message.title);
-    }
-    if (message.description !== undefined) {
-      writer.uint32(18).string(message.description);
-    }
-    if (message.Symbols !== undefined) {
-      SymbolRequests.encode(message.Symbols, writer.uint32(26).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSymbolRequestProposal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdateSymbolRequestProposal();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.title = reader.string();
-          break;
-        case 2:
-          message.description = reader.string();
-          break;
-        case 3:
-          message.Symbols = SymbolRequests.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): UpdateSymbolRequestProposal {
-    return {
-      title: isSet(object.title) ? String(object.title) : undefined,
-      description: isSet(object.description) ? String(object.description) : undefined,
-      Symbols: isSet(object.Symbols) ? SymbolRequests.fromJSON(object.Symbols) : undefined,
-    };
-  },
-
-  toJSON(message: UpdateSymbolRequestProposal): unknown {
-    const obj: any = {};
-    message.title !== undefined && (obj.title = message.title);
-    message.description !== undefined && (obj.description = message.description);
-    message.Symbols !== undefined
-      && (obj.Symbols = message.Symbols ? SymbolRequests.toJSON(message.Symbols) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<UpdateSymbolRequestProposal>, I>>(object: I): UpdateSymbolRequestProposal {
-    const message = createBaseUpdateSymbolRequestProposal();
-    message.title = object.title ?? undefined;
-    message.description = object.description ?? undefined;
-    message.Symbols = (object.Symbols !== undefined && object.Symbols !== null)
-      ? SymbolRequests.fromPartial(object.Symbols)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseSymbolRequests(): SymbolRequests {
-  return { Symbols: [] };
-}
-
-export const SymbolRequests = {
-  encode(message: SymbolRequests, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.Symbols) {
-      SymbolRequest.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): SymbolRequests {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSymbolRequests();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.Symbols.push(SymbolRequest.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): SymbolRequests {
-    return { Symbols: Array.isArray(object?.Symbols) ? object.Symbols.map((e: any) => SymbolRequest.fromJSON(e)) : [] };
-  },
-
-  toJSON(message: SymbolRequests): unknown {
-    const obj: any = {};
-    if (message.Symbols) {
-      obj.Symbols = message.Symbols.map((e) => e ? SymbolRequest.toJSON(e) : undefined);
-    } else {
-      obj.Symbols = [];
-    }
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<SymbolRequests>, I>>(object: I): SymbolRequests {
-    const message = createBaseSymbolRequests();
-    message.Symbols = object.Symbols?.map((e) => SymbolRequest.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseSymbolRequest(): SymbolRequest {
+function createBaseSymbol(): Symbol {
   return { symbol: "", oracleScriptId: 0, blockInterval: 0 };
 }
 
-export const SymbolRequest = {
-  encode(message: SymbolRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const Symbol = {
+  encode(message: Symbol, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.symbol !== "") {
       writer.uint32(10).string(message.symbol);
     }
@@ -309,10 +184,10 @@ export const SymbolRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): SymbolRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Symbol {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSymbolRequest();
+    const message = createBaseSymbol();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -333,7 +208,7 @@ export const SymbolRequest = {
     return message;
   },
 
-  fromJSON(object: any): SymbolRequest {
+  fromJSON(object: any): Symbol {
     return {
       symbol: isSet(object.symbol) ? String(object.symbol) : "",
       oracleScriptId: isSet(object.oracleScriptId) ? Number(object.oracleScriptId) : 0,
@@ -341,7 +216,7 @@ export const SymbolRequest = {
     };
   },
 
-  toJSON(message: SymbolRequest): unknown {
+  toJSON(message: Symbol): unknown {
     const obj: any = {};
     message.symbol !== undefined && (obj.symbol = message.symbol);
     message.oracleScriptId !== undefined && (obj.oracleScriptId = Math.round(message.oracleScriptId));
@@ -349,11 +224,133 @@ export const SymbolRequest = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<SymbolRequest>, I>>(object: I): SymbolRequest {
-    const message = createBaseSymbolRequest();
+  fromPartial<I extends Exact<DeepPartial<Symbol>, I>>(object: I): Symbol {
+    const message = createBaseSymbol();
     message.symbol = object.symbol ?? "";
     message.oracleScriptId = object.oracleScriptId ?? 0;
     message.blockInterval = object.blockInterval ?? 0;
+    return message;
+  },
+};
+
+function createBaseSymbols(): Symbols {
+  return { symbols: [] };
+}
+
+export const Symbols = {
+  encode(message: Symbols, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.symbols) {
+      Symbol.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Symbols {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSymbols();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.symbols.push(Symbol.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Symbols {
+    return { symbols: Array.isArray(object?.symbols) ? object.symbols.map((e: any) => Symbol.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: Symbols): unknown {
+    const obj: any = {};
+    if (message.symbols) {
+      obj.symbols = message.symbols.map((e) => e ? Symbol.toJSON(e) : undefined);
+    } else {
+      obj.symbols = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Symbols>, I>>(object: I): Symbols {
+    const message = createBaseSymbols();
+    message.symbols = object.symbols?.map((e) => Symbol.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUpdateSymbolRequestProposal(): UpdateSymbolRequestProposal {
+  return { title: "", description: "", symbols: [] };
+}
+
+export const UpdateSymbolRequestProposal = {
+  encode(message: UpdateSymbolRequestProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.title !== "") {
+      writer.uint32(10).string(message.title);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    for (const v of message.symbols) {
+      Symbol.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSymbolRequestProposal {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSymbolRequestProposal();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.title = reader.string();
+          break;
+        case 2:
+          message.description = reader.string();
+          break;
+        case 3:
+          message.symbols.push(Symbol.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSymbolRequestProposal {
+    return {
+      title: isSet(object.title) ? String(object.title) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      symbols: Array.isArray(object?.symbols) ? object.symbols.map((e: any) => Symbol.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: UpdateSymbolRequestProposal): unknown {
+    const obj: any = {};
+    message.title !== undefined && (obj.title = message.title);
+    message.description !== undefined && (obj.description = message.description);
+    if (message.symbols) {
+      obj.symbols = message.symbols.map((e) => e ? Symbol.toJSON(e) : undefined);
+    } else {
+      obj.symbols = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateSymbolRequestProposal>, I>>(object: I): UpdateSymbolRequestProposal {
+    const message = createBaseUpdateSymbolRequestProposal();
+    message.title = object.title ?? "";
+    message.description = object.description ?? "";
+    message.symbols = object.symbols?.map((e) => Symbol.fromPartial(e)) || [];
     return message;
   },
 };
