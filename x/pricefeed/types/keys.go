@@ -23,12 +23,10 @@ const (
 var (
 	GlobalStoreKeyPrefix = []byte{0x00}
 
-	SymbolsStoreKey = append(GlobalStoreKeyPrefix, []byte("Symbols")...)
-
 	// PortKey defines the key to store the port ID in store
 	PortKey = KeyPrefix("pricefeed-port-")
 
-	RequestIntervalStoreKeyPrefix = []byte{0x01}
+	SymbolStoreKeyPrefix = []byte{0x01}
 
 	PriceStoreKeyPrefix = []byte{0x02}
 )
@@ -37,8 +35,8 @@ func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
 
-func RequestIntervalStoreKey(requestSymbol string) []byte {
-	return append(RequestIntervalStoreKeyPrefix, []byte(requestSymbol)...)
+func SymbolStoreKey(symbol string) []byte {
+	return append(SymbolStoreKeyPrefix, []byte(symbol)...)
 }
 
 func PriceStoreKey(symbol string) []byte {

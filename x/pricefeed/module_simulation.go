@@ -70,11 +70,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 			weightMsgSetRequestInterval = defaultWeightMsgSetRequestInterval
 		},
 	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgSetRequestInterval,
-		priceFeedsimulation.SimulateMsgSetRequestInterval(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations

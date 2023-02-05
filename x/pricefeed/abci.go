@@ -14,7 +14,7 @@ import (
 func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
 	symbolsOsMap := make(map[uint64][]string)
 
-	requestIntervals, err := k.GetAllRequestInterval(ctx)
+	symbols, err := k.GetAllSymbol(ctx)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -24,13 +24,13 @@ func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keep
 
 	blockHeight := ctx.BlockHeight()
 
-	for _, requestInterval := range requestIntervals {
-		if blockHeight%int64(requestInterval.BlockInterval) == 0 {
-			_, ok := symbolsOsMap[requestInterval.OracleScriptId]
+	for _, symbol := range symbols {
+		if blockHeight%int64(symbol.BlockInterval) == 0 {
+			_, ok := symbolsOsMap[symbol.OracleScriptId]
 			if ok {
-				symbolsOsMap[requestInterval.OracleScriptId] = append(symbolsOsMap[requestInterval.OracleScriptId], requestInterval.Symbol)
+				symbolsOsMap[symbol.OracleScriptId] = append(symbolsOsMap[symbol.OracleScriptId], symbol.Symbol)
 			} else {
-				symbolsOsMap[requestInterval.OracleScriptId] = []string{requestInterval.Symbol}
+				symbolsOsMap[symbol.OracleScriptId] = []string{symbol.Symbol}
 			}
 		}
 	}

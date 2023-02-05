@@ -1,4 +1,3 @@
-import { RequestInterval } from "./types/consumer/pricefeed/oracle"
 import { Price } from "./types/consumer/pricefeed/oracle"
 import { Symbol } from "./types/consumer/pricefeed/oracle"
 import { Symbols } from "./types/consumer/pricefeed/oracle"
@@ -9,7 +8,6 @@ import { Params } from "./types/consumer/pricefeed/params"
 
 
 export {     
-    RequestInterval,
     Price,
     Symbol,
     Symbols,

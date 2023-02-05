@@ -1,6 +1,5 @@
 import { Client, registry, MissingWalletError } from 'consumer-client-ts'
 
-import { RequestInterval } from "consumer-client-ts/consumer.pricefeed/types"
 import { Price } from "consumer-client-ts/consumer.pricefeed/types"
 import { Symbol } from "consumer-client-ts/consumer.pricefeed/types"
 import { Symbols } from "consumer-client-ts/consumer.pricefeed/types"
@@ -10,7 +9,7 @@ import { NoData } from "consumer-client-ts/consumer.pricefeed/types"
 import { Params } from "consumer-client-ts/consumer.pricefeed/types"
 
 
-export { RequestInterval, Price, Symbol, Symbols, UpdateSymbolRequestProposal, PriceFeedPacketData, NoData, Params };
+export { Price, Symbol, Symbols, UpdateSymbolRequestProposal, PriceFeedPacketData, NoData, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -42,12 +41,10 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				Params: {},
-				RequestInterval: {},
 				Symbols: {},
 				Price: {},
 				
 				_Structure: {
-						RequestInterval: getStructure(RequestInterval.fromPartial({})),
 						Price: getStructure(Price.fromPartial({})),
 						Symbol: getStructure(Symbol.fromPartial({})),
 						Symbols: getStructure(Symbols.fromPartial({})),
@@ -88,12 +85,6 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Params[JSON.stringify(params)] ?? {}
-		},
-				getRequestInterval: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.RequestInterval[JSON.stringify(params)] ?? {}
 		},
 				getSymbols: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
@@ -168,28 +159,6 @@ export default {
 		 		
 		
 		
-		async QueryRequestInterval({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
-			try {
-				const key = params ?? {};
-				const client = initClient(rootGetters);
-				let value= (await client.ConsumerPricefeed.query.queryRequestInterval( key.symbol)).data
-				
-					
-				commit('QUERY', { query: 'RequestInterval', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryRequestInterval', payload: { options: { all }, params: {...key},query }})
-				return getters['getRequestInterval']( { params: {...key}, query}) ?? {}
-			} catch (e) {
-				throw new Error('QueryClient:QueryRequestInterval API Node Unavailable. Could not perform query: ' + e.message)
-				
-			}
-		},
-		
-		
-		
-		
-		 		
-		
-		
 		async QuerySymbols({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
 				const key = params ?? {};
@@ -229,33 +198,7 @@ export default {
 		},
 		
 		
-		async sendMsgCreateRequestInterval({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.ConsumerPricefeed.tx.sendMsgCreateRequestInterval({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateRequestInterval:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateRequestInterval:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		
-		async MsgCreateRequestInterval({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.ConsumerPricefeed.tx.msgCreateRequestInterval({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateRequestInterval:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateRequestInterval:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		
 	}
 }

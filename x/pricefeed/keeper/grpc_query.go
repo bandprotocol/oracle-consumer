@@ -20,30 +20,18 @@ func (k Querier) Params(c context.Context, req *types.QueryParamsRequest) (*type
 	}, nil
 }
 
-func (k Querier) RequestInterval(c context.Context, req *types.QueryRequestInterval) (*types.QueryRequestIntervalResponse, error) {
-	ctx := sdk.UnwrapSDKContext(c)
-
-	requestInterval, err := k.GetRequestInterval(ctx, req.Symbol)
-
-	if err != nil {
-		return nil, err
-	}
-	return &types.QueryRequestIntervalResponse{
-		OracleScriptId: requestInterval.OracleScriptId,
-		BlockInterval:  requestInterval.BlockInterval,
-	}, nil
-}
-
 func (k Querier) Symbols(c context.Context, req *types.QuerySymbols) (*types.QuerySymbolsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
-	s, err := k.GetSymbols(ctx)
-
+	ss, err := k.GetAllSymbol(ctx)
 	if err != nil {
 		return nil, err
 	}
+
 	return &types.QuerySymbolsResponse{
-		Symbols: &s,
+		Symbols: &types.Symbols{
+			Symbols: ss,
+		},
 	}, nil
 }
 

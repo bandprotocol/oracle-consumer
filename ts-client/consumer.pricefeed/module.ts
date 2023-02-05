@@ -7,21 +7,10 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgCreateRequestInterval } from "./types/consumer/pricefeed/tx";
 
 
-export { MsgCreateRequestInterval };
+export {  };
 
-type sendMsgCreateRequestIntervalParams = {
-  value: MsgCreateRequestInterval,
-  fee?: StdFee,
-  memo?: string
-};
-
-
-type msgCreateRequestIntervalParams = {
-  value: MsgCreateRequestInterval,
-};
 
 
 export const registry = new Registry(msgTypes);
@@ -41,28 +30,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgCreateRequestInterval({ value, fee, memo }: sendMsgCreateRequestIntervalParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateRequestInterval: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateRequestInterval({ value: MsgCreateRequestInterval.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateRequestInterval: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		
-		msgCreateRequestInterval({ value }: msgCreateRequestIntervalParams): EncodeObject {
-			try {
-				return { typeUrl: "/consumer.pricefeed.MsgCreateRequestInterval", value: MsgCreateRequestInterval.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateRequestInterval: Could not create message: ' + e.message)
-			}
-		},
 		
 	}
 };

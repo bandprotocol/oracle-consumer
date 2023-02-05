@@ -15,9 +15,6 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/consumer/pricefeed/params";
   }
-  rpc RequestInterval(QueryRequestInterval) returns (QueryRequestIntervalResponse) {
-    option (google.api.http).get = "/consumer/pricefeed/{symbol}";
-  }
   rpc Symbols(QuerySymbols) returns (QuerySymbolsResponse) {
     option (google.api.http).get = "/consumer/pricefeed/symbols";
   }
@@ -33,14 +30,6 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [ (gogoproto.nullable) = false ];
-}
-
-message QueryRequestInterval { string symbol = 1; }
-
-// QueryCountsResponse is response type for the Query/Count RPC method.
-message QueryRequestIntervalResponse {
-  uint64 oracle_script_id = 1;
-  uint64 block_interval = 2;
 }
 
 message QuerySymbols {}

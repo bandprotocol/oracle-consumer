@@ -9,8 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export type PricefeedMsgCreateRequestIntervalResponse = object;
-
 /**
  * Params defines the parameters for the module.
  */
@@ -55,17 +53,6 @@ export interface PricefeedQueryPriceResponse {
 
   /** @format int64 */
   resolve_time?: string;
-}
-
-/**
- * QueryCountsResponse is response type for the Query/Count RPC method.
- */
-export interface PricefeedQueryRequestIntervalResponse {
-  /** @format uint64 */
-  oracle_script_id?: string;
-
-  /** @format uint64 */
-  block_interval?: string;
 }
 
 export interface PricefeedQuerySymbolsResponse {
@@ -274,21 +261,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   querySymbols = (params: RequestParams = {}) =>
     this.request<PricefeedQuerySymbolsResponse, RpcStatus>({
       path: `/consumer/pricefeed/symbols`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryRequestInterval
-   * @request GET:/consumer/pricefeed/{symbol}
-   */
-  queryRequestInterval = (symbol: string, params: RequestParams = {}) =>
-    this.request<PricefeedQueryRequestIntervalResponse, RpcStatus>({
-      path: `/consumer/pricefeed/${symbol}`,
       method: "GET",
       format: "json",
       ...params,

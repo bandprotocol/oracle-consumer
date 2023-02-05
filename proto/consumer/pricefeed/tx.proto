@@ -6,16 +6,4 @@ option go_package = "consumer/x/pricefeed/types";
 // this line is used by starport scaffolding # proto/tx/import
 
 // Msg defines the Msg service.
-service Msg {
-  rpc CreateRequestInterval(MsgCreateRequestInterval)
-      returns (MsgCreateRequestIntervalResponse);
-}
-
-message MsgCreateRequestInterval {
-  string symbol = 1;
-  uint64 oracle_script_id = 2;
-  uint64 block_interval = 3;
-  string sender = 4;
-}
-
-message MsgCreateRequestIntervalResponse {}
+service Msg {}

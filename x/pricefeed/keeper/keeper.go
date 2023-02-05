@@ -61,49 +61,38 @@ func NewKeeper(
 	}
 }
 
-func (k Keeper) SetRequestInterval(ctx sdk.Context, requestInterval types.RequestInterval) {
-	ctx.KVStore(k.storeKey).Set(types.RequestIntervalStoreKey(requestInterval.Symbol), k.cdc.MustMarshal(&requestInterval))
+func (k Keeper) SetSymbol(ctx sdk.Context, symbol types.Symbol) {
+	ctx.KVStore(k.storeKey).Set(types.SymbolStoreKey(symbol.Symbol), k.cdc.MustMarshal(&symbol))
 }
 
-func (k Keeper) GetRequestInterval(ctx sdk.Context, symbol string) (types.RequestInterval, error) {
-	bz := ctx.KVStore(k.storeKey).Get(types.RequestIntervalStoreKey(symbol))
+func (k Keeper) GetSymbol(ctx sdk.Context, symbol string) (types.Symbol, error) {
+	bz := ctx.KVStore(k.storeKey).Get(types.SymbolStoreKey(symbol))
 	if bz == nil {
-		return types.RequestInterval{}, sdkerrors.Wrapf(types.ErrRequestIntervalNotFound, "symbol: %s", symbol)
+		return types.Symbol{}, sdkerrors.Wrapf(types.ErrSymbolNotFound, "symbol: %s", symbol)
 	}
-	var requestInterval types.RequestInterval
-	k.cdc.MustUnmarshal(bz, &requestInterval)
-	return requestInterval, nil
-}
-
-func (k Keeper) GetAllRequestInterval(ctx sdk.Context) ([]types.RequestInterval, error) {
-	store := ctx.KVStore(k.storeKey)
-
-	iterator := storetypes.KVStorePrefixIterator(store, types.RequestIntervalStoreKeyPrefix)
-	defer iterator.Close()
-	var requestIntervals []types.RequestInterval
-	for ; iterator.Valid(); iterator.Next() {
-		var requestInterval types.RequestInterval
-		k.cdc.MustUnmarshal(iterator.Value(), &requestInterval)
-		requestIntervals = append(requestIntervals, requestInterval)
-	}
-	return requestIntervals, nil
+	var s types.Symbol
+	k.cdc.MustUnmarshal(bz, &s)
+	return s, nil
 }
 
 func (k Keeper) SetSymbols(ctx sdk.Context, symbols types.Symbols) {
-	fmt.Print("\n\n*********************************************\n")
-	fmt.Printf("eiei\n")
-	fmt.Print("*********************************************\n")
-	ctx.KVStore(k.storeKey).Set(types.SymbolsStoreKey, k.cdc.MustMarshal(&symbols))
+	for _, s := range symbols.Symbols {
+		k.SetSymbol(ctx, s)
+	}
 }
 
-func (k Keeper) GetSymbols(ctx sdk.Context) (types.Symbols, error) {
-	bz := ctx.KVStore(k.storeKey).Get(types.SymbolsStoreKey)
-	if bz == nil {
-		return types.Symbols{}, sdkerrors.Wrap(types.ErrSymbolsNotFound, "")
+func (k Keeper) GetAllSymbol(ctx sdk.Context) ([]types.Symbol, error) {
+	store := ctx.KVStore(k.storeKey)
+
+	iterator := storetypes.KVStorePrefixIterator(store, types.SymbolStoreKeyPrefix)
+	defer iterator.Close()
+	var ss []types.Symbol
+	for ; iterator.Valid(); iterator.Next() {
+		var s types.Symbol
+		k.cdc.MustUnmarshal(iterator.Value(), &s)
+		ss = append(ss, s)
 	}
-	var symbols types.Symbols
-	k.cdc.MustUnmarshal(bz, &symbols)
-	return symbols, nil
+	return ss, nil
 }
 
 func (k Keeper) SetPrice(ctx sdk.Context, price types.Price) {

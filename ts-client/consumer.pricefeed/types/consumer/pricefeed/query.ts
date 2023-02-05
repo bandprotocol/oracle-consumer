@@ -16,16 +16,6 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
-export interface QueryRequestInterval {
-  symbol: string;
-}
-
-/** QueryCountsResponse is response type for the Query/Count RPC method. */
-export interface QueryRequestIntervalResponse {
-  oracleScriptId: number;
-  blockInterval: number;
-}
-
 export interface QuerySymbols {
 }
 
@@ -127,111 +117,6 @@ export const QueryParamsResponse = {
     message.params = (object.params !== undefined && object.params !== null)
       ? Params.fromPartial(object.params)
       : undefined;
-    return message;
-  },
-};
-
-function createBaseQueryRequestInterval(): QueryRequestInterval {
-  return { symbol: "" };
-}
-
-export const QueryRequestInterval = {
-  encode(message: QueryRequestInterval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.symbol !== "") {
-      writer.uint32(10).string(message.symbol);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryRequestInterval {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryRequestInterval();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.symbol = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): QueryRequestInterval {
-    return { symbol: isSet(object.symbol) ? String(object.symbol) : "" };
-  },
-
-  toJSON(message: QueryRequestInterval): unknown {
-    const obj: any = {};
-    message.symbol !== undefined && (obj.symbol = message.symbol);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryRequestInterval>, I>>(object: I): QueryRequestInterval {
-    const message = createBaseQueryRequestInterval();
-    message.symbol = object.symbol ?? "";
-    return message;
-  },
-};
-
-function createBaseQueryRequestIntervalResponse(): QueryRequestIntervalResponse {
-  return { oracleScriptId: 0, blockInterval: 0 };
-}
-
-export const QueryRequestIntervalResponse = {
-  encode(message: QueryRequestIntervalResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.oracleScriptId !== 0) {
-      writer.uint32(8).uint64(message.oracleScriptId);
-    }
-    if (message.blockInterval !== 0) {
-      writer.uint32(16).uint64(message.blockInterval);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryRequestIntervalResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryRequestIntervalResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.oracleScriptId = longToNumber(reader.uint64() as Long);
-          break;
-        case 2:
-          message.blockInterval = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): QueryRequestIntervalResponse {
-    return {
-      oracleScriptId: isSet(object.oracleScriptId) ? Number(object.oracleScriptId) : 0,
-      blockInterval: isSet(object.blockInterval) ? Number(object.blockInterval) : 0,
-    };
-  },
-
-  toJSON(message: QueryRequestIntervalResponse): unknown {
-    const obj: any = {};
-    message.oracleScriptId !== undefined && (obj.oracleScriptId = Math.round(message.oracleScriptId));
-    message.blockInterval !== undefined && (obj.blockInterval = Math.round(message.blockInterval));
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryRequestIntervalResponse>, I>>(object: I): QueryRequestIntervalResponse {
-    const message = createBaseQueryRequestIntervalResponse();
-    message.oracleScriptId = object.oracleScriptId ?? 0;
-    message.blockInterval = object.blockInterval ?? 0;
     return message;
   },
 };
@@ -442,7 +327,6 @@ export const QueryPriceResponse = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
-  RequestInterval(request: QueryRequestInterval): Promise<QueryRequestIntervalResponse>;
   Symbols(request: QuerySymbols): Promise<QuerySymbolsResponse>;
   Price(request: QueryPrice): Promise<QueryPriceResponse>;
 }
@@ -452,7 +336,6 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
-    this.RequestInterval = this.RequestInterval.bind(this);
     this.Symbols = this.Symbols.bind(this);
     this.Price = this.Price.bind(this);
   }
@@ -460,12 +343,6 @@ export class QueryClientImpl implements Query {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("consumer.pricefeed.Query", "Params", data);
     return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
-  }
-
-  RequestInterval(request: QueryRequestInterval): Promise<QueryRequestIntervalResponse> {
-    const data = QueryRequestInterval.encode(request).finish();
-    const promise = this.rpc.request("consumer.pricefeed.Query", "RequestInterval", data);
-    return promise.then((data) => QueryRequestIntervalResponse.decode(new _m0.Reader(data)));
   }
 
   Symbols(request: QuerySymbols): Promise<QuerySymbolsResponse> {
