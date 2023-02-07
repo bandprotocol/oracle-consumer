@@ -6,6 +6,7 @@
     "@cosmjs/stargate": "0.27.0",
     "@starport/vue": "^0.3.10",
     "@starport/vuex": "^0.3.10",
+    "bandprotocol-consumer-client-ts": "file:../ts-client",
     "buffer": "^6.0.3",
     "consumer-client-ts": "file:../ts-client",
     "core-js": "^3.18.2",

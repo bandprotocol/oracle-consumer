@@ -3,16 +3,16 @@ package pricefeed
 import (
 	"math/rand"
 
-	"consumer/testutil/sample"
-	priceFeedsimulation "consumer/x/pricefeed/simulation"
-	"consumer/x/pricefeed/types"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
+
+	"github.com/bandprotocol/consumer/testutil/sample"
+	priceFeedsimulation "github.com/bandprotocol/consumer/x/pricefeed/simulation"
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 // avoid unused import issue
@@ -28,8 +28,6 @@ const (
 	opWeightMsgSetRequestInterval = "op_weight_msg_set_request_interval"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSetRequestInterval int = 100
-
-	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -41,7 +39,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	priceFeedGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
 		PortId: types.PortID,
-		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&priceFeedGenesis)
 }
@@ -70,7 +67,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 			weightMsgSetRequestInterval = defaultWeightMsgSetRequestInterval
 		},
 	)
-	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
 }

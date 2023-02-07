@@ -1,6 +1,6 @@
-import { Client, registry, MissingWalletError } from 'consumer-client-ts'
+import { Client, registry, MissingWalletError } from 'bandprotocol-consumer-client-ts'
 
-import { Params } from "consumer-client-ts/consumer.consumer/types"
+import { Params } from "bandprotocol-consumer-client-ts/consumer.consumer/types"
 
 
 export { Params };

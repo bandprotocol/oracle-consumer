@@ -3,18 +3,17 @@ package consumer_test
 import (
 	"testing"
 
-	keepertest "consumer/testutil/keeper"
-	"consumer/testutil/nullify"
-	"consumer/x/consumer"
-	"consumer/x/consumer/types"
+	keepertest "github.com/bandprotocol/consumer/testutil/keeper"
 	"github.com/stretchr/testify/require"
+
+	"github.com/bandprotocol/consumer/testutil/nullify"
+	"github.com/bandprotocol/consumer/x/consumer"
+	"github.com/bandprotocol/consumer/x/consumer/types"
 )
 
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
-
-		// this line is used by starport scaffolding # genesis/test/state
 	}
 
 	k, ctx := keepertest.ConsumerKeeper(t)
@@ -24,6 +23,4 @@ func TestGenesis(t *testing.T) {
 
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
-
-	// this line is used by starport scaffolding # genesis/test/assert
 }

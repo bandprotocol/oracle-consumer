@@ -1,4 +1,4 @@
-module consumer
+module github.com/bandprotocol/consumer
 
 go 1.19
 

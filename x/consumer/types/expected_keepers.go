@@ -4,7 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	pftypes "consumer/x/pricefeed/types"
+	pftypes "github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)

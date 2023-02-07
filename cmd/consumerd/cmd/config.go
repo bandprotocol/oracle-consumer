@@ -3,7 +3,7 @@ package cmd
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"consumer/app"
+	"github.com/bandprotocol/consumer/app"
 )
 
 func initSDKConfig() {

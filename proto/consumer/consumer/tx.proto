@@ -3,7 +3,7 @@ package consumer.consumer;
 
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "consumer/x/consumer/types";
+option go_package = "github.com/bandprotocol/consumer/x/consumer/types";
 
 // Msg defines the Msg service.
 service Msg {

@@ -3,11 +3,11 @@ package keeper
 import (
 	"context"
 
-	"consumer/x/pricefeed/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 func (k Keeper) Params(c context.Context, req *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {

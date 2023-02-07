@@ -1,10 +1,11 @@
 package keeper
 
 import (
-	"consumer/x/pricefeed/types"
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 type Querier struct {
@@ -36,10 +37,7 @@ func (k Querier) SymbolRequest(c context.Context, req *types.QuerySymbolRequest)
 func (k Querier) SymbolRequests(c context.Context, req *types.QuerySymbolRequests) (*types.QuerySymbolRequestsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
-	srs, err := k.GetAllSymbolRequest(ctx)
-	if err != nil {
-		return nil, err
-	}
+	srs := k.GetAllSymbolRequest(ctx)
 
 	result := types.QuerySymbolRequestsResponse{}
 	for _, sr := range srs {

@@ -4,10 +4,10 @@ package consumer.pricefeed;
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "consumer/pricefeed/params.proto";
-import "consumer/pricefeed/oracle.proto";
+import "consumer/pricefeed/pricefeed.proto";
 // this line is used by starport scaffolding # 1
 
-option go_package = "consumer/x/pricefeed/types";
+option go_package = "github.com/bandprotocol/consumer/x/pricefeed/types";
 
 // Query defines the gRPC querier service.
 service Query {

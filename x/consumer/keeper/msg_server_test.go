@@ -4,10 +4,11 @@ import (
 	"context"
 	"testing"
 
-	keepertest "consumer/testutil/keeper"
-	"consumer/x/consumer/keeper"
-	"consumer/x/consumer/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	keepertest "github.com/bandprotocol/consumer/testutil/keeper"
+	"github.com/bandprotocol/consumer/x/consumer/keeper"
+	"github.com/bandprotocol/consumer/x/consumer/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {

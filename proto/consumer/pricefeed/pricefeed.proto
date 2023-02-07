@@ -1,11 +1,11 @@
 syntax = "proto3";
 package consumer.pricefeed;
 
-option go_package = "consumer/x/pricefeed/types";
-option (gogoproto.equal_all) = true;
-
 import "gogoproto/gogo.proto";
 // import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/bandprotocol/consumer/x/pricefeed/types";
+option (gogoproto.equal_all) = true;
 
 message Price {
   string symbol = 1;

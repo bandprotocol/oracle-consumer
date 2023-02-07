@@ -1,12 +1,11 @@
 syntax = "proto3";
 package consumer.pricefeed;
 
-option go_package = "consumer/x/pricefeed/types";
-
 import "gogoproto/gogo.proto";
 import "consumer/pricefeed/params.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
+option go_package = "github.com/bandprotocol/consumer/x/pricefeed/types";
 
 // GenesisState defines the pricefeed module's genesis state.
 message GenesisState {

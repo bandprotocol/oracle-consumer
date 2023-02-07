@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "consumer/testutil/keeper"
-	"consumer/x/consumer/types"
+	testkeeper "github.com/bandprotocol/consumer/testutil/keeper"
+	"github.com/bandprotocol/consumer/x/consumer/types"
 	"github.com/stretchr/testify/require"
 )
 

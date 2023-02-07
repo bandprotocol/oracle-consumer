@@ -1,9 +1,9 @@
 package client
 
 import (
-	"consumer/x/pricefeed/client/cli"
-
 	govclient "github.com/cosmos/cosmos-sdk/x/gov/client"
+
+	"github.com/bandprotocol/consumer/x/pricefeed/client/cli"
 )
 
 // ProposalHandler is the param change proposal handler.

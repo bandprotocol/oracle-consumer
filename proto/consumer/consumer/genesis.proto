@@ -5,7 +5,7 @@ import "gogoproto/gogo.proto";
 import "consumer/consumer/params.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "consumer/x/consumer/types";
+option go_package = "github.com/bandprotocol/consumer/x/consumer/types";
 
 // GenesisState defines the consumer module's genesis state.
 message GenesisState {

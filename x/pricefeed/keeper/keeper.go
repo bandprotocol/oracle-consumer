@@ -15,8 +15,8 @@ import (
 	"github.com/ignite/cli/ignite/pkg/cosmosibckeeper"
 	"github.com/tendermint/tendermint/libs/log"
 
-	bandtypes "consumer/types/band"
-	"consumer/x/pricefeed/types"
+	bandtypes "github.com/bandprotocol/consumer/types/band"
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 const SRC_PORT = "pricefeed"
@@ -81,7 +81,7 @@ func (k Keeper) SetSymbolRequests(ctx sdk.Context, symbolRequests []types.Symbol
 	}
 }
 
-func (k Keeper) GetAllSymbolRequest(ctx sdk.Context) ([]types.SymbolRequest, error) {
+func (k Keeper) GetAllSymbolRequest(ctx sdk.Context) []types.SymbolRequest {
 	store := ctx.KVStore(k.storeKey)
 
 	iterator := storetypes.KVStorePrefixIterator(store, types.SymbolRequestStoreKeyPrefix)
@@ -92,7 +92,7 @@ func (k Keeper) GetAllSymbolRequest(ctx sdk.Context) ([]types.SymbolRequest, err
 		k.cdc.MustUnmarshal(iterator.Value(), &s)
 		ss = append(ss, s)
 	}
-	return ss, nil
+	return ss
 }
 
 func (k Keeper) SetPrice(ctx sdk.Context, price types.Price) {
@@ -158,6 +158,7 @@ func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.Oracl
 	result, err := bandtypes.DecodeResult(res.Result)
 	if err != nil {
 		fmt.Println(err.Error())
+		return
 	}
 
 	for _, r := range result {
@@ -167,10 +168,6 @@ func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.Oracl
 			ResolveTime: res.ResolveTime,
 		})
 	}
-
-	fmt.Print("\n\n*********************************************\n")
-	fmt.Printf("%+v got result from BandChain\n", result)
-	fmt.Print("*********************************************\n")
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {

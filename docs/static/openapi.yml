@@ -108,16 +108,16 @@ paths:
                   min_ds_count:
                     type: string
                     format: uint64
-                  prepare_gas_a:
+                  prepare_gas_base:
                     type: string
                     format: uint64
-                  prepare_gas_b:
+                  prepare_gas_each:
                     type: string
                     format: uint64
-                  execute_gas_a:
+                  execute_gas_base:
                     type: string
                     format: uint64
-                  execute_gas_b:
+                  execute_gas_each:
                     type: string
                     format: uint64
                   source_channel:
@@ -45330,16 +45330,16 @@ definitions:
       min_ds_count:
         type: string
         format: uint64
-      prepare_gas_a:
+      prepare_gas_base:
         type: string
         format: uint64
-      prepare_gas_b:
+      prepare_gas_each:
         type: string
         format: uint64
-      execute_gas_a:
+      execute_gas_base:
         type: string
         format: uint64
-      execute_gas_b:
+      execute_gas_each:
         type: string
         format: uint64
       source_channel:
@@ -45386,16 +45386,16 @@ definitions:
           min_ds_count:
             type: string
             format: uint64
-          prepare_gas_a:
+          prepare_gas_base:
             type: string
             format: uint64
-          prepare_gas_b:
+          prepare_gas_each:
             type: string
             format: uint64
-          execute_gas_a:
+          execute_gas_base:
             type: string
             format: uint64
-          execute_gas_b:
+          execute_gas_each:
             type: string
             format: uint64
           source_channel:

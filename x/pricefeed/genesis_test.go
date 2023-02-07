@@ -3,19 +3,18 @@ package pricefeed_test
 import (
 	"testing"
 
-	keepertest "consumer/testutil/keeper"
-	"consumer/testutil/nullify"
-	"consumer/x/pricefeed"
-	"consumer/x/pricefeed/types"
-
 	"github.com/stretchr/testify/require"
+
+	keepertest "github.com/bandprotocol/consumer/testutil/keeper"
+	"github.com/bandprotocol/consumer/testutil/nullify"
+	"github.com/bandprotocol/consumer/x/pricefeed"
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 		PortId: types.PortID,
-		// this line is used by starport scaffolding # genesis/test/state
 	}
 
 	k, ctx := keepertest.PriceFeedKeeper(t)
@@ -27,6 +26,4 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.Equal(t, genesisState.PortId, got.PortId)
-
-	// this line is used by starport scaffolding # genesis/test/assert
 }

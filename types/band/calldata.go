@@ -1,7 +1,7 @@
 package band
 
 import (
-	"consumer/obi"
+	"github.com/bandprotocol/consumer/obi"
 )
 
 type Calldata interface {

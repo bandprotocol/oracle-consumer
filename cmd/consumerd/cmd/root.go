@@ -37,8 +37,8 @@ import (
 
 	// this line is used by starport scaffolding # root/moduleImport
 
-	"consumer/app"
-	appparams "consumer/app/params"
+	"github.com/bandprotocol/consumer/app"
+	appparams "github.com/bandprotocol/consumer/app/params"
 )
 
 // NewRootCmd creates a new root command for a Cosmos SDK application

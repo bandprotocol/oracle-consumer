@@ -1,5 +1,5 @@
 package types
 
-func CalculateGas(a, b, x uint64) uint64 {
-	return a*x + b
+func CalculateGas(base, each, n uint64) uint64 {
+	return base + each*n
 }

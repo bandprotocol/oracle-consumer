@@ -1,14 +1,14 @@
-import { Client, registry, MissingWalletError } from 'consumer-client-ts'
+import { Client, registry, MissingWalletError } from 'bandprotocol-consumer-client-ts'
 
-import { Price } from "consumer-client-ts/consumer.pricefeed/types"
-import { SymbolRequest } from "consumer-client-ts/consumer.pricefeed/types"
-import { UpdateSymbolRequestProposal } from "consumer-client-ts/consumer.pricefeed/types"
-import { PriceFeedPacketData } from "consumer-client-ts/consumer.pricefeed/types"
-import { NoData } from "consumer-client-ts/consumer.pricefeed/types"
-import { Params } from "consumer-client-ts/consumer.pricefeed/types"
+import { PriceFeedPacketData } from "bandprotocol-consumer-client-ts/consumer.pricefeed/types"
+import { NoData } from "bandprotocol-consumer-client-ts/consumer.pricefeed/types"
+import { Params } from "bandprotocol-consumer-client-ts/consumer.pricefeed/types"
+import { Price } from "bandprotocol-consumer-client-ts/consumer.pricefeed/types"
+import { SymbolRequest } from "bandprotocol-consumer-client-ts/consumer.pricefeed/types"
+import { UpdateSymbolRequestProposal } from "bandprotocol-consumer-client-ts/consumer.pricefeed/types"
 
 
-export { Price, SymbolRequest, UpdateSymbolRequestProposal, PriceFeedPacketData, NoData, Params };
+export { PriceFeedPacketData, NoData, Params, Price, SymbolRequest, UpdateSymbolRequestProposal };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -45,12 +45,12 @@ const getDefaultState = () => {
 				Price: {},
 				
 				_Structure: {
-						Price: getStructure(Price.fromPartial({})),
-						SymbolRequest: getStructure(SymbolRequest.fromPartial({})),
-						UpdateSymbolRequestProposal: getStructure(UpdateSymbolRequestProposal.fromPartial({})),
 						PriceFeedPacketData: getStructure(PriceFeedPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
+						Price: getStructure(Price.fromPartial({})),
+						SymbolRequest: getStructure(SymbolRequest.fromPartial({})),
+						UpdateSymbolRequestProposal: getStructure(UpdateSymbolRequestProposal.fromPartial({})),
 						
 		},
 		_Registry: registry,

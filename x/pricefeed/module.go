@@ -5,16 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	// this line is used by starport scaffolding # 1
-
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
-
-	abci "github.com/tendermint/tendermint/abci/types"
-
-	"consumer/x/pricefeed/client/cli"
-	"consumer/x/pricefeed/keeper"
-	"consumer/x/pricefeed/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -22,6 +14,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	porttypes "github.com/cosmos/ibc-go/v5/modules/core/05-port/types"
+	abci "github.com/tendermint/tendermint/abci/types"
+
+	"github.com/bandprotocol/consumer/x/pricefeed/client/cli"
+	"github.com/bandprotocol/consumer/x/pricefeed/keeper"
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 var (

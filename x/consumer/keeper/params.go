@@ -1,8 +1,9 @@
 package keeper
 
 import (
-	"consumer/x/consumer/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/bandprotocol/consumer/x/consumer/types"
 )
 
 // GetParams get all parameters as types.Params

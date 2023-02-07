@@ -1,13 +1,12 @@
 package pricefeed
 
 import (
-	"consumer/x/pricefeed/keeper"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 
-	"consumer/x/pricefeed/types"
+	"github.com/bandprotocol/consumer/x/pricefeed/keeper"
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 // NewParamChangeProposalHandler creates a new governance Handler for a ParamChangeProposal

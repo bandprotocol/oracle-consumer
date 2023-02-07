@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"consumer/x/pricefeed/types"
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 type msgServer struct {

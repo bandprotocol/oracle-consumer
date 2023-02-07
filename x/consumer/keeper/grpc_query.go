@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"consumer/x/consumer/types"
+	"github.com/bandprotocol/consumer/x/consumer/types"
 )
 
 var _ types.QueryServer = Keeper{}

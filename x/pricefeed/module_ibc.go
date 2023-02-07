@@ -1,14 +1,6 @@
 package pricefeed
 
 import (
-	"encoding/hex"
-	"fmt"
-
-	"consumer/x/pricefeed/keeper"
-	"consumer/x/pricefeed/types"
-
-	bandtypes "consumer/types/band"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
@@ -16,6 +8,10 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v5/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
+
+	bandtypes "github.com/bandprotocol/consumer/types/band"
+	"github.com/bandprotocol/consumer/x/pricefeed/keeper"
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 type IBCModule struct {
@@ -149,7 +145,6 @@ func (im IBCModule) OnRecvPacket(
 	}
 
 	if ack.Success() {
-		fmt.Println("Receive result packet", hex.EncodeToString(data.Result))
 		im.keeper.RecvIbcOracleResponsePacket(ctx, data)
 	}
 
@@ -174,9 +169,6 @@ func (im IBCModule) OnAcknowledgementPacket(
 	case *channeltypes.Acknowledgement_Result:
 		var oracleAck bandtypes.OracleRequestPacketAcknowledgement
 		types.ModuleCdc.MustUnmarshalJSON(resp.Result, &oracleAck)
-		fmt.Print("\n\n*********************************************\n")
-		fmt.Printf("got requestID %d\n", oracleAck.RequestID)
-		fmt.Print("*********************************************\n")
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				eventType,

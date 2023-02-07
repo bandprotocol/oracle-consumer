@@ -4,7 +4,6 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "consumer.pricefeed";
 
 export interface PriceFeedPacketData {
-  /** this line is used by starport scaffolding # ibc/packet/proto/field */
   noData: NoData | undefined;
 }
 

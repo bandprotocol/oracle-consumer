@@ -23,16 +23,16 @@ export interface PricefeedParams {
   min_ds_count?: string;
 
   /** @format uint64 */
-  prepare_gas_a?: string;
+  prepare_gas_base?: string;
 
   /** @format uint64 */
-  prepare_gas_b?: string;
+  prepare_gas_each?: string;
 
   /** @format uint64 */
-  execute_gas_a?: string;
+  execute_gas_base?: string;
 
   /** @format uint64 */
-  execute_gas_b?: string;
+  execute_gas_each?: string;
   source_channel?: string;
   fee_limit?: V1Beta1Coin[];
 }

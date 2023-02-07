@@ -1,7 +1,7 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { Price, SymbolRequest } from "./oracle";
 import { Params } from "./params";
+import { Price, SymbolRequest } from "./pricefeed";
 
 export const protobufPackage = "consumer.pricefeed";
 

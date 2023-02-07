@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"consumer/x/consumer/types"
+	"github.com/bandprotocol/consumer/x/consumer/types"
 )
 
 type msgServer struct {

@@ -3,16 +3,18 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "consumer/testutil/keeper"
-	"consumer/x/consumer/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+
+	testkeeper "github.com/bandprotocol/consumer/testutil/keeper"
+	"github.com/bandprotocol/consumer/x/consumer/types"
 )
 
 func TestParamsQuery(t *testing.T) {
 	keeper, ctx := testkeeper.ConsumerKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	params := types.DefaultParams()
+
 	keeper.SetParams(ctx, params)
 
 	response, err := keeper.Params(wctx, &types.QueryParamsRequest{})

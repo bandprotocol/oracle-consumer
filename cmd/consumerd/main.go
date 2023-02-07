@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 
-	"consumer/app"
-	"consumer/cmd/consumerd/cmd"
+	"github.com/bandprotocol/consumer/app"
+	"github.com/bandprotocol/consumer/cmd/consumerd/cmd"
 )
 
 func main() {

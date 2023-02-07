@@ -4,21 +4,20 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	// this line is used by starport scaffolding # 1
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-
-	"consumer/x/consumer/client/cli"
-	"consumer/x/consumer/keeper"
-	"consumer/x/consumer/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	abci "github.com/tendermint/tendermint/abci/types"
+
+	"github.com/bandprotocol/consumer/x/consumer/client/cli"
+	"github.com/bandprotocol/consumer/x/consumer/keeper"
+	"github.com/bandprotocol/consumer/x/consumer/types"
 )
 
 var (

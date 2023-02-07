@@ -104,18 +104,18 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	consumermodule "consumer/x/consumer"
-	consumermodulekeeper "consumer/x/consumer/keeper"
-	consumermoduletypes "consumer/x/consumer/types"
-	pricefeedmodule "consumer/x/pricefeed"
-	pricefeedclient "consumer/x/pricefeed/client"
-	pricefeedmodulekeeper "consumer/x/pricefeed/keeper"
-	pricefeedmoduletypes "consumer/x/pricefeed/types"
+	consumermodule "github.com/bandprotocol/consumer/x/consumer"
+	consumermodulekeeper "github.com/bandprotocol/consumer/x/consumer/keeper"
+	consumermoduletypes "github.com/bandprotocol/consumer/x/consumer/types"
+	pricefeedmodule "github.com/bandprotocol/consumer/x/pricefeed"
+	pricefeedclient "github.com/bandprotocol/consumer/x/pricefeed/client"
+	pricefeedmodulekeeper "github.com/bandprotocol/consumer/x/pricefeed/keeper"
+	pricefeedmoduletypes "github.com/bandprotocol/consumer/x/pricefeed/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	appparams "consumer/app/params"
-	"consumer/docs"
+	appparams "github.com/bandprotocol/consumer/app/params"
+	"github.com/bandprotocol/consumer/docs"
 )
 
 const (

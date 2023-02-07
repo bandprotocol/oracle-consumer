@@ -1,10 +1,11 @@
 package utils
 
 import (
-	"consumer/x/pricefeed/types"
 	"os"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 type (

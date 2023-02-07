@@ -3,11 +3,12 @@ package cli
 import (
 	"context"
 
-	"consumer/x/pricefeed/types"
+	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/spf13/cobra"
+
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 func CmdQuerySymbolRequests() *cobra.Command {

@@ -10,14 +10,14 @@ import (
 )
 
 const (
-	DefaultAskCount      = uint64(16)
-	DefaultMinCount      = uint64(10)
-	DefaultMinDsCount    = uint64(3)
-	DefaultPrepareGasA   = uint64(1)
-	DefaultPrepareGasB   = uint64(100000)
-	DefaultExecuteGasA   = uint64(1)
-	DefaultExecuteGasB   = uint64(750000)
-	DefaultSourceChannel = "channel-0"
+	DefaultAskCount       = uint64(16)
+	DefaultMinCount       = uint64(10)
+	DefaultMinDsCount     = uint64(3)
+	DefaultPrepareGasBase = uint64(100000)
+	DefaultPrepareGasEach = uint64(1)
+	DefaultExecuteGasBase = uint64(750000)
+	DefaultExecuteGasEach = uint64(1)
+	DefaultSourceChannel  = "channel-0"
 )
 
 var (
@@ -25,15 +25,15 @@ var (
 )
 
 var (
-	KeyAskCount      = []byte("AskCount")
-	KeyMinCount      = []byte("MinCount")
-	KeyMinDsCount    = []byte("MinDsCount")
-	KeyPrepareGasA   = []byte("PrepareGasA")
-	KeyPrepareGasB   = []byte("PrepareGasB")
-	KeyExecuteGasA   = []byte("ExecuteGasA")
-	KeyExecuteGasB   = []byte("ExecuteGasB")
-	KeySourceChannel = []byte("SourceChannel")
-	KeyFeeLimit      = []byte("FeeLimit")
+	KeyAskCount       = []byte("AskCount")
+	KeyMinCount       = []byte("MinCount")
+	KeyMinDsCount     = []byte("MinDsCount")
+	KeyPrepareGasBase = []byte("PrepareGasBase")
+	KeyPrepareGasEach = []byte("PrepareGasEach")
+	KeyExecuteGasBase = []byte("ExecuteGasBase")
+	KeyExecuteGasEach = []byte("ExecuteGasEach")
+	KeySourceChannel  = []byte("SourceChannel")
+	KeyFeeLimit       = []byte("FeeLimit")
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)
@@ -44,23 +44,23 @@ func ParamKeyTable() paramtypes.KeyTable {
 }
 
 // NewParams creates a new Params instance
-func NewParams(askCount, minCount, minDsCount, prepareGasA, prepareGasB, executeGasA, executeGasB uint64, sourceChannel string, feeLimit sdk.Coins) Params {
+func NewParams(askCount, minCount, minDsCount, prepareGasBase, prepareGasEach, executeGasBase, executeGasEach uint64, sourceChannel string, feeLimit sdk.Coins) Params {
 	return Params{
-		AskCount:      askCount,
-		MinCount:      minCount,
-		MinDsCount:    minDsCount,
-		PrepareGasA:   prepareGasA,
-		PrepareGasB:   prepareGasB,
-		ExecuteGasA:   executeGasA,
-		ExecuteGasB:   executeGasB,
-		SourceChannel: sourceChannel,
-		FeeLimit:      feeLimit,
+		AskCount:       askCount,
+		MinCount:       minCount,
+		MinDsCount:     minDsCount,
+		PrepareGasBase: prepareGasBase,
+		PrepareGasEach: prepareGasEach,
+		ExecuteGasBase: executeGasBase,
+		ExecuteGasEach: executeGasEach,
+		SourceChannel:  sourceChannel,
+		FeeLimit:       feeLimit,
 	}
 }
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultAskCount, DefaultMinCount, DefaultMinDsCount, DefaultPrepareGasA, DefaultPrepareGasB, DefaultExecuteGasA, DefaultExecuteGasB, DefaultSourceChannel, DefaultFeeLimit)
+	return NewParams(DefaultAskCount, DefaultMinCount, DefaultMinDsCount, DefaultPrepareGasBase, DefaultPrepareGasEach, DefaultExecuteGasBase, DefaultExecuteGasEach, DefaultSourceChannel, DefaultFeeLimit)
 }
 
 // ParamSetPairs get the params.ParamSet
@@ -69,10 +69,10 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyAskCount, &p.AskCount, validateUint64("ask count", true)),
 		paramtypes.NewParamSetPair(KeyMinCount, &p.MinCount, validateUint64("min count", true)),
 		paramtypes.NewParamSetPair(KeyMinDsCount, &p.MinDsCount, validateUint64("min ds count", true)),
-		paramtypes.NewParamSetPair(KeyPrepareGasA, &p.PrepareGasA, validateUint64("prepare gas a", true)),
-		paramtypes.NewParamSetPair(KeyPrepareGasB, &p.PrepareGasB, validateUint64("prepare gas b", true)),
-		paramtypes.NewParamSetPair(KeyExecuteGasA, &p.ExecuteGasA, validateUint64("execute gas a", true)),
-		paramtypes.NewParamSetPair(KeyExecuteGasB, &p.ExecuteGasB, validateUint64("execute gas b", true)),
+		paramtypes.NewParamSetPair(KeyPrepareGasBase, &p.PrepareGasBase, validateUint64("prepare gas base", true)),
+		paramtypes.NewParamSetPair(KeyPrepareGasEach, &p.PrepareGasEach, validateUint64("prepare gas each", true)),
+		paramtypes.NewParamSetPair(KeyExecuteGasBase, &p.ExecuteGasBase, validateUint64("execute gas base", true)),
+		paramtypes.NewParamSetPair(KeyExecuteGasEach, &p.ExecuteGasEach, validateUint64("execute gas each", true)),
 		paramtypes.NewParamSetPair(KeySourceChannel, &p.SourceChannel, validateString("source channel")),
 		paramtypes.NewParamSetPair(KeyFeeLimit, &p.FeeLimit, validateGasLimit),
 	}

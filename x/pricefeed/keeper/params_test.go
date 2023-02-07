@@ -3,10 +3,10 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "consumer/testutil/keeper"
-	"consumer/x/pricefeed/types"
-
 	"github.com/stretchr/testify/require"
+
+	testkeeper "github.com/bandprotocol/consumer/testutil/keeper"
+	"github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 func TestGetParams(t *testing.T) {

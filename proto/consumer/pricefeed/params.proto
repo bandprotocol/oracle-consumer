@@ -4,7 +4,7 @@ package consumer.pricefeed;
 import "gogoproto/gogo.proto";
 import "cosmos/base/v1beta1/coin.proto";
 
-option go_package = "consumer/x/pricefeed/types";
+option go_package = "github.com/bandprotocol/consumer/x/pricefeed/types";
 
 // Params defines the parameters for the module.
 message Params {
@@ -13,10 +13,10 @@ message Params {
   uint64 ask_count = 1;
   uint64 min_count = 2;
   uint64 min_ds_count = 3;
-  uint64 prepare_gas_a = 4;
-  uint64 prepare_gas_b = 5;
-  uint64 execute_gas_a = 6;
-  uint64 execute_gas_b = 7;
+  uint64 prepare_gas_base = 4;
+  uint64 prepare_gas_each = 5;
+  uint64 execute_gas_base = 6;
+  uint64 execute_gas_each = 7;
   string source_channel = 8;
   repeated cosmos.base.v1beta1.Coin fee_limit = 9 [
     (gogoproto.nullable) = false,
