@@ -1,15 +1,14 @@
 import { Client, registry, MissingWalletError } from 'consumer-client-ts'
 
 import { Price } from "consumer-client-ts/consumer.pricefeed/types"
-import { Symbol } from "consumer-client-ts/consumer.pricefeed/types"
-import { Symbols } from "consumer-client-ts/consumer.pricefeed/types"
+import { SymbolRequest } from "consumer-client-ts/consumer.pricefeed/types"
 import { UpdateSymbolRequestProposal } from "consumer-client-ts/consumer.pricefeed/types"
 import { PriceFeedPacketData } from "consumer-client-ts/consumer.pricefeed/types"
 import { NoData } from "consumer-client-ts/consumer.pricefeed/types"
 import { Params } from "consumer-client-ts/consumer.pricefeed/types"
 
 
-export { Price, Symbol, Symbols, UpdateSymbolRequestProposal, PriceFeedPacketData, NoData, Params };
+export { Price, SymbolRequest, UpdateSymbolRequestProposal, PriceFeedPacketData, NoData, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -41,13 +40,13 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				Params: {},
-				Symbols: {},
+				SymbolRequest: {},
+				SymbolRequests: {},
 				Price: {},
 				
 				_Structure: {
 						Price: getStructure(Price.fromPartial({})),
-						Symbol: getStructure(Symbol.fromPartial({})),
-						Symbols: getStructure(Symbols.fromPartial({})),
+						SymbolRequest: getStructure(SymbolRequest.fromPartial({})),
 						UpdateSymbolRequestProposal: getStructure(UpdateSymbolRequestProposal.fromPartial({})),
 						PriceFeedPacketData: getStructure(PriceFeedPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
@@ -86,11 +85,17 @@ export default {
 					}
 			return state.Params[JSON.stringify(params)] ?? {}
 		},
-				getSymbols: (state) => (params = { params: {}}) => {
+				getSymbolRequest: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
 						(<any> params).query=null
 					}
-			return state.Symbols[JSON.stringify(params)] ?? {}
+			return state.SymbolRequest[JSON.stringify(params)] ?? {}
+		},
+				getSymbolRequests: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.SymbolRequests[JSON.stringify(params)] ?? {}
 		},
 				getPrice: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
@@ -159,18 +164,40 @@ export default {
 		 		
 		
 		
-		async QuerySymbols({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+		async QuerySymbolRequest({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
 				const key = params ?? {};
 				const client = initClient(rootGetters);
-				let value= (await client.ConsumerPricefeed.query.querySymbols()).data
+				let value= (await client.ConsumerPricefeed.query.querySymbolRequest( key.symbol)).data
 				
 					
-				commit('QUERY', { query: 'Symbols', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySymbols', payload: { options: { all }, params: {...key},query }})
-				return getters['getSymbols']( { params: {...key}, query}) ?? {}
+				commit('QUERY', { query: 'SymbolRequest', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySymbolRequest', payload: { options: { all }, params: {...key},query }})
+				return getters['getSymbolRequest']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				throw new Error('QueryClient:QuerySymbols API Node Unavailable. Could not perform query: ' + e.message)
+				throw new Error('QueryClient:QuerySymbolRequest API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QuerySymbolRequests({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.ConsumerPricefeed.query.querySymbolRequests()).data
+				
+					
+				commit('QUERY', { query: 'SymbolRequests', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySymbolRequests', payload: { options: { all }, params: {...key},query }})
+				return getters['getSymbolRequests']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QuerySymbolRequests API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

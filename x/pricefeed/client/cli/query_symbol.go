@@ -10,17 +10,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdQuerySymbolRequests() *cobra.Command {
+func CmdQuerySymbolRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "symbol-requests",
-		Short: "shows all of the symbol requests",
-		Args:  cobra.NoArgs,
+		Use:   "symbol-request [symbol]",
+		Short: "shows the symbol request",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			res, err := queryClient.SymbolRequests(context.Background(), &types.QuerySymbolRequests{})
+			res, err := queryClient.SymbolRequest(context.Background(), &types.QuerySymbolRequest{
+				Symbol: args[0],
+			})
 			if err != nil {
 				return err
 			}

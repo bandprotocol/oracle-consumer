@@ -54,29 +54,33 @@ objects, only non-empty fields will be updated.
 
 IMPORTANT: Currently parameter changes are evaluated but not validated, so it is
 very important that any "value" change is valid (ie. correct type and within bounds)
-for its respective parameter, eg. "MaxValidators" should be an integer and not a decimal.
 
 Proper vetting of a parameter change proposal should prevent this from happening
 (no deposits should occur during the governance process), but it should be noted
 regardless.
 
 Example:
-$ %s tx gov submit-proposal param-change <path/to/proposal.json> --from=<key_or_address>
+$ %s tx gov submit-legacy-proposal update-symbol-request <path/to/proposal.json> --from=<key_or_address>
 
 Where proposal.json contains:
 
 {
-  "title": "Staking Param Change",
-  "description": "Update max validators",
-  "changes": [
-    {
-      "subspace": "staking",
-      "key": "MaxValidators",
-      "value": 105
-    }
-  ],
-  "deposit": "1000stake"
-}
+	"title": "Update Symbol requests",
+	"description": "Update symbol that request price from BandChain",
+	"symbol_requests": [
+	  {
+		"symbol": "BTC",
+		"oracle_script_id": "396",
+		"block_interval": "40"
+	  },
+	  {
+		"symbol": "ETH",
+		"oracle_script_id": "396",
+		"block_interval": "40"
+	  }
+	],
+	"deposit": "10000000stake"
+  }
 `,
 				version.AppName,
 			),
@@ -92,11 +96,8 @@ Where proposal.json contains:
 			}
 			from := clientCtx.GetFromAddress()
 			content := types.NewUpdateSymbolRequestProposal(
-				proposal.Title, proposal.Description, proposal.Symbols.ToSymbols(),
+				proposal.Title, proposal.Description, proposal.SymbolRequests.ToSymbolRequests(),
 			)
-			fmt.Print("\n\n*********************************************\n")
-			fmt.Printf("%+v\n", content)
-			fmt.Print("*********************************************\n")
 			deposit, err := sdk.ParseCoinsNormalized(proposal.Deposit)
 			if err != nil {
 				return err
@@ -105,9 +106,6 @@ Where proposal.json contains:
 			if err != nil {
 				return err
 			}
-			fmt.Print("\n\n*********************************************\n")
-			fmt.Printf("%s\n", msg)
-			fmt.Print("*********************************************\n")
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

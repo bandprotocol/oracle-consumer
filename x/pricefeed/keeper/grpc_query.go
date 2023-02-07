@@ -20,19 +20,33 @@ func (k Querier) Params(c context.Context, req *types.QueryParamsRequest) (*type
 	}, nil
 }
 
-func (k Querier) Symbols(c context.Context, req *types.QuerySymbols) (*types.QuerySymbolsResponse, error) {
+func (k Querier) SymbolRequest(c context.Context, req *types.QuerySymbolRequest) (*types.QuerySymbolRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
-	ss, err := k.GetAllSymbol(ctx)
+	sr, err := k.GetSymbolRequest(ctx, req.Symbol)
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.QuerySymbolsResponse{
-		Symbols: &types.Symbols{
-			Symbols: ss,
-		},
+	return &types.QuerySymbolRequestResponse{
+		SymbolRequest: &sr,
 	}, nil
+}
+
+func (k Querier) SymbolRequests(c context.Context, req *types.QuerySymbolRequests) (*types.QuerySymbolRequestsResponse, error) {
+	ctx := sdk.UnwrapSDKContext(c)
+
+	srs, err := k.GetAllSymbolRequest(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	result := types.QuerySymbolRequestsResponse{}
+	for _, sr := range srs {
+		result.SymbolRequests = append(result.SymbolRequests, &sr)
+	}
+
+	return &result, nil
 }
 
 func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPriceResponse, error) {
@@ -44,8 +58,6 @@ func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPr
 		return nil, err
 	}
 	return &types.QueryPriceResponse{
-		Symbol:      p.Symbol,
-		Price:       p.Price,
-		ResolveTime: p.ResolveTime,
+		Price: p,
 	}, nil
 }

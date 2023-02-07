@@ -15,7 +15,10 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/consumer/pricefeed/params";
   }
-  rpc Symbols(QuerySymbols) returns (QuerySymbolsResponse) {
+  rpc SymbolRequest(QuerySymbolRequest) returns (QuerySymbolRequestResponse) {
+    option (google.api.http).get = "/consumer/pricefeed/symbol/{symbol}";
+  }
+  rpc SymbolRequests(QuerySymbolRequests) returns (QuerySymbolRequestsResponse) {
     option (google.api.http).get = "/consumer/pricefeed/symbols";
   }
   rpc Price(QueryPrice) returns (QueryPriceResponse) {
@@ -32,17 +35,22 @@ message QueryParamsResponse {
   Params params = 1 [ (gogoproto.nullable) = false ];
 }
 
-message QuerySymbols {}
+message QuerySymbolRequest { string symbol = 1; }
 
-message QuerySymbolsResponse {
-  Symbols symbols = 1;
+message QuerySymbolRequestResponse {
+  SymbolRequest symbol_request = 1;
+}
+
+
+message QuerySymbolRequests {}
+
+message QuerySymbolRequestsResponse {
+  repeated SymbolRequest symbol_requests = 1;
 }
 
 
 message QueryPrice { string symbol = 1; }
 
 message QueryPriceResponse {
-  string symbol = 1;
-  uint64 price = 2;
-  int64 resolve_time = 3;
+  Price price = 1;
 }

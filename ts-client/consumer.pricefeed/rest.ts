@@ -37,15 +37,7 @@ export interface PricefeedParams {
   fee_limit?: V1Beta1Coin[];
 }
 
-/**
- * QueryParamsResponse is response type for the Query/Params RPC method.
- */
-export interface PricefeedQueryParamsResponse {
-  /** params holds all the parameters of this module. */
-  params?: PricefeedParams;
-}
-
-export interface PricefeedQueryPriceResponse {
+export interface PricefeedPrice {
   symbol?: string;
 
   /** @format uint64 */
@@ -55,11 +47,27 @@ export interface PricefeedQueryPriceResponse {
   resolve_time?: string;
 }
 
-export interface PricefeedQuerySymbolsResponse {
-  symbols?: PricefeedSymbols;
+/**
+ * QueryParamsResponse is response type for the Query/Params RPC method.
+ */
+export interface PricefeedQueryParamsResponse {
+  /** params holds all the parameters of this module. */
+  params?: PricefeedParams;
 }
 
-export interface PricefeedSymbol {
+export interface PricefeedQueryPriceResponse {
+  price?: PricefeedPrice;
+}
+
+export interface PricefeedQuerySymbolRequestResponse {
+  symbol_request?: PricefeedSymbolRequest;
+}
+
+export interface PricefeedQuerySymbolRequestsResponse {
+  symbol_requests?: PricefeedSymbolRequest[];
+}
+
+export interface PricefeedSymbolRequest {
   symbol?: string;
 
   /** @format uint64 */
@@ -67,10 +75,6 @@ export interface PricefeedSymbol {
 
   /** @format uint64 */
   block_interval?: string;
-}
-
-export interface PricefeedSymbols {
-  symbols?: PricefeedSymbol[];
 }
 
 export interface ProtobufAny {
@@ -255,11 +259,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QuerySymbols
+   * @name QuerySymbolRequest
+   * @request GET:/consumer/pricefeed/symbol/{symbol}
+   */
+  querySymbolRequest = (symbol: string, params: RequestParams = {}) =>
+    this.request<PricefeedQuerySymbolRequestResponse, RpcStatus>({
+      path: `/consumer/pricefeed/symbol/${symbol}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySymbolRequests
    * @request GET:/consumer/pricefeed/symbols
    */
-  querySymbols = (params: RequestParams = {}) =>
-    this.request<PricefeedQuerySymbolsResponse, RpcStatus>({
+  querySymbolRequests = (params: RequestParams = {}) =>
+    this.request<PricefeedQuerySymbolRequestsResponse, RpcStatus>({
       path: `/consumer/pricefeed/symbols`,
       method: "GET",
       format: "json",

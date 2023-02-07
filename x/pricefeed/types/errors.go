@@ -8,8 +8,9 @@ import (
 
 // x/pricefeed module sentinel errors
 var (
-	ErrSymbolNotFound  = sdkerrors.Register(ModuleName, 1, "symbol not found")
-	ErrSymbolsNotFound = sdkerrors.Register(ModuleName, 2, "symbols not found")
+	ErrSymbolRequestNotFound  = sdkerrors.Register(ModuleName, 1, "symbol request not found")
+	ErrSymbolRequestsNotFound = sdkerrors.Register(ModuleName, 2, "symbol requests not found")
+	ErrPriceNotFound          = sdkerrors.Register(ModuleName, 3, "price not found")
 
 	ErrSample               = sdkerrors.Register(ModuleName, 1100, "sample error")
 	ErrInvalidPacketTimeout = sdkerrors.Register(ModuleName, 1500, "invalid packet timeout")

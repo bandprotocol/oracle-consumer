@@ -8,54 +8,52 @@ import (
 )
 
 type (
-	// ParamChangesJSON defines a slice of ParamChangeJSON objects which can be
+	// SymbolRequestsJSON defines a slice of SymbolRequestJSON objects which can be
 	// converted to a slice of ParamChange objects.
-	SymbolsJSON []SymbolJSON
+	SymbolRequestsJSON []SymbolRequestJSON
 
-	// ParamChangeJSON defines a parameter change used in JSON input. This
+	// SymbolRequestJSON defines a parameter change used in JSON input. This
 	// allows values to be specified in raw JSON instead of being string encoded.
-	SymbolJSON struct {
+	SymbolRequestJSON struct {
 		Symbol         string `json:"symbol" yaml:"symbol"`
 		OracleScriptId uint64 `json:"oracle_script_id" yaml:"oracle_script_id"`
 		BlockInterval  uint64 `json:"block_interval" yaml:"block_interval"`
 	}
 
-	// ParamChangeProposalJSON defines a ParameterChangeProposal with a deposit used
+	// UpdateSymbolRequestProposalJSON defines a ParameterChangeProposal with a deposit used
 	// to parse parameter change proposals from a JSON file.
 	UpdateSymbolRequestProposalJSON struct {
-		Title       string      `json:"title" yaml:"title"`
-		Description string      `json:"description" yaml:"description"`
-		Symbols     SymbolsJSON `json:"symbols" yaml:"symbols"`
-		Deposit     string      `json:"deposit" yaml:"deposit"`
+		Title          string             `json:"title" yaml:"title"`
+		Description    string             `json:"description" yaml:"description"`
+		SymbolRequests SymbolRequestsJSON `json:"symbol_requests" yaml:"symbol_requests"`
+		Deposit        string             `json:"deposit" yaml:"deposit"`
 	}
 )
 
-func NewSymbolJSON(symbol string, oracleScriptId, blockInterval uint64) SymbolJSON {
-	return SymbolJSON{symbol, oracleScriptId, blockInterval}
+func NewSymbolRequestJSON(symbol string, oracleScriptId, blockInterval uint64) SymbolRequestJSON {
+	return SymbolRequestJSON{symbol, oracleScriptId, blockInterval}
 }
 
-// ToParamChange converts a ParamChangeJSON object to ParamChange.
-func (sj SymbolJSON) ToSymbol() types.Symbol {
-	return types.Symbol{
-		Symbol:         sj.Symbol,
-		OracleScriptId: sj.OracleScriptId,
-		BlockInterval:  sj.BlockInterval,
+// ToSymbolRequest converts a SymbolRequestJSON object to SymbolRequest.
+func (srj SymbolRequestJSON) ToSymbolRequest() types.SymbolRequest {
+	return types.SymbolRequest{
+		Symbol:         srj.Symbol,
+		OracleScriptId: srj.OracleScriptId,
+		BlockInterval:  srj.BlockInterval,
 	}
 }
 
-// ToParamChanges converts a slice of ParamChangeJSON objects to a slice of
-// ParamChange.
-func (sj SymbolsJSON) ToSymbols() types.Symbols {
-	res := make([]types.Symbol, len(sj))
-	for i, s := range sj {
-		res[i] = s.ToSymbol()
+// ToSymbolRequests converts a slice of SymbolRequestJSON objects to a slice of
+// ToSymbolRequest.
+func (srsj SymbolRequestsJSON) ToSymbolRequests() []types.SymbolRequest {
+	res := make([]types.SymbolRequest, len(srsj))
+	for i, s := range srsj {
+		res[i] = s.ToSymbolRequest()
 	}
-	return types.Symbols{
-		Symbols: res,
-	}
+	return res
 }
 
-// ParseParamChangeProposalJSON reads and parses a ParamChangeProposalJSON from
+// ParseUpdateSymbolRequestProposalJSON reads and parses a UpdateSymbolRequestProposalJSON from
 // file.
 func ParseUpdateSymbolRequestProposalJSON(cdc *codec.LegacyAmino, proposalFile string) (UpdateSymbolRequestProposalJSON, error) {
 	proposal := UpdateSymbolRequestProposalJSON{}

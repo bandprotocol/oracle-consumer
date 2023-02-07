@@ -13,24 +13,18 @@ message Price {
   int64 resolve_time = 3;
 }
 
-message Symbol {
+message SymbolRequest {
   string symbol = 1;
   uint64 oracle_script_id = 2;
   uint64 block_interval = 3;
 }
 
-message Symbols {
-  repeated Symbol symbols = 1 [ (gogoproto.nullable) = false ];
-}
-
 message UpdateSymbolRequestProposal {
   option (gogoproto.goproto_getters) = false;
-  option (gogoproto.goproto_stringer) = false;
-  // option (cosmos_proto.implements_interface) = "cosmos.gov.v1beta1.Content";
 
   string title = 1;
   string description = 2;
 
-  repeated Symbol symbols = 3 [ (gogoproto.nullable) = false ];
+  repeated SymbolRequest symbol_requests = 3 [ (gogoproto.nullable) = false ];
 }
 

@@ -24,8 +24,6 @@ func NewUpdateSymbolRequestProposalHandler(k keeper.Keeper) govtypes.Handler {
 }
 
 func handleUpdateSymbolRequestProposal(ctx sdk.Context, k keeper.Keeper, p *types.UpdateSymbolRequestProposal) error {
-	k.SetSymbols(ctx, types.Symbols{
-		Symbols: p.Symbols,
-	})
+	k.SetSymbolRequests(ctx, p.SymbolRequests)
 	return nil
 }

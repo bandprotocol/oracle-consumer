@@ -61,34 +61,34 @@ func NewKeeper(
 	}
 }
 
-func (k Keeper) SetSymbol(ctx sdk.Context, symbol types.Symbol) {
-	ctx.KVStore(k.storeKey).Set(types.SymbolStoreKey(symbol.Symbol), k.cdc.MustMarshal(&symbol))
+func (k Keeper) SetSymbolRequest(ctx sdk.Context, symbolRequest types.SymbolRequest) {
+	ctx.KVStore(k.storeKey).Set(types.SymbolRequestStoreKey(symbolRequest.Symbol), k.cdc.MustMarshal(&symbolRequest))
 }
 
-func (k Keeper) GetSymbol(ctx sdk.Context, symbol string) (types.Symbol, error) {
-	bz := ctx.KVStore(k.storeKey).Get(types.SymbolStoreKey(symbol))
+func (k Keeper) GetSymbolRequest(ctx sdk.Context, symbol string) (types.SymbolRequest, error) {
+	bz := ctx.KVStore(k.storeKey).Get(types.SymbolRequestStoreKey(symbol))
 	if bz == nil {
-		return types.Symbol{}, sdkerrors.Wrapf(types.ErrSymbolNotFound, "symbol: %s", symbol)
+		return types.SymbolRequest{}, sdkerrors.Wrapf(types.ErrSymbolRequestNotFound, "symbol: %s", symbol)
 	}
-	var s types.Symbol
-	k.cdc.MustUnmarshal(bz, &s)
-	return s, nil
+	var sr types.SymbolRequest
+	k.cdc.MustUnmarshal(bz, &sr)
+	return sr, nil
 }
 
-func (k Keeper) SetSymbols(ctx sdk.Context, symbols types.Symbols) {
-	for _, s := range symbols.Symbols {
-		k.SetSymbol(ctx, s)
+func (k Keeper) SetSymbolRequests(ctx sdk.Context, symbolRequests []types.SymbolRequest) {
+	for _, sr := range symbolRequests {
+		k.SetSymbolRequest(ctx, sr)
 	}
 }
 
-func (k Keeper) GetAllSymbol(ctx sdk.Context) ([]types.Symbol, error) {
+func (k Keeper) GetAllSymbolRequest(ctx sdk.Context) ([]types.SymbolRequest, error) {
 	store := ctx.KVStore(k.storeKey)
 
-	iterator := storetypes.KVStorePrefixIterator(store, types.SymbolStoreKeyPrefix)
+	iterator := storetypes.KVStorePrefixIterator(store, types.SymbolRequestStoreKeyPrefix)
 	defer iterator.Close()
-	var ss []types.Symbol
+	var ss []types.SymbolRequest
 	for ; iterator.Valid(); iterator.Next() {
-		var s types.Symbol
+		var s types.SymbolRequest
 		k.cdc.MustUnmarshal(iterator.Value(), &s)
 		ss = append(ss, s)
 	}
@@ -100,12 +100,13 @@ func (k Keeper) SetPrice(ctx sdk.Context, price types.Price) {
 }
 
 func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (*types.Price, error) {
-	pf := &types.Price{}
 	bz := ctx.KVStore(k.storeKey).Get(types.PriceStoreKey(symbol))
 
-	if err := k.cdc.Unmarshal(bz, pf); err != nil {
-		return nil, err
+	if bz == nil {
+		return &types.Price{}, sdkerrors.Wrapf(types.ErrPriceNotFound, "symbol: %s", symbol)
 	}
+	pf := &types.Price{}
+	k.cdc.MustUnmarshal(bz, pf)
 
 	return pf, nil
 }

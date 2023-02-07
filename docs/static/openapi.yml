@@ -171,14 +171,62 @@ paths:
           schema:
             type: object
             properties:
-              symbol:
-                type: string
               price:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  price:
+                    type: string
+                    format: uint64
+                  resolve_time:
+                    type: string
+                    format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
                 type: string
-                format: uint64
-              resolve_time:
-                type: string
-                format: int64
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /consumer/pricefeed/symbol/{symbol}:
+    get:
+      operationId: ConsumerPricefeedSymbolRequest
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              symbol_request:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  oracle_script_id:
+                    type: string
+                    format: uint64
+                  block_interval:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -206,29 +254,26 @@ paths:
         - Query
   /consumer/pricefeed/symbols:
     get:
-      operationId: ConsumerPricefeedSymbols
+      operationId: ConsumerPricefeedSymbolRequests
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              symbols:
-                type: object
-                properties:
-                  symbols:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        symbol:
-                          type: string
-                        oracle_script_id:
-                          type: string
-                          format: uint64
-                        block_interval:
-                          type: string
-                          format: uint64
+              symbol_requests:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    symbol:
+                      type: string
+                    oracle_script_id:
+                      type: string
+                      format: uint64
+                    block_interval:
+                      type: string
+                      format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -45314,6 +45359,17 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Params defines the parameters for the module.
+  consumer.pricefeed.Price:
+    type: object
+    properties:
+      symbol:
+        type: string
+      price:
+        type: string
+        format: uint64
+      resolve_time:
+        type: string
+        format: int64
   consumer.pricefeed.QueryParamsResponse:
     type: object
     properties:
@@ -45365,48 +45421,35 @@ definitions:
   consumer.pricefeed.QueryPriceResponse:
     type: object
     properties:
-      symbol:
-        type: string
       price:
-        type: string
-        format: uint64
-      resolve_time:
-        type: string
-        format: int64
-  consumer.pricefeed.QuerySymbolsResponse:
-    type: object
-    properties:
-      symbols:
         type: object
         properties:
-          symbols:
-            type: array
-            items:
-              type: object
-              properties:
-                symbol:
-                  type: string
-                oracle_script_id:
-                  type: string
-                  format: uint64
-                block_interval:
-                  type: string
-                  format: uint64
-  consumer.pricefeed.Symbol:
+          symbol:
+            type: string
+          price:
+            type: string
+            format: uint64
+          resolve_time:
+            type: string
+            format: int64
+  consumer.pricefeed.QuerySymbolRequestResponse:
     type: object
     properties:
-      symbol:
-        type: string
-      oracle_script_id:
-        type: string
-        format: uint64
-      block_interval:
-        type: string
-        format: uint64
-  consumer.pricefeed.Symbols:
+      symbol_request:
+        type: object
+        properties:
+          symbol:
+            type: string
+          oracle_script_id:
+            type: string
+            format: uint64
+          block_interval:
+            type: string
+            format: uint64
+  consumer.pricefeed.QuerySymbolRequestsResponse:
     type: object
     properties:
-      symbols:
+      symbol_requests:
         type: array
         items:
           type: object
@@ -45419,6 +45462,17 @@ definitions:
             block_interval:
               type: string
               format: uint64
+  consumer.pricefeed.SymbolRequest:
+    type: object
+    properties:
+      symbol:
+        type: string
+      oracle_script_id:
+        type: string
+        format: uint64
+      block_interval:
+        type: string
+        format: uint64
   cosmos.base.v1beta1.Coin:
     type: object
     properties:

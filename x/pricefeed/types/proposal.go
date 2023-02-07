@@ -16,13 +16,8 @@ func init() {
 	govtypes.RegisterProposalType(UpdateSymbolRequest)
 }
 
-func NewUpdateSymbolRequestProposal(title, description string, symbols Symbols) *UpdateSymbolRequestProposal {
-	return &UpdateSymbolRequestProposal{title, description, symbols.Symbols}
-}
-
-// String implements the Stringer interface.
-func (usrp UpdateSymbolRequestProposal) String() string {
-	return "ABV"
+func NewUpdateSymbolRequestProposal(title, description string, symbolRequests []SymbolRequest) *UpdateSymbolRequestProposal {
+	return &UpdateSymbolRequestProposal{title, description, symbolRequests}
 }
 
 // GetTitle returns the title of a update symbol request proposal.

@@ -1,7 +1,6 @@
 /* eslint-disable */
-import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { Symbols } from "./oracle";
+import { Price, SymbolRequest } from "./oracle";
 import { Params } from "./params";
 
 export const protobufPackage = "consumer.pricefeed";
@@ -16,11 +15,19 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
-export interface QuerySymbols {
+export interface QuerySymbolRequest {
+  symbol: string;
 }
 
-export interface QuerySymbolsResponse {
-  symbols: Symbols | undefined;
+export interface QuerySymbolRequestResponse {
+  symbolRequest: SymbolRequest | undefined;
+}
+
+export interface QuerySymbolRequests {
+}
+
+export interface QuerySymbolRequestsResponse {
+  symbolRequests: SymbolRequest[];
 }
 
 export interface QueryPrice {
@@ -28,9 +35,7 @@ export interface QueryPrice {
 }
 
 export interface QueryPriceResponse {
-  symbol: string;
-  price: number;
-  resolveTime: number;
+  price: Price | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -121,66 +126,27 @@ export const QueryParamsResponse = {
   },
 };
 
-function createBaseQuerySymbols(): QuerySymbols {
-  return {};
+function createBaseQuerySymbolRequest(): QuerySymbolRequest {
+  return { symbol: "" };
 }
 
-export const QuerySymbols = {
-  encode(_: QuerySymbols, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySymbols {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySymbols();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): QuerySymbols {
-    return {};
-  },
-
-  toJSON(_: QuerySymbols): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QuerySymbols>, I>>(_: I): QuerySymbols {
-    const message = createBaseQuerySymbols();
-    return message;
-  },
-};
-
-function createBaseQuerySymbolsResponse(): QuerySymbolsResponse {
-  return { symbols: undefined };
-}
-
-export const QuerySymbolsResponse = {
-  encode(message: QuerySymbolsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.symbols !== undefined) {
-      Symbols.encode(message.symbols, writer.uint32(10).fork()).ldelim();
+export const QuerySymbolRequest = {
+  encode(message: QuerySymbolRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.symbol !== "") {
+      writer.uint32(10).string(message.symbol);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySymbolsResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySymbolRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerySymbolsResponse();
+    const message = createBaseQuerySymbolRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.symbols = Symbols.decode(reader, reader.uint32());
+          message.symbol = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -190,21 +156,163 @@ export const QuerySymbolsResponse = {
     return message;
   },
 
-  fromJSON(object: any): QuerySymbolsResponse {
-    return { symbols: isSet(object.symbols) ? Symbols.fromJSON(object.symbols) : undefined };
+  fromJSON(object: any): QuerySymbolRequest {
+    return { symbol: isSet(object.symbol) ? String(object.symbol) : "" };
   },
 
-  toJSON(message: QuerySymbolsResponse): unknown {
+  toJSON(message: QuerySymbolRequest): unknown {
     const obj: any = {};
-    message.symbols !== undefined && (obj.symbols = message.symbols ? Symbols.toJSON(message.symbols) : undefined);
+    message.symbol !== undefined && (obj.symbol = message.symbol);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QuerySymbolsResponse>, I>>(object: I): QuerySymbolsResponse {
-    const message = createBaseQuerySymbolsResponse();
-    message.symbols = (object.symbols !== undefined && object.symbols !== null)
-      ? Symbols.fromPartial(object.symbols)
+  fromPartial<I extends Exact<DeepPartial<QuerySymbolRequest>, I>>(object: I): QuerySymbolRequest {
+    const message = createBaseQuerySymbolRequest();
+    message.symbol = object.symbol ?? "";
+    return message;
+  },
+};
+
+function createBaseQuerySymbolRequestResponse(): QuerySymbolRequestResponse {
+  return { symbolRequest: undefined };
+}
+
+export const QuerySymbolRequestResponse = {
+  encode(message: QuerySymbolRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.symbolRequest !== undefined) {
+      SymbolRequest.encode(message.symbolRequest, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySymbolRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySymbolRequestResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.symbolRequest = SymbolRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QuerySymbolRequestResponse {
+    return { symbolRequest: isSet(object.symbolRequest) ? SymbolRequest.fromJSON(object.symbolRequest) : undefined };
+  },
+
+  toJSON(message: QuerySymbolRequestResponse): unknown {
+    const obj: any = {};
+    message.symbolRequest !== undefined
+      && (obj.symbolRequest = message.symbolRequest ? SymbolRequest.toJSON(message.symbolRequest) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QuerySymbolRequestResponse>, I>>(object: I): QuerySymbolRequestResponse {
+    const message = createBaseQuerySymbolRequestResponse();
+    message.symbolRequest = (object.symbolRequest !== undefined && object.symbolRequest !== null)
+      ? SymbolRequest.fromPartial(object.symbolRequest)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseQuerySymbolRequests(): QuerySymbolRequests {
+  return {};
+}
+
+export const QuerySymbolRequests = {
+  encode(_: QuerySymbolRequests, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySymbolRequests {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySymbolRequests();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QuerySymbolRequests {
+    return {};
+  },
+
+  toJSON(_: QuerySymbolRequests): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QuerySymbolRequests>, I>>(_: I): QuerySymbolRequests {
+    const message = createBaseQuerySymbolRequests();
+    return message;
+  },
+};
+
+function createBaseQuerySymbolRequestsResponse(): QuerySymbolRequestsResponse {
+  return { symbolRequests: [] };
+}
+
+export const QuerySymbolRequestsResponse = {
+  encode(message: QuerySymbolRequestsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.symbolRequests) {
+      SymbolRequest.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySymbolRequestsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySymbolRequestsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.symbolRequests.push(SymbolRequest.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QuerySymbolRequestsResponse {
+    return {
+      symbolRequests: Array.isArray(object?.symbolRequests)
+        ? object.symbolRequests.map((e: any) => SymbolRequest.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: QuerySymbolRequestsResponse): unknown {
+    const obj: any = {};
+    if (message.symbolRequests) {
+      obj.symbolRequests = message.symbolRequests.map((e) => e ? SymbolRequest.toJSON(e) : undefined);
+    } else {
+      obj.symbolRequests = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QuerySymbolRequestsResponse>, I>>(object: I): QuerySymbolRequestsResponse {
+    const message = createBaseQuerySymbolRequestsResponse();
+    message.symbolRequests = object.symbolRequests?.map((e) => SymbolRequest.fromPartial(e)) || [];
     return message;
   },
 };
@@ -257,19 +365,13 @@ export const QueryPrice = {
 };
 
 function createBaseQueryPriceResponse(): QueryPriceResponse {
-  return { symbol: "", price: 0, resolveTime: 0 };
+  return { price: undefined };
 }
 
 export const QueryPriceResponse = {
   encode(message: QueryPriceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.symbol !== "") {
-      writer.uint32(10).string(message.symbol);
-    }
-    if (message.price !== 0) {
-      writer.uint32(16).uint64(message.price);
-    }
-    if (message.resolveTime !== 0) {
-      writer.uint32(24).int64(message.resolveTime);
+    if (message.price !== undefined) {
+      Price.encode(message.price, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -282,13 +384,7 @@ export const QueryPriceResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.symbol = reader.string();
-          break;
-        case 2:
-          message.price = longToNumber(reader.uint64() as Long);
-          break;
-        case 3:
-          message.resolveTime = longToNumber(reader.int64() as Long);
+          message.price = Price.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -299,26 +395,18 @@ export const QueryPriceResponse = {
   },
 
   fromJSON(object: any): QueryPriceResponse {
-    return {
-      symbol: isSet(object.symbol) ? String(object.symbol) : "",
-      price: isSet(object.price) ? Number(object.price) : 0,
-      resolveTime: isSet(object.resolveTime) ? Number(object.resolveTime) : 0,
-    };
+    return { price: isSet(object.price) ? Price.fromJSON(object.price) : undefined };
   },
 
   toJSON(message: QueryPriceResponse): unknown {
     const obj: any = {};
-    message.symbol !== undefined && (obj.symbol = message.symbol);
-    message.price !== undefined && (obj.price = Math.round(message.price));
-    message.resolveTime !== undefined && (obj.resolveTime = Math.round(message.resolveTime));
+    message.price !== undefined && (obj.price = message.price ? Price.toJSON(message.price) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryPriceResponse>, I>>(object: I): QueryPriceResponse {
     const message = createBaseQueryPriceResponse();
-    message.symbol = object.symbol ?? "";
-    message.price = object.price ?? 0;
-    message.resolveTime = object.resolveTime ?? 0;
+    message.price = (object.price !== undefined && object.price !== null) ? Price.fromPartial(object.price) : undefined;
     return message;
   },
 };
@@ -327,7 +415,8 @@ export const QueryPriceResponse = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
-  Symbols(request: QuerySymbols): Promise<QuerySymbolsResponse>;
+  SymbolRequest(request: QuerySymbolRequest): Promise<QuerySymbolRequestResponse>;
+  SymbolRequests(request: QuerySymbolRequests): Promise<QuerySymbolRequestsResponse>;
   Price(request: QueryPrice): Promise<QueryPriceResponse>;
 }
 
@@ -336,7 +425,8 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
-    this.Symbols = this.Symbols.bind(this);
+    this.SymbolRequest = this.SymbolRequest.bind(this);
+    this.SymbolRequests = this.SymbolRequests.bind(this);
     this.Price = this.Price.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
@@ -345,10 +435,16 @@ export class QueryClientImpl implements Query {
     return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 
-  Symbols(request: QuerySymbols): Promise<QuerySymbolsResponse> {
-    const data = QuerySymbols.encode(request).finish();
-    const promise = this.rpc.request("consumer.pricefeed.Query", "Symbols", data);
-    return promise.then((data) => QuerySymbolsResponse.decode(new _m0.Reader(data)));
+  SymbolRequest(request: QuerySymbolRequest): Promise<QuerySymbolRequestResponse> {
+    const data = QuerySymbolRequest.encode(request).finish();
+    const promise = this.rpc.request("consumer.pricefeed.Query", "SymbolRequest", data);
+    return promise.then((data) => QuerySymbolRequestResponse.decode(new _m0.Reader(data)));
+  }
+
+  SymbolRequests(request: QuerySymbolRequests): Promise<QuerySymbolRequestsResponse> {
+    const data = QuerySymbolRequests.encode(request).finish();
+    const promise = this.rpc.request("consumer.pricefeed.Query", "SymbolRequests", data);
+    return promise.then((data) => QuerySymbolRequestsResponse.decode(new _m0.Reader(data)));
   }
 
   Price(request: QueryPrice): Promise<QueryPriceResponse> {
@@ -362,25 +458,6 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -391,18 +468,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
-
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
