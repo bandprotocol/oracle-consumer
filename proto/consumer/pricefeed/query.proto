@@ -16,10 +16,10 @@ service Query {
     option (google.api.http).get = "/consumer/pricefeed/params";
   }
   rpc SymbolRequest(QuerySymbolRequest) returns (QuerySymbolRequestResponse) {
-    option (google.api.http).get = "/consumer/pricefeed/symbol/{symbol}";
+    option (google.api.http).get = "/consumer/pricefeed/symbol_request/{symbol}";
   }
   rpc SymbolRequests(QuerySymbolRequests) returns (QuerySymbolRequestsResponse) {
-    option (google.api.http).get = "/consumer/pricefeed/symbols";
+    option (google.api.http).get = "/consumer/pricefeed/symbol_requests";
   }
   rpc Price(QueryPrice) returns (QueryPriceResponse) {
     option (google.api.http).get = "/consumer/pricefeed/price/{symbol}";
