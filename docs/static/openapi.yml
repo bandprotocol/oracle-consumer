@@ -207,7 +207,7 @@ paths:
           type: string
       tags:
         - Query
-  /consumer/pricefeed/symbol/{symbol}:
+  /consumer/pricefeed/symbol_request/{symbol}:
     get:
       operationId: ConsumerPricefeedSymbolRequest
       responses:
@@ -252,7 +252,7 @@ paths:
           type: string
       tags:
         - Query
-  /consumer/pricefeed/symbols:
+  /consumer/pricefeed/symbol_requests:
     get:
       operationId: ConsumerPricefeedSymbolRequests
       responses:

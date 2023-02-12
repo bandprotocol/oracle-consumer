@@ -260,11 +260,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QuerySymbolRequest
-   * @request GET:/consumer/pricefeed/symbol/{symbol}
+   * @request GET:/consumer/pricefeed/symbol_request/{symbol}
    */
   querySymbolRequest = (symbol: string, params: RequestParams = {}) =>
     this.request<PricefeedQuerySymbolRequestResponse, RpcStatus>({
-      path: `/consumer/pricefeed/symbol/${symbol}`,
+      path: `/consumer/pricefeed/symbol_request/${symbol}`,
       method: "GET",
       format: "json",
       ...params,
@@ -275,11 +275,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QuerySymbolRequests
-   * @request GET:/consumer/pricefeed/symbols
+   * @request GET:/consumer/pricefeed/symbol_requests
    */
   querySymbolRequests = (params: RequestParams = {}) =>
     this.request<PricefeedQuerySymbolRequestsResponse, RpcStatus>({
-      path: `/consumer/pricefeed/symbols`,
+      path: `/consumer/pricefeed/symbol_requests`,
       method: "GET",
       format: "json",
       ...params,
