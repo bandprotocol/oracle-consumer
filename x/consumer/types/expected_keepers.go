@@ -4,7 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	pftypes "github.com/bandprotocol/consumer/x/pricefeed/types"
+	pricefeedtypes "github.com/bandprotocol/consumer/x/pricefeed/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -20,5 +20,5 @@ type BankKeeper interface {
 }
 
 type PriceFeedKeeper interface {
-	GetPrice(ctx sdk.Context, symbol string) (*pftypes.Price, error)
+	GetPrice(ctx sdk.Context, symbol string) (*pricefeedtypes.Price, error)
 }
