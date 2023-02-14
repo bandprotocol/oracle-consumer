@@ -26,7 +26,7 @@ var (
 
 const (
 	opWeightMsgSetRequestInterval = "op_weight_msg_set_request_interval"
-	// TODO: Determine the simulation weight value
+
 	defaultWeightMsgSetRequestInterval int = 100
 )
 
