@@ -21,12 +21,7 @@ func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keep
 
 	for _, symbol := range symbols {
 		if symbol.BlockInterval != 0 && blockHeight%int64(symbol.BlockInterval) == 0 {
-			_, ok := symbolsOsMap[symbol.OracleScriptId]
-			if ok {
-				symbolsOsMap[symbol.OracleScriptId] = append(symbolsOsMap[symbol.OracleScriptId], symbol.Symbol)
-			} else {
-				symbolsOsMap[symbol.OracleScriptId] = []string{symbol.Symbol}
-			}
+			symbolsOsMap[symbol.OracleScriptId] = append(symbolsOsMap[symbol.OracleScriptId], symbol.Symbol)
 		}
 	}
 
