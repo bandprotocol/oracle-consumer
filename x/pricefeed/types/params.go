@@ -74,7 +74,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyExecuteGasBase, &p.ExecuteGasBase, validateUint64("execute gas base", true)),
 		paramtypes.NewParamSetPair(KeyExecuteGasEach, &p.ExecuteGasEach, validateUint64("execute gas each", true)),
 		paramtypes.NewParamSetPair(KeySourceChannel, &p.SourceChannel, validateString("source channel")),
-		paramtypes.NewParamSetPair(KeyFeeLimit, &p.FeeLimit, validateGasLimit),
+		paramtypes.NewParamSetPair(KeyFeeLimit, &p.FeeLimit, validateFeeLimit),
 	}
 }
 
@@ -112,7 +112,7 @@ func validateString(name string) func(interface{}) error {
 	}
 }
 
-func validateGasLimit(i interface{}) error {
+func validateFeeLimit(i interface{}) error {
 	_, ok := i.(sdk.Coins)
 	if !ok {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "type: %T, expected sdk.Coins", i)
