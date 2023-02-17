@@ -429,6 +429,7 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	// this line is used by starport scaffolding # 2
 	SymbolRequest(ctx context.Context, in *QuerySymbolRequest, opts ...grpc.CallOption) (*QuerySymbolRequestResponse, error)
 	SymbolRequests(ctx context.Context, in *QuerySymbolRequests, opts ...grpc.CallOption) (*QuerySymbolRequestsResponse, error)
 	Price(ctx context.Context, in *QueryPrice, opts ...grpc.CallOption) (*QueryPriceResponse, error)
@@ -482,6 +483,7 @@ func (c *queryClient) Price(ctx context.Context, in *QueryPrice, opts ...grpc.Ca
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	// this line is used by starport scaffolding # 2
 	SymbolRequest(context.Context, *QuerySymbolRequest) (*QuerySymbolRequestResponse, error)
 	SymbolRequests(context.Context, *QuerySymbolRequests) (*QuerySymbolRequestsResponse, error)
 	Price(context.Context, *QueryPrice) (*QueryPriceResponse, error)
