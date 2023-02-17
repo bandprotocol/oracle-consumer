@@ -86,13 +86,13 @@ func (k Keeper) GetAllSymbolRequest(ctx sdk.Context) []types.SymbolRequest {
 
 	iterator := storetypes.KVStorePrefixIterator(store, types.SymbolRequestStoreKeyPrefix)
 	defer iterator.Close()
-	var ss []types.SymbolRequest
+	var srs []types.SymbolRequest
 	for ; iterator.Valid(); iterator.Next() {
-		var s types.SymbolRequest
-		k.cdc.MustUnmarshal(iterator.Value(), &s)
-		ss = append(ss, s)
+		var sr types.SymbolRequest
+		k.cdc.MustUnmarshal(iterator.Value(), &sr)
+		srs = append(srs, sr)
 	}
-	return ss
+	return srs
 }
 
 func (k Keeper) SetPrice(ctx sdk.Context, price types.Price) {
