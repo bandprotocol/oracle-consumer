@@ -157,7 +157,10 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) {
 	result, err := bandtypes.DecodeResult(res.Result)
 	if err != nil {
-		fmt.Println(err.Error())
+		ctx.EventManager().EmitEvent(sdk.NewEvent(
+			types.EventTypeDecodeBandChainResultFailed,
+			sdk.NewAttribute(types.AttributeKeyReason, fmt.Sprintf("Unable to decode result from BandChain: %s", err)),
+		))
 		return
 	}
 
