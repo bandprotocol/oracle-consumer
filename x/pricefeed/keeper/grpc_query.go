@@ -21,13 +21,6 @@ func (k Querier) Params(c context.Context, req *types.QueryParamsRequest) (*type
 	}, nil
 }
 
-func (k Querier) PortID(c context.Context, req *types.QueryPortIDRequest) (*types.QueryPortIDResponse, error) {
-	ctx := sdk.UnwrapSDKContext(c)
-	return &types.QueryPortIDResponse{
-		PortId: k.GetPort(ctx),
-	}, nil
-}
-
 func (k Querier) SymbolRequest(c context.Context, req *types.QuerySymbolRequest) (*types.QuerySymbolRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 

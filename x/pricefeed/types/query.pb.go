@@ -112,86 +112,6 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
-type QueryPortIDRequest struct {
-}
-
-func (m *QueryPortIDRequest) Reset()         { *m = QueryPortIDRequest{} }
-func (m *QueryPortIDRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryPortIDRequest) ProtoMessage()    {}
-func (*QueryPortIDRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d76169d2461fc862, []int{2}
-}
-func (m *QueryPortIDRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryPortIDRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryPortIDRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryPortIDRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryPortIDRequest.Merge(m, src)
-}
-func (m *QueryPortIDRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryPortIDRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryPortIDRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryPortIDRequest proto.InternalMessageInfo
-
-type QueryPortIDResponse struct {
-	PortId string `protobuf:"bytes,1,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
-}
-
-func (m *QueryPortIDResponse) Reset()         { *m = QueryPortIDResponse{} }
-func (m *QueryPortIDResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryPortIDResponse) ProtoMessage()    {}
-func (*QueryPortIDResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d76169d2461fc862, []int{3}
-}
-func (m *QueryPortIDResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryPortIDResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryPortIDResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryPortIDResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryPortIDResponse.Merge(m, src)
-}
-func (m *QueryPortIDResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryPortIDResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryPortIDResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryPortIDResponse proto.InternalMessageInfo
-
-func (m *QueryPortIDResponse) GetPortId() string {
-	if m != nil {
-		return m.PortId
-	}
-	return ""
-}
-
 type QuerySymbolRequest struct {
 	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 }
@@ -200,7 +120,7 @@ func (m *QuerySymbolRequest) Reset()         { *m = QuerySymbolRequest{} }
 func (m *QuerySymbolRequest) String() string { return proto.CompactTextString(m) }
 func (*QuerySymbolRequest) ProtoMessage()    {}
 func (*QuerySymbolRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d76169d2461fc862, []int{4}
+	return fileDescriptor_d76169d2461fc862, []int{2}
 }
 func (m *QuerySymbolRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -244,7 +164,7 @@ func (m *QuerySymbolRequestResponse) Reset()         { *m = QuerySymbolRequestRe
 func (m *QuerySymbolRequestResponse) String() string { return proto.CompactTextString(m) }
 func (*QuerySymbolRequestResponse) ProtoMessage()    {}
 func (*QuerySymbolRequestResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d76169d2461fc862, []int{5}
+	return fileDescriptor_d76169d2461fc862, []int{3}
 }
 func (m *QuerySymbolRequestResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -287,7 +207,7 @@ func (m *QuerySymbolRequests) Reset()         { *m = QuerySymbolRequests{} }
 func (m *QuerySymbolRequests) String() string { return proto.CompactTextString(m) }
 func (*QuerySymbolRequests) ProtoMessage()    {}
 func (*QuerySymbolRequests) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d76169d2461fc862, []int{6}
+	return fileDescriptor_d76169d2461fc862, []int{4}
 }
 func (m *QuerySymbolRequests) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -324,7 +244,7 @@ func (m *QuerySymbolRequestsResponse) Reset()         { *m = QuerySymbolRequests
 func (m *QuerySymbolRequestsResponse) String() string { return proto.CompactTextString(m) }
 func (*QuerySymbolRequestsResponse) ProtoMessage()    {}
 func (*QuerySymbolRequestsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d76169d2461fc862, []int{7}
+	return fileDescriptor_d76169d2461fc862, []int{5}
 }
 func (m *QuerySymbolRequestsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -368,7 +288,7 @@ func (m *QueryPrice) Reset()         { *m = QueryPrice{} }
 func (m *QueryPrice) String() string { return proto.CompactTextString(m) }
 func (*QueryPrice) ProtoMessage()    {}
 func (*QueryPrice) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d76169d2461fc862, []int{8}
+	return fileDescriptor_d76169d2461fc862, []int{6}
 }
 func (m *QueryPrice) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -412,7 +332,7 @@ func (m *QueryPriceResponse) Reset()         { *m = QueryPriceResponse{} }
 func (m *QueryPriceResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryPriceResponse) ProtoMessage()    {}
 func (*QueryPriceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d76169d2461fc862, []int{9}
+	return fileDescriptor_d76169d2461fc862, []int{7}
 }
 func (m *QueryPriceResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -451,8 +371,6 @@ func (m *QueryPriceResponse) GetPrice() *Price {
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "consumer.pricefeed.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "consumer.pricefeed.QueryParamsResponse")
-	proto.RegisterType((*QueryPortIDRequest)(nil), "consumer.pricefeed.QueryPortIDRequest")
-	proto.RegisterType((*QueryPortIDResponse)(nil), "consumer.pricefeed.QueryPortIDResponse")
 	proto.RegisterType((*QuerySymbolRequest)(nil), "consumer.pricefeed.QuerySymbolRequest")
 	proto.RegisterType((*QuerySymbolRequestResponse)(nil), "consumer.pricefeed.QuerySymbolRequestResponse")
 	proto.RegisterType((*QuerySymbolRequests)(nil), "consumer.pricefeed.QuerySymbolRequests")
@@ -464,41 +382,37 @@ func init() {
 func init() { proto.RegisterFile("consumer/pricefeed/query.proto", fileDescriptor_d76169d2461fc862) }
 
 var fileDescriptor_d76169d2461fc862 = []byte{
-	// 534 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x94, 0x4f, 0x6f, 0xd3, 0x30,
-	0x18, 0xc6, 0x1b, 0xa0, 0x41, 0xbc, 0x68, 0x45, 0x32, 0xe3, 0x9f, 0x37, 0x32, 0xf0, 0x60, 0x43,
-	0x62, 0x8a, 0xa5, 0xc2, 0x81, 0xf3, 0x04, 0x12, 0x43, 0x48, 0x40, 0xb9, 0x71, 0x99, 0xd2, 0xd6,
-	0x0b, 0x91, 0xda, 0x38, 0x8b, 0x53, 0x89, 0x0a, 0xc6, 0x81, 0x4f, 0x80, 0xc4, 0x81, 0x13, 0x5f,
-	0x85, 0xf3, 0x8e, 0x95, 0xb8, 0x70, 0x42, 0xa8, 0xe5, 0x83, 0xa0, 0xd8, 0x4e, 0x5a, 0x53, 0xa7,
-	0xe4, 0x16, 0xfb, 0x7d, 0xfc, 0xfe, 0x9e, 0xd7, 0x7e, 0x14, 0xf0, 0x7a, 0x3c, 0x16, 0xa3, 0x21,
-	0x4b, 0x69, 0x92, 0x46, 0x3d, 0x76, 0xc4, 0x58, 0x9f, 0x1e, 0x8f, 0x58, 0x3a, 0xf6, 0x93, 0x94,
-	0x67, 0x1c, 0xa1, 0xa2, 0xee, 0x97, 0x75, 0xbc, 0x1e, 0xf2, 0x90, 0xcb, 0x32, 0xcd, 0xbf, 0x94,
-	0x12, 0x6f, 0x86, 0x9c, 0x87, 0x03, 0x46, 0x83, 0x24, 0xa2, 0x41, 0x1c, 0xf3, 0x2c, 0xc8, 0x22,
-	0x1e, 0x0b, 0x5d, 0xdd, 0xb2, 0x70, 0x92, 0x20, 0x0d, 0x86, 0x85, 0x80, 0xd8, 0x04, 0xc5, 0x97,
-	0xd2, 0x90, 0x75, 0x40, 0xaf, 0x72, 0x6f, 0x2f, 0xe5, 0xc1, 0x0e, 0x3b, 0x1e, 0x31, 0x91, 0x91,
-	0x17, 0x70, 0xd9, 0xd8, 0x15, 0x09, 0x8f, 0x05, 0x43, 0x8f, 0xc0, 0x55, 0x80, 0xeb, 0xce, 0x2d,
-	0xe7, 0xde, 0xc5, 0x36, 0xf6, 0x97, 0x47, 0xf1, 0xd5, 0x99, 0xfd, 0x73, 0xa7, 0xbf, 0xb6, 0x1a,
-	0x1d, 0xad, 0x9f, 0x63, 0x78, 0x9a, 0x1d, 0x3c, 0x2e, 0x30, 0x7e, 0x81, 0xd1, 0xbb, 0x1a, 0x73,
-	0x0d, 0xce, 0x27, 0x3c, 0xcd, 0x0e, 0xa3, 0xbe, 0xe4, 0x5c, 0xe8, 0xb8, 0xf9, 0xf2, 0xa0, 0x4f,
-	0xf6, 0x74, 0x97, 0xd7, 0xe3, 0x61, 0x97, 0x0f, 0x74, 0x17, 0x74, 0x15, 0x5c, 0x21, 0x37, 0x0a,
-	0xb5, 0x5a, 0x91, 0x23, 0xc0, 0xcb, 0xea, 0x12, 0xf2, 0x14, 0x5a, 0x4a, 0x77, 0x98, 0xaa, 0x8a,
-	0x9e, 0xe9, 0xb6, 0x6d, 0x26, 0xb3, 0xc5, 0x9a, 0x58, 0x5c, 0x92, 0x2b, 0x7a, 0x0a, 0x43, 0x24,
-	0x48, 0x04, 0x1b, 0x96, 0xed, 0x92, 0xff, 0x0c, 0x2e, 0x99, 0xfc, 0xfc, 0x52, 0xcf, 0xd6, 0x33,
-	0xd0, 0x12, 0x26, 0xea, 0x0e, 0x80, 0xba, 0xc7, 0x5c, 0x5f, 0x79, 0x1f, 0x4f, 0x8a, 0x37, 0xc8,
-	0x55, 0xa5, 0x0f, 0x0a, 0x4d, 0x89, 0xd1, 0xe3, 0xdf, 0xb0, 0x3e, 0xa9, 0x3c, 0xa1, 0x74, 0xed,
-	0xef, 0x4d, 0x68, 0xca, 0x3e, 0xe8, 0x04, 0x5c, 0xf5, 0xd8, 0x68, 0xc7, 0x76, 0x6a, 0x39, 0x57,
-	0x78, 0xf7, 0xbf, 0x3a, 0xe5, 0x8a, 0x90, 0x4f, 0x3f, 0xfe, 0x7c, 0x39, 0xb3, 0x89, 0x30, 0xad,
-	0x0c, 0x39, 0xfa, 0x08, 0xae, 0x0a, 0xce, 0x2a, 0xfc, 0x62, 0xde, 0x56, 0xe1, 0x8d, 0x04, 0x92,
-	0x6d, 0x89, 0xbf, 0x89, 0x36, 0xac, 0x78, 0x95, 0x4d, 0xf4, 0xcd, 0x81, 0x35, 0x33, 0x89, 0xd5,
-	0x3e, 0x0c, 0x1d, 0xf6, 0xeb, 0xe9, 0x4a, 0x3b, 0x0f, 0xa5, 0x1d, 0x1f, 0xed, 0xd9, 0xec, 0xfc,
-	0x93, 0x22, 0xfa, 0x5e, 0x6d, 0x9c, 0xa0, 0xaf, 0x0e, 0xb4, 0xcc, 0xf0, 0xa1, 0xdd, 0x7a, 0x60,
-	0x81, 0x69, 0x4d, 0x61, 0x69, 0xf1, 0xbe, 0xb4, 0x78, 0x17, 0x6d, 0xd7, 0xb0, 0x88, 0x3e, 0x40,
-	0x53, 0x45, 0xd5, 0xab, 0x7e, 0x90, 0x7c, 0x89, 0x77, 0x56, 0xd7, 0xeb, 0xd1, 0xe5, 0xd7, 0xfc,
-	0x5e, 0xf6, 0x9f, 0x9f, 0x4e, 0x3d, 0x67, 0x32, 0xf5, 0x9c, 0xdf, 0x53, 0xcf, 0xf9, 0x3c, 0xf3,
-	0x1a, 0x93, 0x99, 0xd7, 0xf8, 0x39, 0xf3, 0x1a, 0x6f, 0xda, 0x61, 0x94, 0xbd, 0x1d, 0x75, 0xfd,
-	0x1e, 0x1f, 0xd2, 0x6e, 0x10, 0xf7, 0xe5, 0x2f, 0xb2, 0xc7, 0x07, 0xf3, 0xae, 0xef, 0x16, 0xfa,
-	0x66, 0xe3, 0x84, 0x89, 0xae, 0x2b, 0x45, 0x0f, 0xfe, 0x06, 0x00, 0x00, 0xff, 0xff, 0xcb, 0x8e,
-	0x19, 0x6b, 0xf6, 0x05, 0x00, 0x00,
+	// 480 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x94, 0x41, 0x6b, 0xd4, 0x40,
+	0x14, 0xc7, 0x13, 0xed, 0x06, 0x7c, 0xd2, 0x15, 0xc6, 0x2a, 0x3a, 0x96, 0xa9, 0x8e, 0xda, 0x0a,
+	0x96, 0x0c, 0xac, 0x1e, 0x3c, 0x17, 0x04, 0x11, 0x41, 0x5d, 0x6f, 0x5e, 0x24, 0x49, 0xa7, 0x31,
+	0xb0, 0xc9, 0xa4, 0x99, 0x04, 0x5c, 0xb4, 0x17, 0x3f, 0x81, 0xe0, 0xc1, 0x93, 0x5f, 0xc5, 0x73,
+	0x8f, 0x05, 0x2f, 0x9e, 0x44, 0x76, 0xfd, 0x20, 0x92, 0x99, 0x49, 0xda, 0x71, 0x13, 0xcd, 0x2d,
+	0x33, 0xef, 0xf7, 0xde, 0xff, 0x3f, 0xef, 0x3d, 0x02, 0x24, 0x12, 0x99, 0xac, 0x52, 0x5e, 0xb0,
+	0xbc, 0x48, 0x22, 0x7e, 0xc0, 0xf9, 0x3e, 0x3b, 0xac, 0x78, 0x31, 0xf7, 0xf3, 0x42, 0x94, 0x02,
+	0xa1, 0x26, 0xee, 0xb7, 0x71, 0xbc, 0x11, 0x8b, 0x58, 0xa8, 0x30, 0xab, 0xbf, 0x34, 0x89, 0x37,
+	0x63, 0x21, 0xe2, 0x19, 0x67, 0x41, 0x9e, 0xb0, 0x20, 0xcb, 0x44, 0x19, 0x94, 0x89, 0xc8, 0xa4,
+	0x89, 0x6e, 0x75, 0xe8, 0xe4, 0x41, 0x11, 0xa4, 0x0d, 0x40, 0xbb, 0x80, 0xe6, 0x4b, 0x33, 0x74,
+	0x03, 0xd0, 0xcb, 0xda, 0xdb, 0x0b, 0x95, 0x38, 0xe5, 0x87, 0x15, 0x97, 0x25, 0x7d, 0x0e, 0x97,
+	0xad, 0x5b, 0x99, 0x8b, 0x4c, 0x72, 0xf4, 0x08, 0x3c, 0x2d, 0x70, 0xcd, 0xbd, 0xe9, 0xde, 0xbb,
+	0x38, 0xc1, 0xfe, 0xea, 0x53, 0x7c, 0x9d, 0xb3, 0xb7, 0x76, 0xfc, 0x73, 0xcb, 0x99, 0x1a, 0x9e,
+	0xee, 0x1a, 0x99, 0x57, 0xf3, 0x34, 0x14, 0x33, 0x23, 0x83, 0xae, 0x82, 0x27, 0xd5, 0x85, 0xaa,
+	0x77, 0x61, 0x6a, 0x4e, 0xf4, 0x00, 0xf0, 0x2a, 0xdd, 0xba, 0x78, 0x02, 0x63, 0xcd, 0xbd, 0x29,
+	0x74, 0xc4, 0xb8, 0xb9, 0xd5, 0xe5, 0xc6, 0x2e, 0xb1, 0x2e, 0xcf, 0x1e, 0xe9, 0x15, 0xf3, 0x4c,
+	0x0b, 0x92, 0x34, 0x81, 0x1b, 0x1d, 0xd7, 0xad, 0xfe, 0x53, 0xb8, 0x64, 0xeb, 0xd7, 0xed, 0x38,
+	0x3f, 0xcc, 0xc0, 0x58, 0xda, 0x52, 0x77, 0x00, 0x74, 0xa3, 0x6b, 0xbe, 0xb7, 0x1f, 0x8f, 0x9b,
+	0x21, 0xd5, 0x54, 0xeb, 0x83, 0xc1, 0x48, 0xc9, 0x98, 0xe7, 0x5f, 0xef, 0x1c, 0x86, 0xca, 0xd0,
+	0xdc, 0xe4, 0xdb, 0x1a, 0x8c, 0x54, 0x1d, 0x74, 0x04, 0x9e, 0x1e, 0x13, 0xda, 0xee, 0xca, 0x5a,
+	0xdd, 0x08, 0xbc, 0xf3, 0x5f, 0x4e, 0xbb, 0xa2, 0xf4, 0xe3, 0xf7, 0xdf, 0x9f, 0xcf, 0x6d, 0x22,
+	0xcc, 0x7a, 0xd7, 0x13, 0x7d, 0x75, 0x61, 0xdd, 0xde, 0x84, 0x7e, 0x1b, 0x16, 0x87, 0xfd, 0x61,
+	0x5c, 0xeb, 0xe6, 0xa1, 0x72, 0xe3, 0xa3, 0xdd, 0x2e, 0x37, 0x7f, 0x4d, 0x91, 0xbd, 0xd7, 0x17,
+	0x47, 0xe8, 0x8b, 0x0b, 0x63, 0x7b, 0xf8, 0x68, 0x67, 0x98, 0xb0, 0xc4, 0x6c, 0x20, 0xd8, 0x5a,
+	0xbc, 0xaf, 0x2c, 0xde, 0x45, 0xb7, 0x07, 0x58, 0x44, 0x1f, 0x60, 0xa4, 0x57, 0x85, 0xf4, 0xcf,
+	0xa3, 0x3e, 0xe2, 0xed, 0x7f, 0xc7, 0x87, 0xa9, 0xab, 0xaf, 0xd3, 0xbe, 0xec, 0x3d, 0x3b, 0x5e,
+	0x10, 0xf7, 0x64, 0x41, 0xdc, 0x5f, 0x0b, 0xe2, 0x7e, 0x5a, 0x12, 0xe7, 0x64, 0x49, 0x9c, 0x1f,
+	0x4b, 0xe2, 0xbc, 0x9e, 0xc4, 0x49, 0xf9, 0xb6, 0x0a, 0xfd, 0x48, 0xa4, 0x2c, 0x0c, 0xb2, 0x7d,
+	0xf5, 0x73, 0x89, 0xc4, 0xec, 0xb4, 0xea, 0xbb, 0x33, 0x75, 0xcb, 0x79, 0xce, 0x65, 0xe8, 0x29,
+	0xe8, 0xc1, 0x9f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x78, 0xed, 0xc7, 0x0f, 0x30, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -516,7 +430,6 @@ type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// this line is used by starport scaffolding # 2
-	PortID(ctx context.Context, in *QueryPortIDRequest, opts ...grpc.CallOption) (*QueryPortIDResponse, error)
 	SymbolRequest(ctx context.Context, in *QuerySymbolRequest, opts ...grpc.CallOption) (*QuerySymbolRequestResponse, error)
 	SymbolRequests(ctx context.Context, in *QuerySymbolRequests, opts ...grpc.CallOption) (*QuerySymbolRequestsResponse, error)
 	Price(ctx context.Context, in *QueryPrice, opts ...grpc.CallOption) (*QueryPriceResponse, error)
@@ -533,15 +446,6 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
 	out := new(QueryParamsResponse)
 	err := c.cc.Invoke(ctx, "/consumer.pricefeed.Query/Params", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) PortID(ctx context.Context, in *QueryPortIDRequest, opts ...grpc.CallOption) (*QueryPortIDResponse, error) {
-	out := new(QueryPortIDResponse)
-	err := c.cc.Invoke(ctx, "/consumer.pricefeed.Query/PortID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -580,7 +484,6 @@ type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// this line is used by starport scaffolding # 2
-	PortID(context.Context, *QueryPortIDRequest) (*QueryPortIDResponse, error)
 	SymbolRequest(context.Context, *QuerySymbolRequest) (*QuerySymbolRequestResponse, error)
 	SymbolRequests(context.Context, *QuerySymbolRequests) (*QuerySymbolRequestsResponse, error)
 	Price(context.Context, *QueryPrice) (*QueryPriceResponse, error)
@@ -592,9 +495,6 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
-}
-func (*UnimplementedQueryServer) PortID(ctx context.Context, req *QueryPortIDRequest) (*QueryPortIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PortID not implemented")
 }
 func (*UnimplementedQueryServer) SymbolRequest(ctx context.Context, req *QuerySymbolRequest) (*QuerySymbolRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SymbolRequest not implemented")
@@ -624,24 +524,6 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Params(ctx, req.(*QueryParamsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_PortID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryPortIDRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).PortID(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/consumer.pricefeed.Query/PortID",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PortID(ctx, req.(*QueryPortIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -707,10 +589,6 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
-		},
-		{
-			MethodName: "PortID",
-			Handler:    _Query_PortID_Handler,
 		},
 		{
 			MethodName: "SymbolRequest",
@@ -782,59 +660,6 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	i--
 	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryPortIDRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryPortIDRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryPortIDRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryPortIDResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryPortIDResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryPortIDResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.PortId) > 0 {
-		i -= len(m.PortId)
-		copy(dAtA[i:], m.PortId)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.PortId)))
-		i--
-		dAtA[i] = 0xa
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1059,28 +884,6 @@ func (m *QueryParamsResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryPortIDRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *QueryPortIDResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.PortId)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
 func (m *QuerySymbolRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1274,138 +1077,6 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryPortIDRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryPortIDRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryPortIDRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryPortIDResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryPortIDResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryPortIDResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PortId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.PortId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
