@@ -51,6 +51,6 @@ func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keep
 
 	// TODO: remove debug
 	fmt.Print("\n\n*********************************************\n")
-	fmt.Printf("%+v %d height %d\n", symbolsOsMap, params.PrepareGasBase, ctx.BlockHeight())
+	fmt.Printf("symbols request %+v height %d\n", symbolsOsMap, ctx.BlockHeight())
 	fmt.Print("*********************************************\n")
 }

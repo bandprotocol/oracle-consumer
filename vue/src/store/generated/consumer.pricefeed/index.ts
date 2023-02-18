@@ -40,7 +40,6 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				Params: {},
-				PortID: {},
 				SymbolRequest: {},
 				SymbolRequests: {},
 				Price: {},
@@ -85,12 +84,6 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Params[JSON.stringify(params)] ?? {}
-		},
-				getPortID: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.PortID[JSON.stringify(params)] ?? {}
 		},
 				getSymbolRequest: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
@@ -161,28 +154,6 @@ export default {
 				return getters['getParams']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryParams API Node Unavailable. Could not perform query: ' + e.message)
-				
-			}
-		},
-		
-		
-		
-		
-		 		
-		
-		
-		async QueryPortID({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
-			try {
-				const key = params ?? {};
-				const client = initClient(rootGetters);
-				let value= (await client.ConsumerPricefeed.query.queryPortId()).data
-				
-					
-				commit('QUERY', { query: 'PortID', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryPortID', payload: { options: { all }, params: {...key},query }})
-				return getters['getPortID']( { params: {...key}, query}) ?? {}
-			} catch (e) {
-				throw new Error('QueryClient:QueryPortID API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

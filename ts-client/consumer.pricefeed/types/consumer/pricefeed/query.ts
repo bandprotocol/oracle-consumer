@@ -15,13 +15,6 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
-export interface QueryPortIDRequest {
-}
-
-export interface QueryPortIDResponse {
-  portId: string;
-}
-
 export interface QuerySymbolRequest {
   symbol: string;
 }
@@ -129,92 +122,6 @@ export const QueryParamsResponse = {
     message.params = (object.params !== undefined && object.params !== null)
       ? Params.fromPartial(object.params)
       : undefined;
-    return message;
-  },
-};
-
-function createBaseQueryPortIDRequest(): QueryPortIDRequest {
-  return {};
-}
-
-export const QueryPortIDRequest = {
-  encode(_: QueryPortIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPortIDRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryPortIDRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): QueryPortIDRequest {
-    return {};
-  },
-
-  toJSON(_: QueryPortIDRequest): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryPortIDRequest>, I>>(_: I): QueryPortIDRequest {
-    const message = createBaseQueryPortIDRequest();
-    return message;
-  },
-};
-
-function createBaseQueryPortIDResponse(): QueryPortIDResponse {
-  return { portId: "" };
-}
-
-export const QueryPortIDResponse = {
-  encode(message: QueryPortIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.portId !== "") {
-      writer.uint32(10).string(message.portId);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPortIDResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryPortIDResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.portId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): QueryPortIDResponse {
-    return { portId: isSet(object.portId) ? String(object.portId) : "" };
-  },
-
-  toJSON(message: QueryPortIDResponse): unknown {
-    const obj: any = {};
-    message.portId !== undefined && (obj.portId = message.portId);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryPortIDResponse>, I>>(object: I): QueryPortIDResponse {
-    const message = createBaseQueryPortIDResponse();
-    message.portId = object.portId ?? "";
     return message;
   },
 };
@@ -509,7 +416,6 @@ export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** this line is used by starport scaffolding # 2 */
-  PortID(request: QueryPortIDRequest): Promise<QueryPortIDResponse>;
   SymbolRequest(request: QuerySymbolRequest): Promise<QuerySymbolRequestResponse>;
   SymbolRequests(request: QuerySymbolRequests): Promise<QuerySymbolRequestsResponse>;
   Price(request: QueryPrice): Promise<QueryPriceResponse>;
@@ -520,7 +426,6 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
-    this.PortID = this.PortID.bind(this);
     this.SymbolRequest = this.SymbolRequest.bind(this);
     this.SymbolRequests = this.SymbolRequests.bind(this);
     this.Price = this.Price.bind(this);
@@ -529,12 +434,6 @@ export class QueryClientImpl implements Query {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("consumer.pricefeed.Query", "Params", data);
     return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
-  }
-
-  PortID(request: QueryPortIDRequest): Promise<QueryPortIDResponse> {
-    const data = QueryPortIDRequest.encode(request).finish();
-    const promise = this.rpc.request("consumer.pricefeed.Query", "PortID", data);
-    return promise.then((data) => QueryPortIDResponse.decode(new _m0.Reader(data)));
   }
 
   SymbolRequest(request: QuerySymbolRequest): Promise<QuerySymbolRequestResponse> {

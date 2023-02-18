@@ -55,10 +55,6 @@ export interface PricefeedQueryParamsResponse {
   params?: PricefeedParams;
 }
 
-export interface PricefeedQueryPortIDResponse {
-  port_id?: string;
-}
-
 export interface PricefeedQueryPriceResponse {
   price?: PricefeedPrice;
 }
@@ -248,22 +244,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryPortId
-   * @summary this line is used by starport scaffolding # 2
-   * @request GET:/consumer/pricefeed/port_id
-   */
-  queryPortId = (params: RequestParams = {}) =>
-    this.request<PricefeedQueryPortIDResponse, RpcStatus>({
-      path: `/consumer/pricefeed/port_id`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
    * @name QueryPrice
    * @request GET:/consumer/pricefeed/prices/{symbol}
    */
@@ -295,6 +275,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QuerySymbolRequest
+   * @summary this line is used by starport scaffolding # 2
    * @request GET:/consumer/pricefeed/symbol_requests/{symbol}
    */
   querySymbolRequest = (symbol: string, params: RequestParams = {}) =>
