@@ -125,14 +125,16 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
+	// TODO: use_port_id
 	sequence, found := k.ChannelKeeper.GetNextSequenceSend(
 		ctx, SRC_PORT, sourceChannel,
 	)
 	if !found {
 		return sdkerrors.Wrapf(
 			sdkerrors.ErrUnknownRequest,
-			"unknown sequence number for channel %s port oracle",
+			"unknown sequence number for channel %s port %s",
 			sourceChannel,
+			SRC_PORT,
 		)
 	}
 
