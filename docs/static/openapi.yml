@@ -162,7 +162,39 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /consumer/pricefeed/price/{symbol}:
+  /consumer/pricefeed/port_id:
+    get:
+      summary: 'this line is used by starport scaffolding # 2'
+      operationId: ConsumerPricefeedPortID
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              port_id:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /consumer/pricefeed/prices/{symbol}:
     get:
       operationId: ConsumerPricefeedPrice
       responses:
@@ -182,51 +214,6 @@ paths:
                   resolve_time:
                     type: string
                     format: int64
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: symbol
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  /consumer/pricefeed/symbol_request/{symbol}:
-    get:
-      operationId: ConsumerPricefeedSymbolRequest
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              symbol_request:
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  oracle_script_id:
-                    type: string
-                    format: uint64
-                  block_interval:
-                    type: string
-                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -292,6 +279,51 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      tags:
+        - Query
+  /consumer/pricefeed/symbol_requests/{symbol}:
+    get:
+      operationId: ConsumerPricefeedSymbolRequest
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              symbol_request:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  oracle_script_id:
+                    type: string
+                    format: uint64
+                  block_interval:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   /cosmos/auth/v1beta1/accounts:
@@ -45418,6 +45450,11 @@ definitions:
 
                 signatures required by gogoproto.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  consumer.pricefeed.QueryPortIDResponse:
+    type: object
+    properties:
+      port_id:
+        type: string
   consumer.pricefeed.QueryPriceResponse:
     type: object
     properties:

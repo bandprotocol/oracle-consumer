@@ -16,6 +16,9 @@ service Query {
     option (google.api.http).get = "/consumer/pricefeed/params";
   }
   // this line is used by starport scaffolding # 2
+  rpc PortID(QueryPortIDRequest) returns (QueryPortIDResponse) {
+    option (google.api.http).get = "/consumer/pricefeed/port_id";
+  }
   rpc SymbolRequest(QuerySymbolRequest) returns (QuerySymbolRequestResponse) {
     option (google.api.http).get = "/consumer/pricefeed/symbol_requests/{symbol}";
   }
@@ -37,6 +40,10 @@ message QueryParamsResponse {
 }
 
 // this line is used by starport scaffolding # 3
+
+message QueryPortIDRequest {}
+
+message QueryPortIDResponse { string port_id = 1; }
 
 message QuerySymbolRequest { string symbol = 1; }
 
