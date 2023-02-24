@@ -39,6 +39,8 @@ An example of the usage of this module is provided on the [ConsumerChain](https:
 
 ### Workflow
 
+The `SymbolRequest` data is utilized by the pricefeed module to initiate the request logic during the begin block. The aim of creating an open proposal is to configure the pricefeed module to request price data from BandChain at a `block_interval` specified in the proposal.
+
 1. submit the `UpdateSymbolRequestProposal` with `SymbolRequests`. If the proposal is approved, the data will be saved in the state of your Cosmos SDK app.
     > proto/consumer/pricefeed/pricefeed.proto
     ```protobuf
@@ -49,12 +51,11 @@ An example of the usage of this module is provided on the [ConsumerChain](https:
     }
     ```
 3. At the start of each block, query all `SymbolRequest` and determine which symbols need to be requested from BandChain.
-4. Handle the `OnRecvPacket` event to extract the data from BandChain and store it in the state of your Cosmos SDK app.
-
+4. Once the pricefeed module sends a data request to BandChain via ibc, it will receive an OnRecvPacket event from BandChain, which will then be extracted and stored in the state of your Cosmos SDK application.
 
 ### Params
 
-The pricefeed module stores it's params in state, it can be updated with governance or the address with authority.
+The pricefeed module stores its params in state, it can be updated with governance or the address with authority. The information contained in these parameters is utilized to request data from BandChain.
 
 > proto/consumer/pricefeed/params.proto
 ```protobuf
@@ -98,7 +99,7 @@ message SymbolRequest {
 }
 ```
 
-The example of submit and vote the proposal is demonstrated in the CIL section.
+The example of submit and vote the proposal is demonstrated in the CLI section.
 
 ### Query Service
 
@@ -180,7 +181,7 @@ TODO: wait for implemetation
 
 ### Client
 
-#### CIL
+#### CLI
 
 A user can query and interact with the pricefeed module using the CLI.
 
@@ -369,7 +370,7 @@ Example Output:
 
 #### SymbolRequests
 
-The `SymbolRequests` endpoint enables users to retrieve information about all symbol requests that are save in this Cosmos SDK application.
+The `SymbolRequests` endpoint enables users to retrieve information about all symbol requests that are saved in this Cosmos SDK application.
 
 ```
 consumer.pricefeed.Query/SymbolRequests

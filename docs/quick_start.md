@@ -2,35 +2,31 @@
 
 The Consumer is an application of the Cosmos SDK that demonstrates the use of the [pricefeed-module](https://) implemented by BandProtocol. This module allows other Cosmos SDK applications to easily obtain data from BandChain through IBC.
 
-- `consumerd`: The Consumer Daemon and command-line interface (CLI). runs a full-node of the comsumer application. 
+- `consumerd`: The Consumer Daemon and command-line interface (CLI). Runs a full-node of the comsumer application. 
 
 consumer is built on the Cosmos SDK using the following modules:
 
 - `x/consumer`: Consume data from pricefeed module.
-- `x/pricefeed`: Reuqest BandChain logic.
+- `x/pricefeed`: Logic of requesting data from BandChain.
+
+### Prerequisites
+Be sure you have met the prerequisites before you install and use Consumer Chan
+
+#### Operating systems
+- Ubuntu 22.04
+
+#### Go (for ignite and consumer chain)
+- 1.19.5 or higher
+
+#### Rust (for Hermes Relayer)
+- 1.65.0 or higher
 
 ### Running Consumer Chain
 This guide will provide instructions on how to install the `consumerd` binary and run the cli on a server. By following these steps, you will have the binary properly set up and ready to use.
 
+> I recommend using Ubuntu 22.04 to run this consumer chain. 
+
 #### Installation
-
-##### Install Go on Ubuntu
-
-At the time of this writing, the latest release is `1.19.5`. We're going to download the tarball, extract it to `/usr/local`, and export `GOROOT` to our ``$PATH`
-
-```
-curl -OL https://golang.org/dl/go1.19.5.linux-amd64.tar.gz
-
-sudo tar -C /usr/local -xvf go1.19.5.linux-amd64.tar.gz
-
-export PATH=$PATH:/usr/local/go/bin
-```
-
-Remember to add `GOPATH` to your `$PATH` environment variable. If you're not sure where that is, run go env GOPATH. This will allow us to run the gaiad binary in the next step.
-
-```
-export PATH=$PATH:$(go env GOPATH)/bin
-```
 
 ##### Install ignite CLI
 Ignite CLI is an easy-to-use CLI tool for creating and maintaining sovereign application-specific blockchains. Blockchains created with Ignite CLI use Cosmos SDK and Tendermint. 
@@ -40,15 +36,24 @@ To install the `ignite` binary in `/usr/local/bin` run the following command:
 curl https://get.ignite.com/cli! | bash
 ```
 
+##### Installing build-essential package in Ubuntu 
 
-##### Install the binaries
+```
+sudo apt update && sudo apt install build-essential
+```
+
+##### Install the binaries and run consumer chain
 
 ```
 git clone -b <latest-release-tag> https://github.com/bandprotocol/oracle-consumer.git
-cd consumer && ignite chain serve -v
+cd oracle-consumer & ignite chain serve -v
 ```
 
-That will install the consumerd binary. Verify that everything installed successfully by running:
+You can locate the `<latest-release-tag>` [here](https://github.com/bandprotocol/oracle-consumer/releases).
+
+By executing the command `ignite chain serve -v`, the consumerd binary will be installed and your consumer chain will start running.
+
+Verify that everything installed successfully by running:
 
 ```
 consumerd version --long
@@ -80,9 +85,13 @@ git checkout v1.1.0-band
 cargo build --release
 ```
 
-
-
 #### Create config_relayer.toml
+```
+# hermes/
+touch config_relayer.toml
+```
+
+add the hermes config in config_relayer.toml
 ```yaml
 # The global section has parameters that apply globally to the relayer operation.
 [global]
@@ -233,10 +242,37 @@ ignore_port_channel = []
 
 #### Add relayer key
 
-##### create mnemonic file
-> Note: The consumer mnemonic can be either Alice's or Bob's mnemonic, which you will receive when you first launch the consumer chain. It's important to note that you need to have funds in your key in order to send transactions on each chain.
-- mem-consumer.txt -> add your consumer mnemonic
-- mem-band.txt -> add your BandChain mnemonic
+##### create mnemonic file on consumer chain and BandChain
+> Note: Upon logging for the first time that you run consumer chain, you will be given either Alice's or Bob's mnemonic, which can be used as the consumer mnemonic. It's important to note that you need to have funds in your key in order to send transactions on each chain.
+
+```
+# hermes/
+touch consumer.txt
+```
+- add your consumer mnemonic in mem-consumer.txt
+
+TODO: implement get band testnet faucet
+###### install bandd binary
+```
+
+```
+
+###### generate account
+```
+
+```
+###### get band from testnet faucet 
+```
+
+```
+
+###### create mnemonic file
+
+```
+# hermes/
+touch mem-band.txt
+```
+- add your BandChain mnemonic in mem-band.txt
 
 ##### add keys to hermes by following command
 
@@ -265,7 +301,8 @@ target/release/hermes --config config_relayer.toml start
 ```
 
 
-### Open and Vote The Proposal
+### Open and Vote the update symbol requests proposal
+The purpose of this proposal is to request price data from BandChain at `block_interval` specified in the proposal. If the proposal is approved, the pricefeed module will retrieve the data and store the response on the consumer chain.
 
 #### create proposal.json
 
@@ -289,7 +326,7 @@ target/release/hermes --config config_relayer.toml start
 }
 ```
 
-#### Submmit proposal
+#### Submit proposal
 
 ```
 consumerd tx gov submit-legacy-proposal update-symbol-request proposal.json --from alice
@@ -312,15 +349,15 @@ consumerd query gov proposals
 ```
 
 
-### Query latest Price that got from BandChain
+### Query latest price that got from BandChain
 
-Query latrst price that got from BandChin via pricefeed moudle
+Query latrst price that got from BandChin via pricefeed module
 
 ```
 consumerd query pricefeed price BTC
 ```
 
-Query latrst price that got from BandChin via consumer moudle
+Query latrst price that got from BandChin via consumer module
 
 ```
 consumerd query consumer price BTC
