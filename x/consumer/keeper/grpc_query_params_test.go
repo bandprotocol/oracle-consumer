@@ -6,8 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	testkeeper "github.com/bandprotocol/consumer/testutil/keeper"
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	testkeeper "github.com/bandprotocol/oracle-consumer/testutil/keeper"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 func TestParamsQuery(t *testing.T) {

@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 func CmdQueryParams() *cobra.Command {

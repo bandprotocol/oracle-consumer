@@ -7,7 +7,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

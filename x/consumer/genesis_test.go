@@ -3,12 +3,12 @@ package consumer_test
 import (
 	"testing"
 
-	keepertest "github.com/bandprotocol/consumer/testutil/keeper"
+	keepertest "github.com/bandprotocol/oracle-consumer/testutil/keeper"
 	"github.com/stretchr/testify/require"
 
-	"github.com/bandprotocol/consumer/testutil/nullify"
-	"github.com/bandprotocol/consumer/x/consumer"
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/testutil/nullify"
+	"github.com/bandprotocol/oracle-consumer/x/consumer"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 func TestGenesis(t *testing.T) {

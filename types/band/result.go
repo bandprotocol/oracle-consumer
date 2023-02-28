@@ -1,6 +1,6 @@
 package band
 
-import "github.com/bandprotocol/consumer/obi"
+import "github.com/bandprotocol/oracle-consumer/obi"
 
 type Responses struct {
 	Symbol       string

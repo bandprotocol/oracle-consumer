@@ -1,7 +1,7 @@
 package band
 
 import (
-	"github.com/bandprotocol/consumer/obi"
+	"github.com/bandprotocol/oracle-consumer/obi"
 )
 
 type Calldata interface {

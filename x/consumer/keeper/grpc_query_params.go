@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 func (k Keeper) Params(c context.Context, req *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {

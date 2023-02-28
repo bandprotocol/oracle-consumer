@@ -3,7 +3,7 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 // GetParams get all parameters as types.Params

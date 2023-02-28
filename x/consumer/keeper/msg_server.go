@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 type msgServer struct {

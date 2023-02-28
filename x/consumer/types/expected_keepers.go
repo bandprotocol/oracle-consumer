@@ -4,7 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	pricefeedtypes "github.com/bandprotocol/consumer/x/pricefeed/types"
+	pricefeedtypes "github.com/bandprotocol/oracle-consumer/x/pricefeedx/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)

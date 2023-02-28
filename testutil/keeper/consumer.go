@@ -14,8 +14,8 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
 
-	"github.com/bandprotocol/consumer/x/consumer/keeper"
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/keeper"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 func ConsumerKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {

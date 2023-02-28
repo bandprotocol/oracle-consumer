@@ -15,9 +15,9 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/bandprotocol/consumer/x/consumer/client/cli"
-	"github.com/bandprotocol/consumer/x/consumer/keeper"
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/client/cli"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/keeper"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 var (

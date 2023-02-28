@@ -3,8 +3,8 @@ package consumer
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/bandprotocol/consumer/x/consumer/keeper"
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/keeper"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.

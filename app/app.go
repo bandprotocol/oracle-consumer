@@ -104,23 +104,23 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	consumermodule "github.com/bandprotocol/consumer/x/consumer"
-	consumermodulekeeper "github.com/bandprotocol/consumer/x/consumer/keeper"
-	consumermoduletypes "github.com/bandprotocol/consumer/x/consumer/types"
-	pricefeedmodule "github.com/bandprotocol/consumer/x/pricefeed"
-	pricefeedclient "github.com/bandprotocol/consumer/x/pricefeed/client"
-	pricefeedmodulekeeper "github.com/bandprotocol/consumer/x/pricefeed/keeper"
-	pricefeedmoduletypes "github.com/bandprotocol/consumer/x/pricefeed/types"
+	consumermodule "github.com/bandprotocol/oracle-consumer/x/consumer"
+	consumermodulekeeper "github.com/bandprotocol/oracle-consumer/x/consumer/keeper"
+	consumermoduletypes "github.com/bandprotocol/oracle-consumer/x/consumer/types"
+	pricefeedmodule "github.com/bandprotocol/oracle-consumer/x/pricefeedx"
+	pricefeedclient "github.com/bandprotocol/oracle-consumer/x/pricefeedx/client"
+	pricefeedmodulekeeper "github.com/bandprotocol/oracle-consumer/x/pricefeedx/keeper"
+	pricefeedmoduletypes "github.com/bandprotocol/oracle-consumer/x/pricefeedx/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	appparams "github.com/bandprotocol/consumer/app/params"
-	"github.com/bandprotocol/consumer/docs"
+	appparams "github.com/bandprotocol/oracle-consumer/app/params"
+	"github.com/bandprotocol/oracle-consumer/docs"
 )
 
 const (
 	AccountAddressPrefix = "cosmos"
-	Name                 = "consumer"
+	Name                 = "oracle-consumer"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals

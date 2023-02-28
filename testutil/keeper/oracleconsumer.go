@@ -18,8 +18,8 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
 
-	"github.com/bandprotocol/consumer/x/pricefeed/keeper"
-	"github.com/bandprotocol/consumer/x/pricefeed/types"
+	"github.com/bandprotocol/oracle-consumer/x/pricefeedx/keeper"
+	"github.com/bandprotocol/oracle-consumer/x/pricefeedx/types"
 )
 
 // priceFeedChannelKeeper is a stub of cosmosibckeeper.ChannelKeeper.

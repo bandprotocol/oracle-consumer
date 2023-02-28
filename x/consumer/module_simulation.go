@@ -10,9 +10,9 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/bandprotocol/consumer/testutil/sample"
-	consumersimulation "github.com/bandprotocol/consumer/x/consumer/simulation"
-	"github.com/bandprotocol/consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/testutil/sample"
+	consumersimulation "github.com/bandprotocol/oracle-consumer/x/consumer/simulation"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
 // avoid unused import issue

@@ -1,0 +1,9 @@
+syntax = "proto3";
+package pricefeedx;
+
+option go_package = "github.com/bandprotocol/oracle-consumer/x/pricefeedx/types";
+
+// this line is used by starport scaffolding # proto/tx/import
+
+// Msg defines the Msg service.
+service Msg {}
