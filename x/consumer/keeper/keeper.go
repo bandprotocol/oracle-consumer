@@ -18,7 +18,7 @@ type (
 		storeKey        storetypes.StoreKey
 		memKey          storetypes.StoreKey
 		paramstore      paramtypes.Subspace
-		PriceFeedKeeper types.PriceFeedKeeper
+		priceFeedKeeper types.PriceFeedKeeper
 	}
 )
 
@@ -40,7 +40,7 @@ func NewKeeper(
 		storeKey:        storeKey,
 		memKey:          memKey,
 		paramstore:      ps,
-		PriceFeedKeeper: priceFeedKeeper,
+		priceFeedKeeper: priceFeedKeeper,
 	}
 }
 
