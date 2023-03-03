@@ -15,6 +15,7 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/consumer/consumer/params";
   }
+  // this line is used by starport scaffolding # 2
   rpc Price(QueryPriceRequest) returns (QueryPriceResponse) {
     option (google.api.http).get = "/consumer/consumer/price/{symbol}";
   }
@@ -28,6 +29,8 @@ message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [ (gogoproto.nullable) = false ];
 }
+
+// this line is used by starport scaffolding # 3
 
 message QueryPriceRequest { string symbol = 1; }
 
