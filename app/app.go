@@ -517,6 +517,8 @@ func New(
 	)
 	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper, app.AccountKeeper, app.BankKeeper)
 
+	// this line is used by starport scaffolding # stargate/app/keeperDefinition
+
 	govRouter := govv1beta1.NewRouter()
 	govRouter.
 		AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler).
