@@ -19,8 +19,6 @@ import (
 	"github.com/bandprotocol/oracle-consumer/x/pricefeedx/types"
 )
 
-const SRC_PORT = "pricefeedx"
-
 type (
 	Keeper struct {
 		*cosmosibckeeper.Keeper
@@ -112,36 +110,36 @@ func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (*types.Price, error) {
 }
 
 func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, oracleRequestPacket bandtypes.OracleRequestPacketData) error {
-	channel, found := k.ChannelKeeper.GetChannel(ctx, SRC_PORT, sourceChannel)
+	channel, found := k.ChannelKeeper.GetChannel(ctx, types.PortID, sourceChannel)
 	if !found {
-		return sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", SRC_PORT, sourceChannel)
+		return sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", types.PortID, sourceChannel)
 	}
 
 	destinationPort := channel.GetCounterparty().GetPortID()
 	destinationChannel := channel.GetCounterparty().GetChannelID()
 
-	channelCap, ok := k.ScopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(SRC_PORT, sourceChannel))
+	channelCap, ok := k.ScopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(types.PortID, sourceChannel))
 	if !ok {
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
 	// TODO: use_port_id
 	sequence, found := k.ChannelKeeper.GetNextSequenceSend(
-		ctx, SRC_PORT, sourceChannel,
+		ctx, types.PortID, sourceChannel,
 	)
 	if !found {
 		return sdkerrors.Wrapf(
 			sdkerrors.ErrUnknownRequest,
 			"unknown sequence number for channel %s port %s",
 			sourceChannel,
-			SRC_PORT,
+			types.PortID,
 		)
 	}
 
 	packet := channeltypes.NewPacket(
 		oracleRequestPacket.GetBytes(),
 		sequence,
-		SRC_PORT,
+		types.PortID,
 		sourceChannel,
 		destinationPort,
 		destinationChannel,
