@@ -44763,10 +44763,10 @@ paths:
           format: uint64
       tags:
         - Query
-  /consumer/pricefeedx/params:
+  /consumer/pricefeed/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: PricefeedxParams
+      operationId: pricefeedParams
       responses:
         '200':
           description: A successful response.
@@ -44840,9 +44840,9 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /consumer/pricefeedx/prices/{symbol}:
+  /consumer/pricefeed/prices/{symbol}:
     get:
-      operationId: PricefeedxPrice
+      operationId: pricefeedPrice
       responses:
         '200':
           description: A successful response.
@@ -44885,9 +44885,9 @@ paths:
           type: string
       tags:
         - Query
-  /consumer/pricefeedx/symbol_requests:
+  /consumer/pricefeed/symbol_requests:
     get:
-      operationId: PricefeedxSymbolRequests
+      operationId: pricefeedSymbolRequests
       responses:
         '200':
           description: A successful response.
@@ -44927,10 +44927,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /consumer/pricefeedx/symbol_requests/{symbol}:
+  /consumer/pricefeed/symbol_requests/{symbol}:
     get:
       summary: 'this line is used by starport scaffolding # 2'
-      operationId: PricefeedxSymbolRequest
+      operationId: pricefeedSymbolRequest
       responses:
         '200':
           description: A successful response.
@@ -74548,7 +74548,7 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
-  pricefeedx.Params:
+  pricefeed.Params:
     type: object
     properties:
       ask_count:
@@ -74589,7 +74589,7 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Params defines the parameters for the module.
-  pricefeedx.Price:
+  pricefeed.Price:
     type: object
     properties:
       symbol:
@@ -74600,7 +74600,7 @@ definitions:
       resolve_time:
         type: string
         format: int64
-  pricefeedx.QueryParamsResponse:
+  pricefeed.QueryParamsResponse:
     type: object
     properties:
       params:
@@ -74648,7 +74648,7 @@ definitions:
 
                 signatures required by gogoproto.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  pricefeedx.QueryPriceResponse:
+  pricefeed.QueryPriceResponse:
     type: object
     properties:
       price:
@@ -74662,7 +74662,7 @@ definitions:
           resolve_time:
             type: string
             format: int64
-  pricefeedx.QuerySymbolRequestResponse:
+  pricefeed.QuerySymbolRequestResponse:
     type: object
     properties:
       symbol_request:
@@ -74676,7 +74676,7 @@ definitions:
           block_interval:
             type: string
             format: uint64
-  pricefeedx.QuerySymbolRequestsResponse:
+  pricefeed.QuerySymbolRequestsResponse:
     type: object
     properties:
       symbol_requests:
@@ -74692,7 +74692,7 @@ definitions:
             block_interval:
               type: string
               format: uint64
-  pricefeedx.SymbolRequest:
+  pricefeed.SymbolRequest:
     type: object
     properties:
       symbol:

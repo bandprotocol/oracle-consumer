@@ -107,10 +107,10 @@ import (
 	consumermodule "github.com/bandprotocol/oracle-consumer/x/consumer"
 	consumermodulekeeper "github.com/bandprotocol/oracle-consumer/x/consumer/keeper"
 	consumermoduletypes "github.com/bandprotocol/oracle-consumer/x/consumer/types"
-	pricefeedmodule "github.com/bandprotocol/oracle-consumer/x/pricefeedx"
-	pricefeedclient "github.com/bandprotocol/oracle-consumer/x/pricefeedx/client"
-	pricefeedmodulekeeper "github.com/bandprotocol/oracle-consumer/x/pricefeedx/keeper"
-	pricefeedmoduletypes "github.com/bandprotocol/oracle-consumer/x/pricefeedx/types"
+	pricefeedmodule "github.com/bandprotocol/oracle-consumer/x/pricefeed"
+	pricefeedclient "github.com/bandprotocol/oracle-consumer/x/pricefeed/client"
+	pricefeedmodulekeeper "github.com/bandprotocol/oracle-consumer/x/pricefeed/keeper"
+	pricefeedmoduletypes "github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
@@ -247,8 +247,8 @@ type App struct {
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
 	ConsumerKeeper        consumermodulekeeper.Keeper
-	scopedPriceFeedKeeper capabilitykeeper.ScopedKeeper
-	PriceFeedKeeper       pricefeedmodulekeeper.Keeper
+	scopedpricefeedKeeper capabilitykeeper.ScopedKeeper
+	pricefeedKeeper       pricefeedmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -492,20 +492,20 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	scopedPriceFeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedmoduletypes.ModuleName)
-	app.scopedPriceFeedKeeper = scopedPriceFeedKeeper
-	app.PriceFeedKeeper = *pricefeedmodulekeeper.NewKeeper(
+	scopedpricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedmoduletypes.ModuleName)
+	app.scopedpricefeedKeeper = scopedpricefeedKeeper
+	app.pricefeedKeeper = *pricefeedmodulekeeper.NewKeeper(
 		appCodec,
 		keys[pricefeedmoduletypes.StoreKey],
 		keys[pricefeedmoduletypes.MemStoreKey],
 		app.GetSubspace(pricefeedmoduletypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
-		scopedPriceFeedKeeper,
+		scopedpricefeedKeeper,
 	)
-	priceFeedModule := pricefeedmodule.NewAppModule(appCodec, app.PriceFeedKeeper, app.AccountKeeper, app.BankKeeper)
+	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.pricefeedKeeper, app.AccountKeeper, app.BankKeeper)
 
-	priceFeedIBCModule := pricefeedmodule.NewIBCModule(app.PriceFeedKeeper)
+	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.pricefeedKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	app.ConsumerKeeper = *consumermodulekeeper.NewKeeper(
@@ -513,7 +513,7 @@ func New(
 		keys[consumermoduletypes.StoreKey],
 		keys[consumermoduletypes.MemStoreKey],
 		app.GetSubspace(consumermoduletypes.ModuleName),
-		app.PriceFeedKeeper,
+		app.pricefeedKeeper,
 	)
 	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -526,7 +526,7 @@ func New(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(pricefeedmoduletypes.RouterKey, pricefeedmodule.NewUpdateSymbolRequestProposalHandler(app.PriceFeedKeeper))
+		AddRoute(pricefeedmoduletypes.RouterKey, pricefeedmodule.NewUpdateSymbolRequestProposalHandler(app.pricefeedKeeper))
 	govConfig := govtypes.DefaultConfig()
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec,
@@ -547,7 +547,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
-	ibcRouter.AddRoute(pricefeedmoduletypes.ModuleName, priceFeedIBCModule)
+	ibcRouter.AddRoute(pricefeedmoduletypes.ModuleName, pricefeedIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -585,7 +585,7 @@ func New(
 		transferModule,
 		icaModule,
 		consumerModule,
-		priceFeedModule,
+		pricefeedModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -704,7 +704,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		consumerModule,
-		priceFeedModule,
+		pricefeedModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()

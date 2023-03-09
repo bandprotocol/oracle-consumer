@@ -1,13 +1,13 @@
 # Consumer Chain
 
-The Consumer is an application of the Cosmos SDK that demonstrates the use of the [pricefeedx-module](https://) implemented by BandProtocol. This module allows other Cosmos SDK applications to easily obtain data from BandChain through IBC.
+The Consumer is an application of the Cosmos SDK that demonstrates the use of the [pricefeed-module](https://) implemented by BandProtocol. This module allows other Cosmos SDK applications to easily obtain data from BandChain through IBC.
 
 - `consumerd`: The Consumer Daemon and command-line interface (CLI). Runs a full-node of the comsumer application. 
 
 consumer is built on the Cosmos SDK using the following modules:
 
-- `x/consumer`: Consume data from pricefeedx module.
-- `x/pricefeedx`: Logic of requesting data from BandChain.
+- `x/consumer`: Consume data from pricefeed module.
+- `x/pricefeed`: Logic of requesting data from BandChain.
 
 ### Prerequisites
 Be sure you have met the prerequisites before you install and use Consumer Chan
@@ -291,7 +291,7 @@ target/release/hermes --config config_relayer.toml keys add --chain band-laozi-t
 #### Create client connection
 
 ```
-target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain consumer --a-port oracle --b-port pricefeedx --order unordered --channel-version bandchain-1 --new-client-connection
+target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain consumer --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection
 ```
 
 #### Start hermes relayer
@@ -302,7 +302,7 @@ target/release/hermes --config config_relayer.toml start
 
 
 ### Open and Vote the update symbol requests proposal
-The purpose of this proposal is to request price data from BandChain at `block_interval` specified in the proposal. If the proposal is approved, the pricefeedx module will retrieve the data and store the response on the consumer chain.
+The purpose of this proposal is to request price data from BandChain at `block_interval` specified in the proposal. If the proposal is approved, the pricefeed module will retrieve the data and store the response on the consumer chain.
 
 #### create proposal.json
 
@@ -351,10 +351,10 @@ consumerd query gov proposals
 
 ### Query latest price that got from BandChain
 
-Query latrst price that got from BandChin via pricefeedx module
+Query latrst price that got from BandChin via pricefeed module
 
 ```
-consumerd query pricefeedx price BTC
+consumerd query pricefeed price BTC
 ```
 
 Query latrst price that got from BandChin via consumer module
