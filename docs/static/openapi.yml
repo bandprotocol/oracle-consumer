@@ -42,6 +42,7 @@ paths:
         - Query
   /consumer/consumer/price/{symbol}:
     get:
+      summary: 'this line is used by starport scaffolding # 2'
       operationId: ConsumerPrice
       responses:
         '200':
@@ -44766,7 +44767,7 @@ paths:
   /consumer/pricefeed/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: pricefeedParams
+      operationId: PricefeedParams
       responses:
         '200':
           description: A successful response.
@@ -44842,7 +44843,7 @@ paths:
         - Query
   /consumer/pricefeed/prices/{symbol}:
     get:
-      operationId: pricefeedPrice
+      operationId: PricefeedPrice
       responses:
         '200':
           description: A successful response.
@@ -44887,7 +44888,7 @@ paths:
         - Query
   /consumer/pricefeed/symbol_requests:
     get:
-      operationId: pricefeedSymbolRequests
+      operationId: PricefeedSymbolRequests
       responses:
         '200':
           description: A successful response.
@@ -44930,7 +44931,7 @@ paths:
   /consumer/pricefeed/symbol_requests/{symbol}:
     get:
       summary: 'this line is used by starport scaffolding # 2'
-      operationId: pricefeedSymbolRequest
+      operationId: PricefeedSymbolRequest
       responses:
         '200':
           description: A successful response.
