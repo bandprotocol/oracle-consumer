@@ -1,13 +1,13 @@
 # Oracle Consumer Chain
 
-The oracle-consumer is an application of the Cosmos SDK that demonstrates the use of the [pricefeedx-module](https://) implemented by BandProtocol. This module allows other Cosmos SDK applications to easily obtain data from BandChain through IBC.
+The oracle-consumer is an application of the Cosmos SDK that demonstrates the use of the [pricefeed-module](https://) implemented by BandProtocol. This module allows other Cosmos SDK applications to easily obtain data from BandChain through IBC.
 
 - `oracle-consumerd`: The Consumer Daemon and command-line interface (CLI). Runs a full-node of the comsumer application. 
 
 oracle-consumer is built on the Cosmos SDK using the following modules:
 
 - `x/consumer`: Consume data from pricefeed module.
-- `x/pricefeedx`: Logic of requesting data from BandChain.
+- `x/pricefeed`: Logic of requesting data from BandChain.
 
 ### Prerequisites
 Be sure you have met the prerequisites before you install and use Consumer Chan
@@ -27,32 +27,6 @@ Be sure you have met the prerequisites before you install and use Consumer Chan
 This guide will provide instructions on how to install the `consumerd` binary and run the cli on a server. By following these steps, you will have the binary properly set up and ready to use.
 
 > I recommend using Ubuntu 22.04 to run this consumer chain. 
-
-#### Installation
-
-<!-- ##### Install Go on Ubuntu
-
-At the time of this writing, the latest release is `1.19.5`. We're going to download the tarball, extract it to `/usr/local`, and export `GOROOT` to our ``$PATH`
-
-```
-curl -OL https://golang.org/dl/go1.19.5.linux-amd64.tar.gz
-
-sudo tar -C /usr/local -xvf go1.19.5.linux-amd64.tar.gz
-
-export PATH=$PATH:/usr/local/go/bin
-```
-
-Remember to add `GOPATH` to your `$PATH` environment variable. If you're not sure where that is, run go env GOPATH. This will allow us to run the `consumerd` binary in the next step.
-
-```
-export PATH=$PATH:$(go env GOPATH)/bin
-``` -->
-
-<!-- ##### install rust for running Hermes Relayer
-Hermes is an open-source Rust implementation of a relayer for the[ Inter-Blockchain Communication protocol (IBC)](https://ibc.cosmos.network/) released under the [ibc-relayer-cli](https://crates.io/crates/ibc-relayer-cli) crate. It provides a CLI to relay packets between Cosmos SDK chains, exposes [Prometheus](https://prometheus.io/) metrics and offers a REST API.
-```
-sudo apt-get update && sudo apt install rustc
-``` -->
 
 
 ##### Install ignite CLI
@@ -289,23 +263,7 @@ ignore_port_channel = []
 # hermes/
 touch mem-oracleconsumer.txt.txt
 ```
-- add your consumer mnemonic in mem-consumer.txt
-
-###### install bandd binary
-```
-
-```
-
-###### generate account
-```
-
-```
-###### get band from testnet faucet 
-```
-
-```
-
-###### create mnemonic file
+- add your oracle-consumer chain mnemonic in mem-consumer.txt
 
 ```
 # hermes/
@@ -330,7 +288,7 @@ target/release/hermes --config config_relayer.toml keys add --chain band-laozi-t
 #### Create client connection
 
 ```
-target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain oracleconsumer --a-port oracle --b-port pricefeedx --order unordered --channel-version bandchain-1 --new-client-connection
+target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain oracleconsumer --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection
 ```
 
 #### Start hermes relayer
@@ -393,7 +351,7 @@ oracle-consumerd query gov proposals
 Query latrst price that got from BandChin via pricefeed module
 
 ```
-oracle-consumerd query pricefeedx price BTC
+oracle-consumerd query pricefeed price BTC
 ```
 
 Query latrst price that got from BandChin via consumer module

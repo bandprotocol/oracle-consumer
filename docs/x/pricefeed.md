@@ -1,6 +1,6 @@
-# Pricefeedx Module
+# pricefeed Module
 
-x/pricefeedx
+x/pricefeed
 
 > Pre-requisite Readings
 > - cosmos-sdk
@@ -14,9 +14,9 @@ x/pricefeedx
 
 ### Abstract
 
-This document specifies the pricefeedx module that implement for the Cosmos SDK applications.
+This document specifies the pricefeed module that implement for the Cosmos SDK applications.
 
-The pricefeedx module obtains price data from BandChain through IBC and stores the most recent prices on your Cosmos SDK applications.
+The pricefeed module obtains price data from BandChain through IBC and stores the most recent prices on your Cosmos SDK applications.
 
 An example of the usage of this module is provided on the [ConsumerChain](https://).
 
@@ -39,7 +39,7 @@ An example of the usage of this module is provided on the [ConsumerChain](https:
 
 ### Workflow
 
-The `SymbolRequest` data is utilized by the pricefeedx module to initiate the request logic during the begin block. The aim of creating an open proposal is to configure the pricefeed module to request price data from BandChain at a `block_interval` specified in the proposal.
+The `SymbolRequest` data is utilized by the pricefeed module to initiate the request logic during the begin block. The aim of creating an open proposal is to configure the pricefeed module to request price data from BandChain at a `block_interval` specified in the proposal.
 
 1. submit the `UpdateSymbolRequestProposal` with `SymbolRequests`. If the proposal is approved, the data will be saved in the state of your Cosmos SDK app.
     > proto/consumer/pricefeed/pricefeed.proto
@@ -51,11 +51,11 @@ The `SymbolRequest` data is utilized by the pricefeedx module to initiate the re
     }
     ```
 3. At the start of each block, query all `SymbolRequest` and determine which symbols need to be requested from BandChain.
-4. Once the pricefeedx module sends a data request to BandChain via ibc, it will receive an OnRecvPacket event from BandChain, which will then be extracted and stored in the state of your Cosmos SDK application.
+4. Once the pricefeed module sends a data request to BandChain via ibc, it will receive an OnRecvPacket event from BandChain, which will then be extracted and stored in the state of your Cosmos SDK application.
 
 ### Params
 
-The pricefeedx module stores its params in state, it can be updated with governance or the address with authority. The information contained in these parameters is utilized to request data from BandChain.
+The pricefeed module stores its params in state, it can be updated with governance or the address with authority. The information contained in these parameters is utilized to request data from BandChain.
 
 > proto/consumer/pricefeed/params.proto
 ```protobuf
@@ -79,7 +79,7 @@ message Params {
 
 ### Proposal
 
-The pricefeedx module includes the `UpdateSymbolRequestProposal` for updating symbols that request prices from BandChain on a block-by-block basis based on `block_interval` configuration by submit the proposal on your Cosmos SDK application.
+The pricefeed module includes the `UpdateSymbolRequestProposal` for updating symbols that request prices from BandChain on a block-by-block basis based on `block_interval` configuration by submit the proposal on your Cosmos SDK application.
 
 > proto/consumer/pricefeed/pricefeed.proto
 ```protobuf
@@ -123,7 +123,7 @@ message QueryParamsResponse {
 
 A `SymbolRequest` can be queried using the `QuerySymbolRequest`. This data, which is stored in the Cosmos SDK app state, can be set by opening an `UpdateSymbolRequestProposal` proposal.
 
-> proto/pricefeedx/query.proto
+> proto/pricefeed/query.proto
 ```protobuf
 message QuerySymbolRequests {}
 
@@ -136,7 +136,7 @@ message QuerySymbolRequestsResponse {
 
 A `SymbolRequest` is similar to the previous description, but `QuerySymbolRequests` will retrieve every `SymbolRequest` that is stored in the Cosmos SDK app.
 
-> proto/pricefeedx/query.proto
+> proto/pricefeed/query.proto
 ```protobuf
 message QuerySymbolRequests {}
 
@@ -149,7 +149,7 @@ message QuerySymbolRequestsResponse {
 
 A `Price` can be obtained by querying with `QueryPrice`. This information, which is saved in the Cosmos SDK app state, represents the latest price consumed by the app from BandChain through IBC.
 
-> proto/pricefeedx/query.proto
+> proto/pricefeed/query.proto
 ```protobuf
 message QueryPrice { string symbol = 1; }
 
@@ -158,7 +158,7 @@ message QueryPriceResponse {
 }
 ```
 
-> proto/pricefeedx/pricefeedx.proto
+> proto/pricefeed/pricefeed.proto
 ```protobuf
 message Price {
   string symbol = 1;
@@ -169,11 +169,11 @@ message Price {
 
 ### Begin Block
 
-The Pricefeed Module implements a process at the begin block to get all `SymbolRequest` and determine which symbols need to request their prices from BandChain. This is determined based on the `BlockInterval` specified in each `SymbolRequest`.
+The pricefeed Module implements a process at the begin block to get all `SymbolRequest` and determine which symbols need to request their prices from BandChain. This is determined based on the `BlockInterval` specified in each `SymbolRequest`.
 
 ### On Recive Packet
 
-Once the Pricefeedx Module has requested price data from BandChain, BandChain will send a response packet back. The results will be extracted and used to update the latest price for each symbol in the state of your Cosmos SDK app.
+Once the pricefeed Module has requested price data from BandChain, BandChain will send a response packet back. The results will be extracted and used to update the latest price for each symbol in the state of your Cosmos SDK app.
 
 ### Events
 
@@ -183,14 +183,14 @@ TODO: wait for implemetation
 
 #### CLI
 
-A user can query and interact with the pricefeedx module using the CLI.
+A user can query and interact with the pricefeed module using the CLI.
 
 ##### Query
 
-The query commands allow users to query pricefeedx state.
+The query commands allow users to query pricefeed state.
 
 ```
-consumerd query pricefeedx --help
+oracle-consumerd query pricefeed --help
 ```
 
 ##### params
@@ -198,7 +198,7 @@ consumerd query pricefeedx --help
 The `params` command allows users to query parameters of the module.
 
 ```
-consumerd query pricefeedx params
+oracle-consumerd query pricefeed params
 ```
 
 ##### symbol-request
@@ -206,13 +206,13 @@ consumerd query pricefeedx params
 The `symbol-request` command allows users to query symbol request by symbol.
 
 ```
-consumerd query pricefeedx symbol-request [symbol]
+oracle-consumerd query pricefeed symbol-request [symbol]
 ```
 
 Example:
 
 ```
-consumerd query pricefeedx symbol-request BTC
+oracle-consumerd query pricefeed symbol-request BTC
 ```
 
 Example Output:
@@ -229,7 +229,7 @@ symbol_request:
 The `symbol-requests` command enables users to retrieve information about all symbol requests that are save in this Cosmos SDK application.
 
 ```
-consumerd query pricefeedx symbol-requests
+oracle-consumerd query pricefeed symbol-requests
 ```
 
 ##### price
@@ -237,13 +237,13 @@ consumerd query pricefeedx symbol-requests
 The `price` command allows users to query price data by symbol.
 
 ```
-consumerd query pricefeedx price [symbol]
+oracle-consumerd query pricefeed price [symbol]
 ```
 
 Example:
 
 ```
-consumerd query pricefeedx price BTC
+oracle-consumerd query pricefeed price BTC
 ```
 
 Example Output:
@@ -260,7 +260,7 @@ price:
 The `tx gov submit-legacy-proposal` commands allow users to submit proposal on your cosmos sdk app.
 
 ```
-consumerd tx gov submit-legacy-proposal -h
+oracle-consumerd tx gov submit-legacy-proposal -h
 ```
 
 ##### update symbol request
@@ -268,7 +268,7 @@ consumerd tx gov submit-legacy-proposal -h
 The `update-symbol-request` command allows users to update symbol request to specify which symbols they desire to obtain price data from BandChain.
 
 ```
-consumerd tx gov submit-legacy-proposal update-symbol-request [proposal-file]
+oracle-consumerd tx gov submit-legacy-proposal update-symbol-request [proposal-file]
 ```
 
 Example:
@@ -296,7 +296,7 @@ Example:
     ```
 2. submit the proposal
     ```
-    consumerd tx gov submit-legacy-proposal update-symbol-request proposal.json --from alice
+    oracle-consumerd tx gov submit-legacy-proposal update-symbol-request proposal.json --from alice
     ```
 
 
@@ -309,14 +309,14 @@ A user can query the bank module using gRPC endpoints.
 The `Params` endpoint allows users to query parameters of the module.
 
 ```
-consumer.pricefeedx.Query/Params
+consumer.pricefeed.Query/Params
 ```
 
 Example
 ```
 grpcurl -plaintext \
     0.0.0.0:9090 \
-    consumer.pricefeedx.Query/Params
+    consumer.pricefeed.Query/Params
 ```
 
 Example Output:
@@ -346,7 +346,7 @@ Example Output:
 The `SymbolRequest` endpoint allows users to query symbol request by symbol.
 
 ```
-consumer.pricefeedx.Query/SymbolRequest
+consumer.pricefeed.Query/SymbolRequest
 ```
 
 Example:
@@ -354,7 +354,7 @@ Example:
 grpcurl -plaintext \
     -d '{"symbol":"BTC"}' \
     localhost:9090 \
-    consumer.pricefeedx.Query/SymbolRequest
+    consumer.pricefeed.Query/SymbolRequest
 ```
 
 Example Output:
@@ -373,14 +373,14 @@ Example Output:
 The `SymbolRequests` endpoint enables users to retrieve information about all symbol requests that are saved in this Cosmos SDK application.
 
 ```
-consumer.pricefeedx.Query/SymbolRequests
+consumer.pricefeed.Query/SymbolRequests
 ```
 
 Example:
 ```
 grpcurl -plaintext \
     localhost:9090 \
-    consumer.pricefeedx.Query/SymbolRequests
+    consumer.pricefeed.Query/SymbolRequests
 ```
 
 Example Output:
@@ -406,7 +406,7 @@ Example Output:
 The `Price` endpoint allows users to query price data by symbol.
 
 ```
-consumer.pricefeedx.Query/Price
+consumer.pricefeed.Query/Price
 ```
 
 Example:
@@ -414,7 +414,7 @@ Example:
 grpcurl -plaintext \
     -d '{"symbol":"BTC"}' \
     localhost:9090 \
-    consumer.pricefeedx.Query/Price
+    consumer.pricefeed.Query/Price
 ```
 
 Example Output:
