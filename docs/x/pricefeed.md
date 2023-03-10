@@ -123,7 +123,7 @@ message QueryParamsResponse {
 
 A `SymbolRequest` can be queried using the `QuerySymbolRequest`. This data, which is stored in the Cosmos SDK app state, can be set by opening an `UpdateSymbolRequestProposal` proposal.
 
-> proto/consumer/pricefeed/query.proto
+> proto/pricefeed/query.proto
 ```protobuf
 message QuerySymbolRequests {}
 
@@ -136,7 +136,7 @@ message QuerySymbolRequestsResponse {
 
 A `SymbolRequest` is similar to the previous description, but `QuerySymbolRequests` will retrieve every `SymbolRequest` that is stored in the Cosmos SDK app.
 
-> proto/consumer/pricefeed/query.proto
+> proto/pricefeed/query.proto
 ```protobuf
 message QuerySymbolRequests {}
 
@@ -149,7 +149,7 @@ message QuerySymbolRequestsResponse {
 
 A `Price` can be obtained by querying with `QueryPrice`. This information, which is saved in the Cosmos SDK app state, represents the latest price consumed by the app from BandChain through IBC.
 
-> proto/consumer/pricefeed/query.proto
+> proto/pricefeed/query.proto
 ```protobuf
 message QueryPrice { string symbol = 1; }
 
@@ -158,7 +158,7 @@ message QueryPriceResponse {
 }
 ```
 
-> proto/consumer/pricefeed/pricefeed.proto
+> proto/pricefeed/pricefeed.proto
 ```protobuf
 message Price {
   string symbol = 1;
@@ -190,7 +190,7 @@ A user can query and interact with the pricefeed module using the CLI.
 The query commands allow users to query pricefeed state.
 
 ```
-consumerd query pricefeed --help
+oracle-consumerd query pricefeed --help
 ```
 
 ##### params
@@ -198,7 +198,7 @@ consumerd query pricefeed --help
 The `params` command allows users to query parameters of the module.
 
 ```
-consumerd query pricefeed params
+oracle-consumerd query pricefeed params
 ```
 
 ##### symbol-request
@@ -206,13 +206,13 @@ consumerd query pricefeed params
 The `symbol-request` command allows users to query symbol request by symbol.
 
 ```
-consumerd query pricefeed symbol-request [symbol]
+oracle-consumerd query pricefeed symbol-request [symbol]
 ```
 
 Example:
 
 ```
-consumerd query pricefeed symbol-request BTC
+oracle-consumerd query pricefeed symbol-request BTC
 ```
 
 Example Output:
@@ -229,7 +229,7 @@ symbol_request:
 The `symbol-requests` command enables users to retrieve information about all symbol requests that are save in this Cosmos SDK application.
 
 ```
-consumerd query pricefeed symbol-requests
+oracle-consumerd query pricefeed symbol-requests
 ```
 
 ##### price
@@ -237,13 +237,13 @@ consumerd query pricefeed symbol-requests
 The `price` command allows users to query price data by symbol.
 
 ```
-consumerd query pricefeed price [symbol]
+oracle-consumerd query pricefeed price [symbol]
 ```
 
 Example:
 
 ```
-consumerd query pricefeed price BTC
+oracle-consumerd query pricefeed price BTC
 ```
 
 Example Output:
@@ -260,7 +260,7 @@ price:
 The `tx gov submit-legacy-proposal` commands allow users to submit proposal on your cosmos sdk app.
 
 ```
-consumerd tx gov submit-legacy-proposal -h
+oracle-consumerd tx gov submit-legacy-proposal -h
 ```
 
 ##### update symbol request
@@ -268,7 +268,7 @@ consumerd tx gov submit-legacy-proposal -h
 The `update-symbol-request` command allows users to update symbol request to specify which symbols they desire to obtain price data from BandChain.
 
 ```
-consumerd tx gov submit-legacy-proposal update-symbol-request [proposal-file]
+oracle-consumerd tx gov submit-legacy-proposal update-symbol-request [proposal-file]
 ```
 
 Example:
@@ -296,7 +296,7 @@ Example:
     ```
 2. submit the proposal
     ```
-    consumerd tx gov submit-legacy-proposal update-symbol-request proposal.json --from alice
+    oracle-consumerd tx gov submit-legacy-proposal update-symbol-request proposal.json --from alice
     ```
 
 
