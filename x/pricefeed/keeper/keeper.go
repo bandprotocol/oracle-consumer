@@ -97,14 +97,14 @@ func (k Keeper) SetPrice(ctx sdk.Context, price types.Price) {
 	ctx.KVStore(k.storeKey).Set(types.PriceStoreKey(price.Symbol), k.cdc.MustMarshal(&price))
 }
 
-func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (*types.Price, error) {
+func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (types.Price, error) {
 	bz := ctx.KVStore(k.storeKey).Get(types.PriceStoreKey(symbol))
 
 	if bz == nil {
-		return &types.Price{}, sdkerrors.Wrapf(types.ErrPriceNotFound, "symbol: %s", symbol)
+		return types.Price{}, sdkerrors.Wrapf(types.ErrPriceNotFound, "symbol: %s", symbol)
 	}
-	pf := &types.Price{}
-	k.cdc.MustUnmarshal(bz, pf)
+	pf := types.Price{}
+	k.cdc.MustUnmarshal(bz, &pf)
 
 	return pf, nil
 }

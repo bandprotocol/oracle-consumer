@@ -56,6 +56,6 @@ func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPr
 		return nil, err
 	}
 	return &types.QueryPriceResponse{
-		Price: p,
+		Price: &p,
 	}, nil
 }

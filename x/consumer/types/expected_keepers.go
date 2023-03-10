@@ -20,5 +20,5 @@ type BankKeeper interface {
 }
 
 type PriceFeedKeeper interface {
-	GetPrice(ctx sdk.Context, symbol string) (*pricefeedtypes.Price, error)
+	GetPrice(ctx sdk.Context, symbol string) (pricefeedtypes.Price, error)
 }
