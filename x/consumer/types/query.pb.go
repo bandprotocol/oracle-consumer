@@ -113,6 +113,7 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
+// QueryPriceRequest is request type for the Query/Price RPC method.
 type QueryPriceRequest struct {
 	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 }
@@ -157,7 +158,7 @@ func (m *QueryPriceRequest) GetSymbol() string {
 	return ""
 }
 
-// QueryCountsResponse is response type for the Query/Count RPC method.
+// QueryPriceResponse is response type for the Query/Price RPC method.
 type QueryPriceResponse struct {
 	Symbol      string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	Price       uint64 `protobuf:"varint,2,opt,name=price,proto3" json:"price,omitempty"`

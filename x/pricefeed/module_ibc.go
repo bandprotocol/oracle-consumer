@@ -140,11 +140,14 @@ func (im IBCModule) OnRecvPacket(
 ) ibcexported.Acknowledgement {
 	ack := channeltypes.NewResultAcknowledgement(nil)
 	var data bandtypes.OracleResponsePacketData
+
+	// Unmarshal the data from the module packet into the OracleResponsePacketData object.
 	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &data); err != nil {
 		ack = channeltypes.NewErrorAcknowledgement(err)
 	}
 
 	if ack.Success() {
+		// If the acknowledgement was successful, receive the OracleResponsePacketData using the RecvIbcOracleResponsePacket function of the pricefeed keeper.
 		im.keeper.RecvIbcOracleResponsePacket(ctx, data)
 	}
 
@@ -165,10 +168,14 @@ func (im IBCModule) OnAcknowledgementPacket(
 
 	var eventType string
 
+	// Check the type of response in the acknowledgement packet.
 	switch resp := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Result:
+		// If the response is of type Result, unmarshal the result into a
+		// bandtypes.OracleRequestPacketAcknowledgement object.
 		var oracleAck bandtypes.OracleRequestPacketAcknowledgement
 		types.ModuleCdc.MustUnmarshalJSON(resp.Result, &oracleAck)
+		// Emit a new event with the eventType and AckSuccess attributes.
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				eventType,

@@ -112,6 +112,7 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
+// QuerySymbolRequest is request type for the Query/SymbolRequest RPC method.
 type QuerySymbolRequest struct {
 	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 }
@@ -156,7 +157,10 @@ func (m *QuerySymbolRequest) GetSymbol() string {
 	return ""
 }
 
+// QuerySymbolRequestResponse is response type for the Query/SymbolRequest RPC method.
 type QuerySymbolRequestResponse struct {
+	// symbol_request holds the symbol request data for the given symbol.
+	// The symbol request data for the given symbol name.
 	SymbolRequest *SymbolRequest `protobuf:"bytes,1,opt,name=symbol_request,json=symbolRequest,proto3" json:"symbol_request,omitempty"`
 }
 
@@ -200,6 +204,7 @@ func (m *QuerySymbolRequestResponse) GetSymbolRequest() *SymbolRequest {
 	return nil
 }
 
+// QuerySymbolRequests is request type for the Query/SymbolRequests RPC method.
 type QuerySymbolRequests struct {
 }
 
@@ -236,7 +241,10 @@ func (m *QuerySymbolRequests) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QuerySymbolRequests proto.InternalMessageInfo
 
+// QuerySymbolRequestsResponse is response type for the Query/SymbolRequests
 type QuerySymbolRequestsResponse struct {
+	// symbol_requests holds a list of all symbol requests.
+	// A list of all symbol requests in the state.
 	SymbolRequests []*SymbolRequest `protobuf:"bytes,1,rep,name=symbol_requests,json=symbolRequests,proto3" json:"symbol_requests,omitempty"`
 }
 
@@ -280,6 +288,7 @@ func (m *QuerySymbolRequestsResponse) GetSymbolRequests() []*SymbolRequest {
 	return nil
 }
 
+// QueryPrice is request type for the Query/Price RPC method.
 type QueryPrice struct {
 	Symbol string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 }
@@ -324,7 +333,10 @@ func (m *QueryPrice) GetSymbol() string {
 	return ""
 }
 
+// QueryPriceResponse is response type for the Query/Price RPC method.
 type QueryPriceResponse struct {
+	// price holds the current price for the given symbol.
+	// The current price data for the given symbol.
 	Price *Price `protobuf:"bytes,1,opt,name=price,proto3" json:"price,omitempty"`
 }
 
@@ -429,9 +441,14 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
-	// this line is used by starport scaffolding # 2
+	// SymbolRequest queries a specific symbol request by symbol name.
+	// Returns the symbol request data for the given symbol.
+	// This method is used to query the status of a specific symbol request.
 	SymbolRequest(ctx context.Context, in *QuerySymbolRequest, opts ...grpc.CallOption) (*QuerySymbolRequestResponse, error)
+	// SymbolRequests queries all symbol requests.
 	SymbolRequests(ctx context.Context, in *QuerySymbolRequests, opts ...grpc.CallOption) (*QuerySymbolRequestsResponse, error)
+	// Price queries the current price data for a specific symbol.
+	// Returns the current price for the given symbol.
 	Price(ctx context.Context, in *QueryPrice, opts ...grpc.CallOption) (*QueryPriceResponse, error)
 }
 
@@ -483,9 +500,14 @@ func (c *queryClient) Price(ctx context.Context, in *QueryPrice, opts ...grpc.Ca
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
-	// this line is used by starport scaffolding # 2
+	// SymbolRequest queries a specific symbol request by symbol name.
+	// Returns the symbol request data for the given symbol.
+	// This method is used to query the status of a specific symbol request.
 	SymbolRequest(context.Context, *QuerySymbolRequest) (*QuerySymbolRequestResponse, error)
+	// SymbolRequests queries all symbol requests.
 	SymbolRequests(context.Context, *QuerySymbolRequests) (*QuerySymbolRequestsResponse, error)
+	// Price queries the current price data for a specific symbol.
+	// Returns the current price for the given symbol.
 	Price(context.Context, *QueryPrice) (*QueryPriceResponse, error)
 }
 

@@ -32,9 +32,10 @@ message QueryParamsResponse {
 
 // this line is used by starport scaffolding # 3
 
+// QueryPriceRequest is request type for the Query/Price RPC method.
 message QueryPriceRequest { string symbol = 1; }
 
-// QueryCountsResponse is response type for the Query/Count RPC method.
+// QueryPriceResponse is response type for the Query/Price RPC method.
 message QueryPriceResponse {
   string symbol = 1;
   uint64 price = 2;

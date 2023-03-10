@@ -109,6 +109,7 @@ func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (*types.Price, error) {
 	return pf, nil
 }
 
+// RequestBandChainData is a function that sends an OracleRequestPacketData to BandChain via IBC.
 func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, oracleRequestPacket bandtypes.OracleRequestPacketData) error {
 	channel, found := k.ChannelKeeper.GetChannel(ctx, types.PortID, sourceChannel)
 	if !found {
@@ -118,11 +119,13 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 	destinationPort := channel.GetCounterparty().GetPortID()
 	destinationChannel := channel.GetCounterparty().GetChannelID()
 
+	// Get the capability associated with the given channel.
 	channelCap, ok := k.ScopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(types.PortID, sourceChannel))
 	if !ok {
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
+	// Get the next sequence number for the given channel and port.
 	sequence, found := k.ChannelKeeper.GetNextSequenceSend(
 		ctx, types.PortID, sourceChannel,
 	)
@@ -135,6 +138,7 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 		)
 	}
 
+	// Create a new packet with the oracle request packet data and the sequence number.
 	packet := channeltypes.NewPacket(
 		oracleRequestPacket.GetBytes(),
 		sequence,
@@ -146,6 +150,7 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 		uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute)),
 	)
 
+	// Send the packet via the channel and capability associated with the given channel.
 	if err := k.ChannelKeeper.SendPacket(ctx, channelCap, packet); err != nil {
 		return err
 	}
@@ -153,9 +158,12 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 	return nil
 }
 
+// RecvIbcOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain via IBC.
 func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) {
+	// Decode the result from the response packet.
 	result, err := bandtypes.DecodeResult(res.Result)
 	if err != nil {
+		// Emit an event if decoding the result fails and return.
 		ctx.EventManager().EmitEvent(sdk.NewEvent(
 			types.EventTypeDecodeBandChainResultFailed,
 			sdk.NewAttribute(types.AttributeKeyReason, fmt.Sprintf("Unable to decode result from BandChain: %s", err)),
@@ -163,6 +171,7 @@ func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.Oracl
 		return
 	}
 
+	// Loop through the result and set the price in the state for each symbol.
 	for _, r := range result {
 		k.SetPrice(ctx, types.Price{
 			Symbol:      r.Symbol,

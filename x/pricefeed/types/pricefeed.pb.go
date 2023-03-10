@@ -23,6 +23,10 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// Price is a message that represents a price data structure.
+// It contains the symbol or name of the price being stored,
+// the most recent price of the specified symbol, and the
+// timestamp (in Unix time) when the price was last resolved.
 type Price struct {
 	Symbol      string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	Price       uint64 `protobuf:"varint,2,opt,name=price,proto3" json:"price,omitempty"`
@@ -83,6 +87,10 @@ func (m *Price) GetResolveTime() int64 {
 	return 0
 }
 
+// SymbolRequest is a message that represents a symbol request data structure.
+// It contains the symbol or name of the requested price data, the ID of the
+// oracle script used to fetch the requested price data, and the block interval
+// at which the price data should be update every n block.
 type SymbolRequest struct {
 	Symbol         string `protobuf:"bytes,1,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	OracleScriptId uint64 `protobuf:"varint,2,opt,name=oracle_script_id,json=oracleScriptId,proto3" json:"oracle_script_id,omitempty"`
@@ -143,6 +151,9 @@ func (m *SymbolRequest) GetBlockInterval() uint64 {
 	return 0
 }
 
+// UpdateSymbolRequestProposal is a message that represents a proposal to update a symbol request.
+// It contains a title, description, and a list of symbol requests to be updated.
+// Once approved, the data will update the SymbolRequest in the state.
 type UpdateSymbolRequestProposal struct {
 	Title          string          `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description    string          `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
