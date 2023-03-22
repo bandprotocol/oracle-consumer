@@ -19,15 +19,13 @@ import (
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 )
 
-type (
-	Keeper struct {
-		*cosmosibckeeper.Keeper
-		cdc        codec.BinaryCodec
-		storeKey   storetypes.StoreKey
-		memKey     storetypes.StoreKey
-		paramstore paramtypes.Subspace
-	}
-)
+type Keeper struct {
+	*cosmosibckeeper.Keeper
+	cdc        codec.BinaryCodec
+	storeKey   storetypes.StoreKey
+	memKey     storetypes.StoreKey
+	paramstore paramtypes.Subspace
+}
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
