@@ -39,12 +39,9 @@ func (k Querier) SymbolRequests(c context.Context, req *types.QuerySymbolRequest
 
 	srs := k.GetAllSymbolRequests(ctx)
 
-	result := types.QuerySymbolRequestsResponse{}
-	for _, sr := range srs {
-		result.SymbolRequests = append(result.SymbolRequests, &sr)
-	}
-
-	return &result, nil
+	return &types.QuerySymbolRequestsResponse{
+		SymbolRequests: srs,
+	}, nil
 }
 
 func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPriceResponse, error) {

@@ -62,7 +62,7 @@ message QuerySymbolRequests {}
 message QuerySymbolRequestsResponse {
   // symbol_requests holds a list of all symbol requests.
   // A list of all symbol requests in the state.
-  repeated SymbolRequest symbol_requests = 1;
+  repeated SymbolRequest symbol_requests = 1 [ (gogoproto.nullable) = false ];
 }
 
 // QueryPrice is request type for the Query/Price RPC method.

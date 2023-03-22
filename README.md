@@ -317,7 +317,7 @@ The purpose of this proposal is to request price data from BandChain at `block_i
 #### Submit proposal
 
 ```
-oracle-consumerd tx gov submit-legacy-proposal update-symbol-request proposal.json --from alice
+oracle-consumerd tx gov submit-legacy-proposal update-symbol-request simple_proposals/update-symbol-requests.json --from alice
 ```
 
 #### Vote the proposal
