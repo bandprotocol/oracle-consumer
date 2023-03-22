@@ -52,7 +52,7 @@ func TestSetPrice(t *testing.T) {
 	require.EqualValues(t, price, storedPrice)
 }
 
-func TestRecvIbcOracleResponsePacket(t *testing.T) {
+func TestStoreOracleResponsePacket(t *testing.T) {
 	// Initialize the testing environment.
 	k, ctx := testkeeper.PriceFeedKeeper(t)
 

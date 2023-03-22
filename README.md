@@ -98,12 +98,6 @@ cargo build --release
 
 #### Create config_relayer.toml
 ```
-# hermes/
-touch config_relayer.toml
-```
-
-add the hermes config in config_relayer.toml
-```yaml
 # The global section has parameters that apply globally to the relayer operation.
 [global]
 
@@ -196,7 +190,7 @@ host = '127.0.0.1'
 port = 3001
 
 [[chains]]
-id = 'consumer'
+id = 'oracleconsumer'
 rpc_addr = 'http://localhost:26657'
 grpc_addr = 'http://localhost:9090'
 websocket_addr = 'ws://localhost:26657/websocket'
@@ -248,7 +242,6 @@ ignore_port_channel = []
 # list = [
 #    ['oracle', '*'],
 # ]
-
 ```
 
 #### Add relayer key
