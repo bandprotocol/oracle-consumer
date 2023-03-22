@@ -10,7 +10,7 @@ oracle-consumer is built on the Cosmos SDK using the following modules:
 - `x/pricefeed`: Logic of requesting data from BandChain.
 
 ### Prerequisites
-Be sure you have met the prerequisites before you install and use Consumer Chan
+Be sure you have met the prerequisites before you install and use Consumer Chain
 
 #### Operating systems
 - Ubuntu 22.04
@@ -25,8 +25,6 @@ Be sure you have met the prerequisites before you install and use Consumer Chan
 
 ### Running Consumer Chain
 This guide will provide instructions on how to install the `consumerd` binary and run the cli on a server. By following these steps, you will have the binary properly set up and ready to use.
-
-> I recommend using Ubuntu 22.04 to run this consumer chain. 
 
 
 ##### Install ignite CLI
@@ -348,13 +346,13 @@ oracle-consumerd query gov proposals
 
 ### Query latest price that got from BandChain
 
-Query latrst price that got from BandChin via pricefeed module
+Query latest price that got from BandChin via pricefeed module
 
 ```
 oracle-consumerd query pricefeed price BTC
 ```
 
-Query latrst price that got from BandChin via consumer module
+Query latest price that got from BandChin via consumer module
 
 ```
 oracle-consumerd query consumer price BTC

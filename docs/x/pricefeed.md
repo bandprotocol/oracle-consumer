@@ -177,7 +177,7 @@ Once the pricefeed Module has requested price data from BandChain, BandChain wil
 
 ### Events
 
-TODO: wait for implemetation
+TODO: wait for implementation
 
 ### Client
 

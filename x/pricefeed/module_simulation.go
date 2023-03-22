@@ -11,14 +11,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
 	"github.com/bandprotocol/oracle-consumer/testutil/sample"
-	priceFeedsimulation "github.com/bandprotocol/oracle-consumer/x/pricefeed/simulation"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 )
 
 // avoid unused import issue
 var (
 	_ = sample.AccAddress
-	_ = priceFeedsimulation.FindAccount
 	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace

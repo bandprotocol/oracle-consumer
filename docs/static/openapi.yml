@@ -4,7 +4,7 @@ info:
   name: ''
   description: ''
 paths:
-  /consumer/consumer/params:
+  /consumer/params:
     get:
       summary: Parameters queries the parameters of the module.
       operationId: ConsumerParams
@@ -40,7 +40,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /consumer/consumer/price/{symbol}:
+  /consumer/price/{symbol}:
     get:
       summary: 'this line is used by starport scaffolding # 2'
       operationId: ConsumerPrice
@@ -43396,7 +43396,7 @@ paths:
           format: uint64
       tags:
         - Query
-  /consumer/pricefeed/params:
+  /pricefeed/params:
     get:
       summary: Parameters queries the parameters of the module.
       operationId: PricefeedParams
@@ -43516,7 +43516,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /consumer/pricefeed/prices/{symbol}:
+  /pricefeed/prices/{symbol}:
     get:
       summary: |-
         Price queries the current price data for a specific symbol.
@@ -43570,7 +43570,7 @@ paths:
           type: string
       tags:
         - Query
-  /consumer/pricefeed/symbol_requests:
+  /pricefeed/symbol_requests:
     get:
       summary: SymbolRequests queries all symbol requests.
       operationId: PricefeedSymbolRequests
@@ -43630,7 +43630,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /consumer/pricefeed/symbol_requests/{symbol}:
+  /pricefeed/symbol_requests/{symbol}:
     get:
       summary: |-
         SymbolRequest queries a specific symbol request by symbol name.

@@ -13,7 +13,7 @@ option go_package = "github.com/bandprotocol/oracle-consumer/x/pricefeed/types";
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/consumer/pricefeed/params";
+    option (google.api.http).get = "/pricefeed/params";
   }
   // this line is used by starport scaffolding # 2
 
@@ -21,16 +21,16 @@ service Query {
   // Returns the symbol request data for the given symbol.
   // This method is used to query the status of a specific symbol request.
   rpc SymbolRequest(QuerySymbolRequest) returns (QuerySymbolRequestResponse) {
-    option (google.api.http).get = "/consumer/pricefeed/symbol_requests/{symbol}";
+    option (google.api.http).get = "/pricefeed/symbol_requests/{symbol}";
   }
   // SymbolRequests queries all symbol requests.
   rpc SymbolRequests(QuerySymbolRequests) returns (QuerySymbolRequestsResponse) {
-    option (google.api.http).get = "/consumer/pricefeed/symbol_requests";
+    option (google.api.http).get = "/pricefeed/symbol_requests";
   }
   // Price queries the current price data for a specific symbol.
   // Returns the current price for the given symbol.
   rpc Price(QueryPrice) returns (QueryPriceResponse) {
-    option (google.api.http).get = "/consumer/pricefeed/prices/{symbol}";
+    option (google.api.http).get = "/pricefeed/prices/{symbol}";
   }
 }
 

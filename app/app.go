@@ -503,7 +503,7 @@ func New(
 		&app.IBCKeeper.PortKeeper,
 		scopedpricefeedKeeper,
 	)
-	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.pricefeedKeeper, app.AccountKeeper, app.BankKeeper)
+	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.pricefeedKeeper)
 
 	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.pricefeedKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
@@ -515,7 +515,7 @@ func New(
 		app.GetSubspace(consumermoduletypes.ModuleName),
 		app.pricefeedKeeper,
 	)
-	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper, app.AccountKeeper, app.BankKeeper)
+	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
