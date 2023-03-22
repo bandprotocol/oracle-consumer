@@ -20,7 +20,7 @@ func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keep
 	blockHeight := ctx.BlockHeight()
 
 	params := k.GetParams(ctx)
-	symbols := k.GetAllSymbolRequest(ctx)
+	symbols := k.GetAllSymbolRequests(ctx)
 
 	for _, symbol := range symbols {
 		if symbol.BlockInterval != 0 && blockHeight%int64(symbol.BlockInterval) == 0 {

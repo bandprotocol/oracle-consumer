@@ -40,7 +40,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /consumer/price/{symbol}:
+  /consumer/prices/{symbol}:
     get:
       summary: 'this line is used by starport scaffolding # 2'
       operationId: ConsumerPrice

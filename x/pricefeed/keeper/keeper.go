@@ -79,7 +79,7 @@ func (k Keeper) SetSymbolRequests(ctx sdk.Context, symbolRequests []types.Symbol
 	}
 }
 
-func (k Keeper) GetAllSymbolRequest(ctx sdk.Context) []types.SymbolRequest {
+func (k Keeper) GetAllSymbolRequests(ctx sdk.Context) []types.SymbolRequest {
 	store := ctx.KVStore(k.storeKey)
 
 	iterator := storetypes.KVStorePrefixIterator(store, types.SymbolRequestStoreKeyPrefix)

@@ -37,7 +37,7 @@ func (k Querier) SymbolRequest(c context.Context, req *types.QuerySymbolRequest)
 func (k Querier) SymbolRequests(c context.Context, req *types.QuerySymbolRequests) (*types.QuerySymbolRequestsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
-	srs := k.GetAllSymbolRequest(ctx)
+	srs := k.GetAllSymbolRequests(ctx)
 
 	result := types.QuerySymbolRequestsResponse{}
 	for _, sr := range srs {

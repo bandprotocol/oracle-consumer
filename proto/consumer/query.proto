@@ -17,7 +17,7 @@ service Query {
   }
   // this line is used by starport scaffolding # 2
   rpc Price(QueryPriceRequest) returns (QueryPriceResponse) {
-    option (google.api.http).get = "/consumer/price/{symbol}";
+    option (google.api.http).get = "/consumer/prices/{symbol}";
   }
 }
 
