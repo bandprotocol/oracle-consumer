@@ -105,12 +105,12 @@ import (
 	dbm "github.com/tendermint/tm-db"
 
 	consumermodule "github.com/bandprotocol/oracle-consumer/x/consumer"
-	consumermodulekeeper "github.com/bandprotocol/oracle-consumer/x/consumer/keeper"
-	consumermoduletypes "github.com/bandprotocol/oracle-consumer/x/consumer/types"
+	consumerkeeper "github.com/bandprotocol/oracle-consumer/x/consumer/keeper"
+	consumertypes "github.com/bandprotocol/oracle-consumer/x/consumer/types"
 	pricefeedmodule "github.com/bandprotocol/oracle-consumer/x/pricefeed"
 	pricefeedclient "github.com/bandprotocol/oracle-consumer/x/pricefeed/client"
-	pricefeedmodulekeeper "github.com/bandprotocol/oracle-consumer/x/pricefeed/keeper"
-	pricefeedmoduletypes "github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
+	pricefeedkeeper "github.com/bandprotocol/oracle-consumer/x/pricefeed/keeper"
+	pricefeedtypes "github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
@@ -246,9 +246,9 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
-	ConsumerKeeper        consumermodulekeeper.Keeper
+	ConsumerKeeper        consumerkeeper.Keeper
 	scopedpricefeedKeeper capabilitykeeper.ScopedKeeper
-	pricefeedKeeper       pricefeedmodulekeeper.Keeper
+	pricefeedKeeper       pricefeedkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -293,8 +293,8 @@ func New(
 		paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey, evidencetypes.StoreKey,
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
-		consumermoduletypes.StoreKey,
-		pricefeedmoduletypes.StoreKey,
+		consumertypes.StoreKey,
+		pricefeedtypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -492,13 +492,13 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	scopedpricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedmoduletypes.ModuleName)
+	scopedpricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
 	app.scopedpricefeedKeeper = scopedpricefeedKeeper
-	app.pricefeedKeeper = *pricefeedmodulekeeper.NewKeeper(
+	app.pricefeedKeeper = *pricefeedkeeper.NewKeeper(
 		appCodec,
-		keys[pricefeedmoduletypes.StoreKey],
-		keys[pricefeedmoduletypes.MemStoreKey],
-		app.GetSubspace(pricefeedmoduletypes.ModuleName),
+		keys[pricefeedtypes.StoreKey],
+		keys[pricefeedtypes.MemStoreKey],
+		app.GetSubspace(pricefeedtypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedpricefeedKeeper,
@@ -508,11 +508,11 @@ func New(
 	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.pricefeedKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.ConsumerKeeper = *consumermodulekeeper.NewKeeper(
+	app.ConsumerKeeper = *consumerkeeper.NewKeeper(
 		appCodec,
-		keys[consumermoduletypes.StoreKey],
-		keys[consumermoduletypes.MemStoreKey],
-		app.GetSubspace(consumermoduletypes.ModuleName),
+		keys[consumertypes.StoreKey],
+		keys[consumertypes.MemStoreKey],
+		app.GetSubspace(consumertypes.ModuleName),
 		app.pricefeedKeeper,
 	)
 	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper)
@@ -526,7 +526,7 @@ func New(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(pricefeedmoduletypes.RouterKey, pricefeedmodule.NewUpdateSymbolRequestProposalHandler(app.pricefeedKeeper))
+		AddRoute(pricefeedtypes.RouterKey, pricefeedmodule.NewUpdateSymbolRequestProposalHandler(app.pricefeedKeeper))
 	govConfig := govtypes.DefaultConfig()
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec,
@@ -547,7 +547,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
-	ibcRouter.AddRoute(pricefeedmoduletypes.ModuleName, pricefeedIBCModule)
+	ibcRouter.AddRoute(pricefeedtypes.ModuleName, pricefeedIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -615,8 +615,8 @@ func New(
 		group.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
-		consumermoduletypes.ModuleName,
-		pricefeedmoduletypes.ModuleName,
+		consumertypes.ModuleName,
+		pricefeedtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -641,8 +641,8 @@ func New(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-		consumermoduletypes.ModuleName,
-		pricefeedmoduletypes.ModuleName,
+		consumertypes.ModuleName,
+		pricefeedtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -672,8 +672,8 @@ func New(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-		consumermoduletypes.ModuleName,
-		pricefeedmoduletypes.ModuleName,
+		consumertypes.ModuleName,
+		pricefeedtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -903,8 +903,8 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
-	paramsKeeper.Subspace(consumermoduletypes.ModuleName)
-	paramsKeeper.Subspace(pricefeedmoduletypes.ModuleName)
+	paramsKeeper.Subspace(consumertypes.ModuleName)
+	paramsKeeper.Subspace(pricefeedtypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
