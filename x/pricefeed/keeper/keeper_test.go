@@ -82,7 +82,7 @@ func TestRecvIbcOracleResponsePacket(t *testing.T) {
 	}
 
 	// Call the function with the test data.
-	k.RecvIbcOracleResponsePacket(ctx, oracleResponsePacket)
+	k.StoreOracleResponsePacket(ctx, oracleResponsePacket)
 
 	// Retrieve the price from the store.
 	storedPrice, err := k.GetPrice(ctx, "test")

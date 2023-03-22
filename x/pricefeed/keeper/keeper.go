@@ -158,8 +158,8 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 	return nil
 }
 
-// RecvIbcOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain via IBC.
-func (k Keeper) RecvIbcOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) {
+// StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
+func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) {
 	// Decode the result from the response packet.
 	result, err := bandtypes.DecodeResult(res.Result)
 	if err != nil {

@@ -147,8 +147,8 @@ func (im IBCModule) OnRecvPacket(
 	}
 
 	if ack.Success() {
-		// If the acknowledgement was successful, receive the OracleResponsePacketData using the RecvIbcOracleResponsePacket function of the pricefeed keeper.
-		im.keeper.RecvIbcOracleResponsePacket(ctx, data)
+		// If the acknowledgement was successful, receive the OracleResponsePacketData using the StoreOracleResponsePacket function of the pricefeed keeper to store data.
+		im.keeper.StoreOracleResponsePacket(ctx, data)
 	}
 
 	return ack
