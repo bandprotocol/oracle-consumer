@@ -1,6 +1,9 @@
 package pricefeed
 
 import (
+	"encoding/hex"
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
@@ -149,6 +152,14 @@ func (im IBCModule) OnRecvPacket(
 	if ack.Success() {
 		// If the acknowledgement was successful, receive the OracleResponsePacketData using the StoreOracleResponsePacket function of the pricefeed keeper to store data.
 		im.keeper.StoreOracleResponsePacket(ctx, data)
+
+		ctx.EventManager().EmitEvent(sdk.NewEvent(
+			types.EventTypeBandChainStoreOracleResponsePacket,
+			sdk.NewAttribute(types.AttributeKeyRequestID, fmt.Sprintf("%d", data.RequestID)),
+			sdk.NewAttribute(types.AttributeKeyResolveStatus, fmt.Sprintf("%d", data.ResolveStatus)),
+			sdk.NewAttribute(types.AttributeKeyResult, hex.EncodeToString(data.Result)),
+			sdk.NewAttribute(types.AttributeKeyResolveTime, fmt.Sprintf("%d", data.ResolveTime)),
+		))
 	}
 
 	return ack
@@ -166,8 +177,6 @@ func (im IBCModule) OnAcknowledgementPacket(
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
 
-	var eventType string
-
 	// Check the type of response in the acknowledgement packet.
 	switch resp := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Result:
@@ -175,17 +184,18 @@ func (im IBCModule) OnAcknowledgementPacket(
 		// bandtypes.OracleRequestPacketAcknowledgement object.
 		var oracleAck bandtypes.OracleRequestPacketAcknowledgement
 		types.ModuleCdc.MustUnmarshalJSON(resp.Result, &oracleAck)
-		// Emit a new event with the eventType and AckSuccess attributes.
+		// Emit a new event with the EventTypeBandChainAckSuccess and AckSuccess attributes.
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				eventType,
+				types.EventTypeBandChainAckSuccess,
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, string(resp.Result)),
 			),
 		)
 	case *channeltypes.Acknowledgement_Error:
+		// Emit a new event with the EventTypeBandChainAckError and AckError attributes.
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				eventType,
+				types.EventTypeBandChainAckError,
 				sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
 			),
 		)

@@ -175,10 +175,6 @@ The pricefeed Module implements a process at the begin block to get all `SymbolR
 
 Once the pricefeed Module has requested price data from BandChain, BandChain will send a response packet back. The results will be extracted and used to update the latest price for each symbol in the state of your Cosmos SDK app.
 
-### Events
-
-TODO: wait for implementation
-
 ### Client
 
 #### CLI
