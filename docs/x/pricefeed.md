@@ -7,6 +7,7 @@ x/pricefeed
 >   - [building-modules](https://docs.cosmos.network/main/building-modules/intro)
 >   - [ibc-app-packets](https://tutorials.cosmos.network/hands-on-exercise/5-ibc-adv/7-ibc-app-packets.html)
 > - BandChain
+>   - [data-source](https://docs.bandchain.org/custom-script/data-source/introduction.html)
 >   - [oracle-script](https://docs.bandchain.org/custom-script/oracle-script/introduction.html)
 
 
