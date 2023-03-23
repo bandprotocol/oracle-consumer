@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	abci "github.com/tendermint/tendermint/abci/types"
 
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/keeper"
@@ -14,7 +13,7 @@ import (
 // handleBeginBlock is a handler function for the BeginBlock ABCI request.
 // It fetches price data from the BandChain
 // at the start of a new block.
-func handleBeginBlock(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
+func handleBeginBlock(ctx sdk.Context, k keeper.Keeper) {
 	symbolsOsMap := make(map[uint64][]string)
 
 	blockHeight := ctx.BlockHeight()
