@@ -107,6 +107,46 @@ func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (types.Price, error) {
 	return pf, nil
 }
 
+func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
+	blockHeight := ctx.BlockHeight()
+
+	params := k.GetParams(ctx)
+	symbols := k.GetAllSymbolRequests(ctx)
+
+	// Map symbols that need to request on this block by oracle script ID and symbol block interval
+	symbolsOsMap := types.MapSymbolsByOsIDAndCheckBlockIntervalRequest(symbols, blockHeight)
+	// Sort keys map for deterministic value
+	symbolsOsMapKeys := types.SortKeysUint64StringMap(symbolsOsMap)
+
+	for _, osID := range symbolsOsMapKeys {
+		calldataByte, err := bandtypes.EncodeCalldata(symbolsOsMap[osID], uint8(params.MinDsCount))
+		if err != nil {
+			ctx.EventManager().EmitEvent(sdk.NewEvent(
+				types.EventTypeEncodeCalldataFailed,
+				sdk.NewAttribute(types.AttributeKeyReason, fmt.Sprintf("Unable to encode calldata: %s", err)),
+			))
+			continue
+		}
+
+		// Calculate the prepareGas and executeGas for the oracle request packet based on the module's parameters and
+		// the number of symbols to be requested
+		prepareGas := types.CalculateGas(params.PrepareGasBase, params.PrepareGasEach, uint64(len(symbols)))
+		executeGas := types.CalculateGas(params.ExecuteGasBase, params.ExecuteGasEach, uint64(len(symbols)))
+
+		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(types.ModuleName, osID, calldataByte, params.AskCount, params.MinCount, params.FeeLimit, prepareGas, executeGas)
+
+		// Send the oracle request packet to the Band Chain using the RequestBandChainData function from the keeper
+		err = k.RequestBandChainData(ctx, params.SourceChannel, oracleRequestPacket)
+		if err != nil {
+			ctx.EventManager().EmitEvent(sdk.NewEvent(
+				types.EventTypeRequestBandChainFailed,
+				sdk.NewAttribute(types.AttributeKeyReason, fmt.Sprintf("Unable to request data on BandChain: %s", err)),
+			))
+		}
+
+	}
+}
+
 // RequestBandChainData is a function that sends an OracleRequestPacketData to BandChain via IBC.
 func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, oracleRequestPacket bandtypes.OracleRequestPacketData) error {
 	channel, found := k.ChannelKeeper.GetChannel(ctx, types.PortID, sourceChannel)
