@@ -4,9 +4,6 @@ import (
 	"github.com/bandprotocol/oracle-consumer/obi"
 )
 
-type Calldata interface {
-}
-
 type DefaultCalldata struct {
 	Symbols            []string
 	MinimumSourceCount uint8

@@ -2,16 +2,16 @@ package band
 
 import "github.com/bandprotocol/oracle-consumer/obi"
 
-type Responses struct {
+type Response struct {
 	Symbol       string
 	ResponseCode uint8
 	Rate         uint64
 }
 
-func DecodeResult(result []byte) ([]Responses, error) {
+func DecodeResult(result []byte) ([]Response, error) {
 	// For decode rates
 	type Output struct {
-		Responses []Responses
+		Responses []Response
 	}
 	var out Output
 	err := obi.Decode(result, &out)
