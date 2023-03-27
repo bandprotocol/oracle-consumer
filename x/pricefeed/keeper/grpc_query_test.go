@@ -10,11 +10,11 @@ import (
 )
 
 func TestParamsQuery(t *testing.T) {
-	keeper, ctx := testkeeper.PriceFeedKeeper(t)
-	delfaultParams := types.DefaultParams()
-	keeper.SetParams(ctx, delfaultParams)
+	k, ctx := testkeeper.PriceFeedKeeper(t)
+	params := types.DefaultParams()
+	k.SetParams(ctx, params)
 
-	params := keeper.GetParams(ctx)
+	storedParams := k.GetParams(ctx)
 
-	require.Equal(t, delfaultParams, params)
+	require.Equal(t, storedParams, params)
 }
