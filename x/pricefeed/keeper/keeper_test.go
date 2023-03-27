@@ -66,7 +66,7 @@ func TestStoreOracleResponsePacket(t *testing.T) {
 	}
 
 	// Initialize BandChain Responses
-	bResult, err := obi.Encode([]bandtypes.Responses{
+	bResult, err := obi.Encode([]bandtypes.Response{
 		{
 			Symbol:       "test",
 			ResponseCode: 0,
