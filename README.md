@@ -72,8 +72,8 @@ You should see something similar to the following:
 ```
 ...
 build_tags: ""
-commit: f81a9b4646d6e627ad3bbe5c7f20446ee2615155
-cosmos_sdk_version: v0.46.10
+commit: ...
+cosmos_sdk_version: v0.46.11
 go: go version go1.19.5 darwin/amd64
 name: Oracle-Consumer
 server_name: oracle-consumerd

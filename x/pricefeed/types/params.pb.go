@@ -34,20 +34,23 @@ type Params struct {
 	// proceed to the execution phase. Higher value means more security, at the
 	// cost of liveness.
 	MinCount uint64 `protobuf:"varint,2,opt,name=min_count,json=minCount,proto3" json:"min_count,omitempty"`
-	// MinDsCount is the minimum number of responses required from data sources (oracles)
-	// to consider the request as successful.
+	// MinDsCount is the minimum number of responses required from data sources
+	// (oracles) to consider the request as successful.
 	MinDsCount uint64 `protobuf:"varint,3,opt,name=min_ds_count,json=minDsCount,proto3" json:"min_ds_count,omitempty"`
-	// PrepareGasBase is the amount of base gas needed to prepare an oracle request.
+	// PrepareGasBase is the amount of base gas needed to prepare an oracle
+	// request.
 	PrepareGasBase uint64 `protobuf:"varint,4,opt,name=prepare_gas_base,json=prepareGasBase,proto3" json:"prepare_gas_base,omitempty"`
-	// PrepareGasEach is the amount of additional gas needed per symbol in an oracle request.
+	// PrepareGasEach is the amount of additional gas needed per symbol in an
+	// oracle request.
 	PrepareGasEach uint64 `protobuf:"varint,5,opt,name=prepare_gas_each,json=prepareGasEach,proto3" json:"prepare_gas_each,omitempty"`
-	// ExecuteGasBase is the amount of base gas needed to execute an oracle request.
+	// ExecuteGasBase is the amount of base gas needed to execute an oracle
+	// request.
 	ExecuteGasBase uint64 `protobuf:"varint,6,opt,name=execute_gas_base,json=executeGasBase,proto3" json:"execute_gas_base,omitempty"`
-	// ExecuteGasEach is the amount of additional gas needed per symbol in executing
-	// an oracle request.
+	// ExecuteGasEach is the amount of additional gas needed per symbol in
+	// executing an oracle request.
 	ExecuteGasEach uint64 `protobuf:"varint,7,opt,name=execute_gas_each,json=executeGasEach,proto3" json:"execute_gas_each,omitempty"`
-	// SourceChannel is the source channel to use when sending the oracle request to
-	// BandChain via IBC
+	// SourceChannel is the source channel to use when sending the oracle request
+	// to BandChain via IBC
 	SourceChannel string `protobuf:"bytes,8,opt,name=source_channel,json=sourceChannel,proto3" json:"source_channel,omitempty"`
 	// FeeLimit is the maximum tokens that will be paid to all data source
 	// providers.

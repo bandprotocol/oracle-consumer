@@ -26,9 +26,10 @@ message SymbolRequest {
   uint64 block_interval = 3;
 }
 
-// UpdateSymbolRequestProposal is a message that represents a proposal to update a symbol request.
-// It contains a title, description, and a list of symbol requests to be updated.
-// Once approved, the data will update the SymbolRequest in the state.
+// UpdateSymbolRequestProposal is a message that represents a proposal to update
+// a symbol request. It contains a title, description, and a list of symbol
+// requests to be updated. Once approved, the data will update the SymbolRequest
+// in the state.
 message UpdateSymbolRequestProposal {
   option (gogoproto.goproto_getters) = false;
 
@@ -37,4 +38,3 @@ message UpdateSymbolRequestProposal {
 
   repeated SymbolRequest symbol_requests = 3 [ (gogoproto.nullable) = false ];
 }
-

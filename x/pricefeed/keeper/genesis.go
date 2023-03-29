@@ -1,34 +1,31 @@
-package pricefeed
+package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/bandprotocol/oracle-consumer/x/pricefeed/keeper"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.
-func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-	k.SetPort(ctx, genState.PortId)
+func (k Keeper) InitGenesis(ctx sdk.Context, state types.GenesisState) {
+	k.SetPort(ctx, state.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
 	// port capability from capability InitGenesis
-	if !k.IsBound(ctx, genState.PortId) {
+	if !k.IsBound(ctx, state.PortId) {
 		// module binds to the port on InitChain
 		// and claims the returned capability
-		err := k.BindPort(ctx, genState.PortId)
+		err := k.BindPort(ctx, state.PortId)
 		if err != nil {
 			panic("could not claim port capability: " + err.Error())
 		}
 	}
-	k.SetParams(ctx, types.DefaultParams())
+	k.SetParams(ctx, state.Params)
 }
 
 // ExportGenesis returns the module's exported genesis
-func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
-	genesis := types.DefaultGenesis()
-
-	genesis.Params = k.GetParams(ctx)
-	genesis.PortId = k.GetPort(ctx)
-
-	return genesis
+func (k Keeper) ExportGenesis(ctx sdk.Context) *types.GenesisState {
+	return &types.GenesisState{
+		PortId: k.GetPort(ctx),
+		Params: k.GetParams(ctx),
+	}
 }

@@ -1,0 +1,58 @@
+#!/usr/bin/make -f
+
+PACKAGES_NOSIMULATION=$(shell go list ./... | grep -v '/simulation')
+PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
+CHANGED_GO_FILES := $(shell git diff --name-only | grep .go$$ | grep -v pb.go)
+ALL_GO_FILES := $(shell find . -regex ".*\.go$$" | grep -v pb.go)
+VERSION := $(shell echo $(shell git describe --always) | sed 's/^v//')
+COMMIT := $(shell git log -1 --format='%H')
+LEDGER_ENABLED ?= true
+BINDIR ?= $(GOPATH)/bin
+BUILDDIR ?= $(CURDIR)/build
+SIMAPP = ./testing/simapp
+MOCKS_DIR = $(CURDIR)/tests/mocks
+HTTPS_GIT := https://github.com/cosmos/ibc-go.git
+DOCKER := $(shell which docker)
+PROJECT_NAME = $(shell git remote get-url origin | xargs basename -s .git)
+
+###############################################################################
+###                          Tools & Dependencies                           ###
+###############################################################################
+
+go.sum: go.mod
+	echo "Ensure dependencies have not been modified ..." >&2
+	go mod verify
+	go mod tidy
+
+###############################################################################
+###                                Protobuf                                 ###
+###############################################################################
+
+protoVer=0.11.6
+protoImageName=ghcr.io/cosmos/proto-builder:$(protoVer)
+protoImage=$(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace $(protoImageName)
+
+proto-all: proto-format proto-lint proto-gen
+
+proto-gen:
+	@echo "Generating Protobuf files"
+	@$(protoImage) sh ./scripts/protocgen.sh
+
+proto-swagger-gen:
+	@echo "Generating Protobuf Swagger"
+	@$(protoImage) sh ./scripts/protoc-swagger-gen.sh
+
+proto-format:
+	@$(protoImage) find ./ -name "*.proto" -exec clang-format -i {} \;
+
+proto-lint:
+	@$(protoImage) buf lint --error-format=json
+
+proto-check-breaking:
+	@$(protoImage) buf breaking --against $(HTTPS_GIT)#branch=main
+
+proto-update-deps:
+	@echo "Updating Protobuf dependencies"
+	$(DOCKER) run --rm -v $(CURDIR)/proto:/workspace --workdir /workspace $(protoImageName) buf mod update
+
+.PHONY: proto-all proto-gen proto-gen-any proto-swagger-gen proto-format proto-lint proto-check-breaking proto-update-deps

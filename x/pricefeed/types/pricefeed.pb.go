@@ -151,9 +151,10 @@ func (m *SymbolRequest) GetBlockInterval() uint64 {
 	return 0
 }
 
-// UpdateSymbolRequestProposal is a message that represents a proposal to update a symbol request.
-// It contains a title, description, and a list of symbol requests to be updated.
-// Once approved, the data will update the SymbolRequest in the state.
+// UpdateSymbolRequestProposal is a message that represents a proposal to update
+// a symbol request. It contains a title, description, and a list of symbol
+// requests to be updated. Once approved, the data will update the SymbolRequest
+// in the state.
 type UpdateSymbolRequestProposal struct {
 	Title          string          `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description    string          `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`

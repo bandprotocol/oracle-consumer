@@ -17,20 +17,23 @@ message Params {
   // proceed to the execution phase. Higher value means more security, at the
   // cost of liveness.
   uint64 min_count = 2;
-  // MinDsCount is the minimum number of responses required from data sources (oracles)
-  // to consider the request as successful.
+  // MinDsCount is the minimum number of responses required from data sources
+  // (oracles) to consider the request as successful.
   uint64 min_ds_count = 3;
-  // PrepareGasBase is the amount of base gas needed to prepare an oracle request.
+  // PrepareGasBase is the amount of base gas needed to prepare an oracle
+  // request.
   uint64 prepare_gas_base = 4;
-  // PrepareGasEach is the amount of additional gas needed per symbol in an oracle request.
+  // PrepareGasEach is the amount of additional gas needed per symbol in an
+  // oracle request.
   uint64 prepare_gas_each = 5;
-  // ExecuteGasBase is the amount of base gas needed to execute an oracle request.
+  // ExecuteGasBase is the amount of base gas needed to execute an oracle
+  // request.
   uint64 execute_gas_base = 6;
-  // ExecuteGasEach is the amount of additional gas needed per symbol in executing 
-  // an oracle request.
+  // ExecuteGasEach is the amount of additional gas needed per symbol in
+  // executing an oracle request.
   uint64 execute_gas_each = 7;
-  // SourceChannel is the source channel to use when sending the oracle request to 
-  // BandChain via IBC
+  // SourceChannel is the source channel to use when sending the oracle request
+  // to BandChain via IBC
   string source_channel = 8;
   // FeeLimit is the maximum tokens that will be paid to all data source
   // providers.

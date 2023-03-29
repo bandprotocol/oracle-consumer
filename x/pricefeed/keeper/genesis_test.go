@@ -1,13 +1,12 @@
-package pricefeed_test
+package keeper_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
 
-	keepertest "github.com/bandprotocol/oracle-consumer/testutil/keeper"
+	testkeeper "github.com/bandprotocol/oracle-consumer/testutil/keeper"
 	"github.com/bandprotocol/oracle-consumer/testutil/nullify"
-	"github.com/bandprotocol/oracle-consumer/x/pricefeed"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 )
 
@@ -17,9 +16,9 @@ func TestGenesis(t *testing.T) {
 		PortId: types.PortID,
 	}
 
-	k, ctx := keepertest.PriceFeedKeeper(t)
-	pricefeed.InitGenesis(ctx, *k, genesisState)
-	got := pricefeed.ExportGenesis(ctx, *k)
+	k, ctx := testkeeper.PriceFeedKeeper(t)
+	k.InitGenesis(ctx, genesisState)
+	got := k.ExportGenesis(ctx)
 	require.NotNil(t, got)
 
 	nullify.Fill(&genesisState)

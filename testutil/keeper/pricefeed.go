@@ -45,7 +45,7 @@ func (priceFeedPortKeeper) BindPort(ctx sdk.Context, portID string) *capabilityt
 	return &capabilitytypes.Capability{}
 }
 
-func PriceFeedKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func PriceFeedKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	logger := log.NewNopLogger()
 
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
@@ -70,8 +70,8 @@ func PriceFeedKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	k := keeper.NewKeeper(
 		appCodec,
 		storeKey,
-		memStoreKey,
 		paramsSubspace,
+		priceFeedChannelKeeper{},
 		priceFeedChannelKeeper{},
 		priceFeedPortKeeper{},
 		capabilityKeeper.ScopeToModule("PriceFeedScopedKeeper"),

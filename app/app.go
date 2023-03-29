@@ -494,11 +494,11 @@ func New(
 
 	scopedpricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
 	app.scopedpricefeedKeeper = scopedpricefeedKeeper
-	app.pricefeedKeeper = *pricefeedkeeper.NewKeeper(
+	app.pricefeedKeeper = pricefeedkeeper.NewKeeper(
 		appCodec,
 		keys[pricefeedtypes.StoreKey],
-		keys[pricefeedtypes.MemStoreKey],
 		app.GetSubspace(pricefeedtypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedpricefeedKeeper,
@@ -508,14 +508,12 @@ func New(
 	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.pricefeedKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.ConsumerKeeper = *consumerkeeper.NewKeeper(
+	app.ConsumerKeeper = consumerkeeper.NewKeeper(
 		appCodec,
 		keys[consumertypes.StoreKey],
-		keys[consumertypes.MemStoreKey],
-		app.GetSubspace(consumertypes.ModuleName),
 		app.pricefeedKeeper,
 	)
-	consumerModule := consumermodule.NewAppModule(appCodec, app.ConsumerKeeper)
+	consumerModule := consumermodule.NewAppModule(app.ConsumerKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 

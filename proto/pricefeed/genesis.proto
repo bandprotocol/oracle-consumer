@@ -1,15 +1,15 @@
 syntax = "proto3";
+
 package pricefeed;
+
+option go_package = "github.com/bandprotocol/oracle-consumer/x/pricefeed/types";
 
 import "gogoproto/gogo.proto";
 import "pricefeed/params.proto";
-// this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "github.com/bandprotocol/oracle-consumer/x/pricefeed/types";
 
 // GenesisState defines the pricefeed module's genesis state.
 message GenesisState {
   Params params = 1 [ (gogoproto.nullable) = false ];
   string port_id = 2;
-  // this line is used by starport scaffolding # genesis/proto/state
 }

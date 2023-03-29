@@ -24,7 +24,8 @@ service Query {
     option (google.api.http).get = "/pricefeed/symbol_requests/{symbol}";
   }
   // SymbolRequests queries all symbol requests.
-  rpc SymbolRequests(QuerySymbolRequests) returns (QuerySymbolRequestsResponse) {
+  rpc SymbolRequests(QuerySymbolRequests)
+      returns (QuerySymbolRequestsResponse) {
     option (google.api.http).get = "/pricefeed/symbol_requests";
   }
   // Price queries the current price data for a specific symbol.
@@ -48,7 +49,8 @@ message QueryParamsResponse {
 // QuerySymbolRequest is request type for the Query/SymbolRequest RPC method.
 message QuerySymbolRequest { string symbol = 1; }
 
-// QuerySymbolRequestResponse is response type for the Query/SymbolRequest RPC method.
+// QuerySymbolRequestResponse is response type for the Query/SymbolRequest RPC
+// method.
 message QuerySymbolRequestResponse {
   // symbol_request holds the symbol request data for the given symbol.
   // The symbol request data for the given symbol name.
