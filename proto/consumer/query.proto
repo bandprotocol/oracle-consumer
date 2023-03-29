@@ -1,22 +1,17 @@
 syntax = "proto3";
 package consumer;
 
-import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
-// this line is used by starport scaffolding # 1
 
 option go_package = "github.com/bandprotocol/oracle-consumer/x/consumer/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  // this line is used by starport scaffolding # 2
+  // Price queries a latest price of symbol.
   rpc Price(QueryPriceRequest) returns (QueryPriceResponse) {
     option (google.api.http).get = "/consumer/prices/{symbol}";
   }
 }
-
-// this line is used by starport scaffolding # 3
 
 // QueryPriceRequest is request type for the Query/Price RPC method.
 message QueryPriceRequest { string symbol = 1; }

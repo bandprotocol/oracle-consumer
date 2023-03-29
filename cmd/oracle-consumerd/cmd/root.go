@@ -35,8 +35,6 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
 
-	// this line is used by starport scaffolding # root/moduleImport
-
 	"github.com/bandprotocol/oracle-consumer/app"
 	appparams "github.com/bandprotocol/oracle-consumer/app/params"
 )
@@ -120,7 +118,6 @@ func initRootCmd(
 		tmcli.NewCompletionCmd(rootCmd, true),
 		debug.Cmd(),
 		config.Cmd(),
-		// this line is used by starport scaffolding # root/commands
 	)
 
 	a := appCreator{
@@ -223,7 +220,6 @@ func startWithTunnelingCommand(appCreator appCreator, defaultNodeHome string) *c
 
 func addModuleInitFlags(startCmd *cobra.Command) {
 	crisis.AddModuleInitFlags(startCmd)
-	// this line is used by starport scaffolding # root/arguments
 }
 
 func overwriteFlagDefaults(c *cobra.Command, defaults map[string]string) {

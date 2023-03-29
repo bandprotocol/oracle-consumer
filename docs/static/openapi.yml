@@ -6,7 +6,7 @@ info:
 paths:
   /consumer/prices/{symbol}:
     get:
-      summary: 'this line is used by starport scaffolding # 2'
+      summary: Price queries a latest price of symbol.
       operationId: ConsumerPrice
       responses:
         '200':

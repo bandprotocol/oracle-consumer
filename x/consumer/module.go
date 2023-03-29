@@ -4,8 +4,6 @@ import (
 	"context"
 	"encoding/json"
 
-	// this line is used by starport scaffolding # 1
-
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
