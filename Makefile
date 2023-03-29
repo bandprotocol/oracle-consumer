@@ -1,19 +1,6 @@
 #!/usr/bin/make -f
 
-PACKAGES_NOSIMULATION=$(shell go list ./... | grep -v '/simulation')
-PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
-CHANGED_GO_FILES := $(shell git diff --name-only | grep .go$$ | grep -v pb.go)
-ALL_GO_FILES := $(shell find . -regex ".*\.go$$" | grep -v pb.go)
-VERSION := $(shell echo $(shell git describe --always) | sed 's/^v//')
-COMMIT := $(shell git log -1 --format='%H')
-LEDGER_ENABLED ?= true
-BINDIR ?= $(GOPATH)/bin
-BUILDDIR ?= $(CURDIR)/build
-SIMAPP = ./testing/simapp
-MOCKS_DIR = $(CURDIR)/tests/mocks
-HTTPS_GIT := https://github.com/cosmos/ibc-go.git
 DOCKER := $(shell which docker)
-PROJECT_NAME = $(shell git remote get-url origin | xargs basename -s .git)
 
 ###############################################################################
 ###                          Tools & Dependencies                           ###
