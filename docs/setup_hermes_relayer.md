@@ -162,3 +162,46 @@ ignore_port_channel = []
 #    ['oracle', '*'],
 # ]
 ```
+
+#### Add relayer key
+
+##### create mnemonic file on consumer chain and BandChain
+> Note: Upon logging for the first time that you run consumer chain, you will be given either Alice's or Bob's mnemonic, which can be used as the consumer mnemonic. It's important to note that you need to have funds in your key in order to send transactions on each chain.
+
+```
+# hermes/
+touch mem-oracleconsumer.txt
+```
+- add your oracle-consumer chain mnemonic in mem-consumer.txt
+
+```
+# hermes/
+touch mem-band.txt
+```
+- add your BandChain mnemonic in mem-band.txt
+
+##### add keys to hermes by following command
+
+###### consumer key
+
+```
+target/release/hermes --config config_relayer.toml keys add --chain oracleconsumer --mnemonic-file "mem-oracleconsumer.txt"
+```
+
+###### and BandChian key
+
+```
+target/release/hermes --config config_relayer.toml keys add --chain band-laozi-testnet6 --mnemonic-file "mem-band.txt"  --hd-path "m/44'/494'/0'/0/0"
+```
+
+#### Create client connection
+
+```
+target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain oracleconsumer --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection
+```
+
+#### Start hermes relayer
+
+```
+target/release/hermes --config config_relayer.toml start
+```
