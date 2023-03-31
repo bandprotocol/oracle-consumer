@@ -17,7 +17,7 @@ This document specifies the pricefeed module that implement for the Cosmos SDK a
 
 The pricefeed module obtains price data from BandChain through IBC and stores the most recent prices on your Cosmos SDK applications.
 
-An example of the usage of this module is provided on the [ConsumerChain](https://).
+An example of the usage of this module is provided on the [ConsumerChain](https://github.com/bandprotocol/oracle-consumer).
 
 ### Contents
 
