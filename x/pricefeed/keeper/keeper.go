@@ -135,6 +135,12 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 	blockHeight := ctx.BlockHeight()
 
 	params := k.GetParams(ctx)
+
+	// Verify that SourceChannel params is set by open params proposal already
+	if params.SourceChannel == types.NotSet {
+		return
+	}
+
 	symbols := k.GetAllSymbolRequests(ctx)
 
 	// Map symbols that need to request on this block by oracle script ID and symbol block interval

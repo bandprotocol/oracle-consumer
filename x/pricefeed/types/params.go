@@ -17,7 +17,7 @@ const (
 	DefaultPrepareGasEach = uint64(1)
 	DefaultExecuteGasBase = uint64(100000)
 	DefaultExecuteGasEach = uint64(1)
-	DefaultSourceChannel  = "channel-0"
+	DefaultSourceChannel  = NotSet
 )
 
 var (
