@@ -25,16 +25,29 @@ import (
 // priceFeedChannelKeeper is a stub of cosmosibckeeper.ChannelKeeper.
 type priceFeedChannelKeeper struct{}
 
-func (priceFeedChannelKeeper) GetChannel(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool) {
+func (priceFeedChannelKeeper) GetChannel(
+	ctx sdk.Context,
+	srcPort, srcChan string,
+) (channel channeltypes.Channel, found bool) {
 	return channeltypes.Channel{}, false
 }
 func (priceFeedChannelKeeper) GetNextSequenceSend(ctx sdk.Context, portID, channelID string) (uint64, bool) {
 	return 0, false
 }
-func (priceFeedChannelKeeper) SendPacket(ctx sdk.Context, channelCap *capabilitytypes.Capability, packet ibcexported.PacketI) error {
+
+func (priceFeedChannelKeeper) SendPacket(
+	ctx sdk.Context,
+	channelCap *capabilitytypes.Capability,
+	packet ibcexported.PacketI,
+) error {
 	return nil
 }
-func (priceFeedChannelKeeper) ChanCloseInit(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error {
+
+func (priceFeedChannelKeeper) ChanCloseInit(
+	ctx sdk.Context,
+	portID, channelID string,
+	chanCap *capabilitytypes.Capability,
+) error {
 	return nil
 }
 
@@ -58,17 +71,18 @@ func PriceFeedKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
-	appCodec := codec.NewProtoCodec(registry)
-	capabilityKeeper := capabilitykeeper.NewKeeper(appCodec, storeKey, memStoreKey)
+	cdc := codec.NewProtoCodec(registry)
+	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, storeKey, memStoreKey)
 
-	paramsSubspace := typesparams.NewSubspace(appCodec,
+	paramsSubspace := typesparams.NewSubspace(
+		cdc,
 		types.Amino,
 		storeKey,
 		memStoreKey,
 		"PriceFeedParams",
 	)
 	k := keeper.NewKeeper(
-		appCodec,
+		cdc,
 		storeKey,
 		paramsSubspace,
 		priceFeedChannelKeeper{},
