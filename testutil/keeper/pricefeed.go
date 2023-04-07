@@ -71,17 +71,18 @@ func PriceFeedKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
-	appCodec := codec.NewProtoCodec(registry)
-	capabilityKeeper := capabilitykeeper.NewKeeper(appCodec, storeKey, memStoreKey)
+	cdc := codec.NewProtoCodec(registry)
+	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, storeKey, memStoreKey)
 
-	paramsSubspace := typesparams.NewSubspace(appCodec,
+	paramsSubspace := typesparams.NewSubspace(
+		cdc,
 		types.Amino,
 		storeKey,
 		memStoreKey,
 		"PriceFeedParams",
 	)
 	k := keeper.NewKeeper(
-		appCodec,
+		cdc,
 		storeKey,
 		paramsSubspace,
 		priceFeedChannelKeeper{},
