@@ -2,7 +2,7 @@
 
 The oracle-consumer is an application of the Cosmos SDK that demonstrates the use of the [pricefeed-module](https://) implemented by BandProtocol. This module allows other Cosmos SDK applications to easily obtain data from BandChain through IBC.
 
-- `oracle-consumerd`: The Oracle Consumer Daemon and command-line interface (CLI). Runs a full-node of the consumer application. 
+- `oracle-consumerd`: The Oracle Consumer Daemon and command-line interface (CLI). Runs a full node of the consumer application. 
 
 oracle-consumer is built on the Cosmos SDK using the following modules:
 
@@ -24,7 +24,7 @@ Be sure you have met the prerequisites before you install and use Consumer Chain
 
 
 ### Running Consumer Chain
-This guide will provide instructions on how to install the `consumerd` binary and run the cli on a server. By following these steps, you will have the binary properly set up and ready to use.
+This guide will provide instructions on how to install the `oracle-consumerd` binary and run the CLI on a server. By following these steps, you will have the binary properly set up and ready to use.
 
 
 ##### Install ignite CLI
@@ -59,9 +59,9 @@ You can locate the `<latest-release-tag>` [here](https://github.com/bandprotocol
 [IGNITE]   [your bob mnemonic]
 ```
 
-By executing the command `ignite chain serve -v`, the consumerd binary will be installed and your consumer chain will start running.
+By executing the command `ignite chain serve -v`, the oracle-consumerd binary will be installed and your consumer chain will start running.
 
-Verify that everything installed successfully by running:
+Verify that everything is installed successfully by running:
 
 ```
 oracle-consumerd version --long
@@ -81,7 +81,7 @@ version: ""
 ```
 
 ### Connecting Hermes Relayer to BandChain
-The last step is to set up a relayer to listen and relay IBC packets between a oracle-consumer chain and BandChain.
+The last step is to set up a relayer to listen and relay IBC packets between an oracle-consumer chain and BandChain.
 
 Here are the simple guides for setting up a relayer.
 * [Setup hermes relayer](docs/setup_hermes_relayer.md)
