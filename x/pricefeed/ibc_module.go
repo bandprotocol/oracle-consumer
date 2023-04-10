@@ -3,6 +3,8 @@ package pricefeed
 import (
 	"encoding/hex"
 	"fmt"
+	"math"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -27,6 +29,48 @@ func NewIBCModule(k keeper.Keeper) IBCModule {
 	}
 }
 
+// ValidatePricefeedChannelParams does validation of a newly created priefeed channel. A pricefeed
+// channel must be UNORDERED, use the correct port (by default 'pricefeed'), and use the current
+// supported version. Only 2^32 channels are allowed to be created.
+func ValidatePricefeedChannelParams(
+	ctx sdk.Context,
+	keeper keeper.Keeper,
+	order channeltypes.Order,
+	portID string,
+	channelID string,
+) error {
+	// NOTE: for escrow address security only 2^32 channels are allowed to be created
+	// Issue: https://github.com/cosmos/cosmos-sdk/issues/7737
+	channelSequence, err := channeltypes.ParseChannelSequence(channelID)
+	if err != nil {
+		return err
+	}
+	if channelSequence > uint64(math.MaxUint32) {
+		return sdkerrors.Wrapf(
+			types.ErrMaxTransferChannels,
+			"channel sequence %d is greater than max allowed transfer channels %d",
+			channelSequence,
+			uint64(math.MaxUint32),
+		)
+	}
+	if order != channeltypes.UNORDERED {
+		return sdkerrors.Wrapf(
+			channeltypes.ErrInvalidChannelOrdering,
+			"expected %s channel, got %s ",
+			channeltypes.UNORDERED,
+			order,
+		)
+	}
+
+	// Require portID is the portID transfer module is bound to
+	boundPort := keeper.GetPort(ctx)
+	if boundPort != portID {
+		return sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+	}
+
+	return nil
+}
+
 // OnChanOpenInit implements the IBCModule interface
 func (im IBCModule) OnChanOpenInit(
 	ctx sdk.Context,
@@ -38,11 +82,12 @@ func (im IBCModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) (string, error) {
+	if err := ValidatePricefeedChannelParams(ctx, im.keeper, order, portID, channelID); err != nil {
+		return "", err
+	}
 
-	// Require portID is the portID module is bound to
-	boundPort := im.keeper.GetPort(ctx)
-	if boundPort != portID {
-		return "", sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+	if strings.TrimSpace(version) == "" {
+		version = types.Version
 	}
 
 	if version != types.Version {
@@ -68,15 +113,17 @@ func (im IBCModule) OnChanOpenTry(
 	counterparty channeltypes.Counterparty,
 	counterpartyVersion string,
 ) (string, error) {
-
-	// Require portID is the portID module is bound to
-	boundPort := im.keeper.GetPort(ctx)
-	if boundPort != portID {
-		return "", sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+	if err := ValidatePricefeedChannelParams(ctx, im.keeper, order, portID, channelID); err != nil {
+		return "", err
 	}
 
 	if counterpartyVersion != types.Version {
-		return "", sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s", counterpartyVersion, types.Version)
+		return "", sdkerrors.Wrapf(
+			types.ErrInvalidVersion,
+			"invalid counterparty version: got: %s, expected %s",
+			counterpartyVersion,
+			types.Version,
+		)
 	}
 
 	// OpenTry must claim the channelCapability that IBC passes into the callback
@@ -96,7 +143,12 @@ func (im IBCModule) OnChanOpenAck(
 	counterpartyVersion string,
 ) error {
 	if counterpartyVersion != types.Version {
-		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.Version)
+		return sdkerrors.Wrapf(
+			types.ErrInvalidVersion,
+			"invalid counterparty version: %s, expected %s",
+			counterpartyVersion,
+			types.Version,
+		)
 	}
 	return nil
 }
@@ -177,7 +229,10 @@ func (im IBCModule) OnAcknowledgementPacket(
 		// If the response is of type Result, unmarshal the result into a
 		// bandtypes.OracleRequestPacketAcknowledgement object.
 		var oracleAck bandtypes.OracleRequestPacketAcknowledgement
-		types.ModuleCdc.MustUnmarshalJSON(resp.Result, &oracleAck)
+		if err := types.ModuleCdc.UnmarshalJSON(resp.Result, &oracleAck); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		}
+
 		// Emit a new event with the EventTypeBandChainAckSuccess and AckSuccess attributes.
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
