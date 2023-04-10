@@ -12,5 +12,5 @@ import "pricefeed/pricefeed.proto";
 message GenesisState {
   Params params = 1 [ (gogoproto.nullable) = false ];
   string port_id = 2;
-  repeated SymbolRequest symbol_request = 3 [ (gogoproto.nullable) = false ];
+  repeated SymbolRequest symbol_requests = 3 [ (gogoproto.nullable) = false ];
 }

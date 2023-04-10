@@ -10,8 +10,9 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		PortId: PortID,
-		Params: DefaultParams(),
+		PortId:         PortID,
+		Params:         DefaultParams(),
+		SymbolRequests: []SymbolRequest{},
 	}
 }
 

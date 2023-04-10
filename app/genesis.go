@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+
+	pricefeedtypes "github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 )
 
 // The genesis state of the blockchain is represented here as a map of raw json
@@ -17,5 +19,32 @@ type GenesisState map[string]json.RawMessage
 
 // NewDefaultGenesisState generates the default state for the application.
 func NewDefaultGenesisState(cdc codec.JSONCodec) GenesisState {
-	return ModuleBasics.DefaultGenesis(cdc)
+	defaultGenesis := ModuleBasics.DefaultGenesis(cdc)
+
+	// Get default genesis states of the modules we are to override.
+	pricefeedGenesis := pricefeedtypes.DefaultGenesis()
+
+	// Override the genesis parameters.
+
+	// Initial symbols that want to request to BandChain
+	pricefeedGenesis.SymbolRequests = []pricefeedtypes.SymbolRequest{
+		{
+			Symbol:         "BTC",
+			OracleScriptId: 396,
+			BlockInterval:  40,
+		},
+		{
+			Symbol:         "ETH",
+			OracleScriptId: 396,
+			BlockInterval:  40,
+		},
+		{
+			Symbol:         "BAND",
+			OracleScriptId: 396,
+			BlockInterval:  40,
+		},
+	}
+	defaultGenesis[pricefeedtypes.ModuleName] = cdc.MustMarshalJSON(pricefeedGenesis)
+
+	return defaultGenesis
 }
