@@ -20,25 +20,7 @@ func (k Keeper) InitGenesis(ctx sdk.Context, state types.GenesisState) {
 		}
 	}
 	k.SetParams(ctx, state.Params)
-
-	// Initial symbols that want to request to BandChain
-	k.SetSymbolRequests(ctx, []types.SymbolRequest{
-		{
-			Symbol:         "BTC",
-			OracleScriptId: 396,
-			BlockInterval:  40,
-		},
-		{
-			Symbol:         "ETH",
-			OracleScriptId: 396,
-			BlockInterval:  40,
-		},
-		{
-			Symbol:         "BAND",
-			OracleScriptId: 396,
-			BlockInterval:  40,
-		},
-	})
+	k.SetSymbolRequests(ctx, state.SymbolRequest)
 }
 
 // ExportGenesis returns the module's exported genesis
