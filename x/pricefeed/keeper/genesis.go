@@ -26,7 +26,8 @@ func (k Keeper) InitGenesis(ctx sdk.Context, state types.GenesisState) {
 // ExportGenesis returns the module's exported genesis
 func (k Keeper) ExportGenesis(ctx sdk.Context) *types.GenesisState {
 	return &types.GenesisState{
-		PortId: k.GetPort(ctx),
-		Params: k.GetParams(ctx),
+		PortId:         k.GetPort(ctx),
+		Params:         k.GetParams(ctx),
+		SymbolRequests: k.GetAllSymbolRequests(ctx),
 	}
 }
