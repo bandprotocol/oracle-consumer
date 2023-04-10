@@ -238,8 +238,8 @@ type App struct {
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
 	ConsumerKeeper        consumerkeeper.Keeper
-	scopedpricefeedKeeper capabilitykeeper.ScopedKeeper
-	pricefeedKeeper       pricefeedkeeper.Keeper
+	ScopedPricefeedKeeper capabilitykeeper.ScopedKeeper
+	PricefeedKeeper       pricefeedkeeper.Keeper
 
 	// mm is the module manager
 	mm *module.Manager
@@ -482,25 +482,25 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	scopedpricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
-	app.scopedpricefeedKeeper = scopedpricefeedKeeper
-	app.pricefeedKeeper = pricefeedkeeper.NewKeeper(
+	scopedPricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
+	app.ScopedPricefeedKeeper = scopedPricefeedKeeper
+	app.PricefeedKeeper = pricefeedkeeper.NewKeeper(
 		appCodec,
 		keys[pricefeedtypes.StoreKey],
 		app.GetSubspace(pricefeedtypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
-		scopedpricefeedKeeper,
+		scopedPricefeedKeeper,
 	)
-	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.pricefeedKeeper)
+	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.PricefeedKeeper)
 
-	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.pricefeedKeeper)
+	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.PricefeedKeeper)
 
 	app.ConsumerKeeper = consumerkeeper.NewKeeper(
 		appCodec,
 		keys[consumertypes.StoreKey],
-		app.pricefeedKeeper,
+		app.PricefeedKeeper,
 	)
 	consumerModule := consumermodule.NewAppModule(app.ConsumerKeeper)
 
@@ -511,7 +511,7 @@ func New(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(pricefeedtypes.RouterKey, pricefeedmodule.NewUpdateSymbolRequestProposalHandler(app.pricefeedKeeper))
+		AddRoute(pricefeedtypes.RouterKey, pricefeedmodule.NewUpdateSymbolRequestProposalHandler(app.PricefeedKeeper))
 	govConfig := govtypes.DefaultConfig()
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec,
