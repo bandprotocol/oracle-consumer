@@ -16,7 +16,9 @@ func init() {
 	govtypes.RegisterProposalType(UpdateSymbolRequest)
 }
 
-func NewUpdateSymbolRequestProposal(title, description string, symbolRequests []SymbolRequest) *UpdateSymbolRequestProposal {
+func NewUpdateSymbolRequestProposal(
+	title, description string, symbolRequests []SymbolRequest,
+) *UpdateSymbolRequestProposal {
 	return &UpdateSymbolRequestProposal{title, description, symbolRequests}
 }
 

@@ -21,7 +21,10 @@ func (k Querier) Params(c context.Context, req *types.QueryParamsRequest) (*type
 	}, nil
 }
 
-func (k Querier) SymbolRequest(c context.Context, req *types.QuerySymbolRequest) (*types.QuerySymbolRequestResponse, error) {
+func (k Querier) SymbolRequest(
+	c context.Context,
+	req *types.QuerySymbolRequest,
+) (*types.QuerySymbolRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
 	sr, err := k.GetSymbolRequest(ctx, req.Symbol)
@@ -34,7 +37,10 @@ func (k Querier) SymbolRequest(c context.Context, req *types.QuerySymbolRequest)
 	}, nil
 }
 
-func (k Querier) SymbolRequests(c context.Context, req *types.QuerySymbolRequests) (*types.QuerySymbolRequestsResponse, error) {
+func (k Querier) SymbolRequests(
+	c context.Context,
+	req *types.QuerySymbolRequests,
+) (*types.QuerySymbolRequestsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
 	srs := k.GetAllSymbolRequests(ctx)
