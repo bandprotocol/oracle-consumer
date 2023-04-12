@@ -76,7 +76,12 @@ func (im IBCModule) OnChanOpenTry(
 	}
 
 	if counterpartyVersion != types.Version {
-		return "", sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s", counterpartyVersion, types.Version)
+		return "", sdkerrors.Wrapf(
+			types.ErrInvalidVersion,
+			"invalid counterparty version: got: %s, expected %s",
+			counterpartyVersion,
+			types.Version,
+		)
 	}
 
 	// OpenTry must claim the channelCapability that IBC passes into the callback
@@ -96,7 +101,12 @@ func (im IBCModule) OnChanOpenAck(
 	counterpartyVersion string,
 ) error {
 	if counterpartyVersion != types.Version {
-		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.Version)
+		return sdkerrors.Wrapf(
+			types.ErrInvalidVersion,
+			"invalid counterparty version: %s, expected %s",
+			counterpartyVersion,
+			types.Version,
+		)
 	}
 	return nil
 }

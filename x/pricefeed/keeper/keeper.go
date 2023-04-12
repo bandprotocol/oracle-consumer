@@ -163,14 +163,26 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 		prepareGas := types.CalculateGas(params.PrepareGasBase, params.PrepareGasEach, uint64(len(symbols)))
 		executeGas := types.CalculateGas(params.ExecuteGasBase, params.ExecuteGasEach, uint64(len(symbols)))
 
-		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(types.ModuleName, osID, calldataByte, params.AskCount, params.MinCount, params.FeeLimit, prepareGas, executeGas)
+		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
+			types.ModuleName,
+			osID,
+			calldataByte,
+			params.AskCount,
+			params.MinCount,
+			params.FeeLimit,
+			prepareGas,
+			executeGas,
+		)
 
 		// Send the oracle request packet to the Band Chain using the RequestBandChainData function from the keeper
 		err = k.RequestBandChainData(ctx, params.SourceChannel, oracleRequestPacket)
 		if err != nil {
 			ctx.EventManager().EmitEvent(sdk.NewEvent(
 				types.EventTypeRequestBandChainFailed,
-				sdk.NewAttribute(types.AttributeKeyReason, fmt.Sprintf("Unable to request data on BandChain: %s", err)),
+				sdk.NewAttribute(
+					types.AttributeKeyReason,
+					fmt.Sprintf("Unable to request data on BandChain: %s", err),
+				),
 			))
 		}
 
@@ -178,10 +190,19 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 }
 
 // RequestBandChainData is a function that sends an OracleRequestPacketData to BandChain via IBC.
-func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, oracleRequestPacket bandtypes.OracleRequestPacketData) error {
+func (k Keeper) RequestBandChainData(
+	ctx sdk.Context,
+	sourceChannel string,
+	oracleRequestPacket bandtypes.OracleRequestPacketData,
+) error {
 	channel, found := k.channelKeeper.GetChannel(ctx, types.PortID, sourceChannel)
 	if !found {
-		return sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", types.PortID, sourceChannel)
+		return sdkerrors.Wrapf(
+			channeltypes.ErrChannelNotFound,
+			"port ID (%s) channel ID (%s)",
+			types.PortID,
+			sourceChannel,
+		)
 	}
 
 	destinationPort := channel.GetCounterparty().GetPortID()

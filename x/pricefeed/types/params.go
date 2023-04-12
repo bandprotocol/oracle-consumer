@@ -44,7 +44,11 @@ func ParamKeyTable() paramtypes.KeyTable {
 }
 
 // NewParams creates a new Params instance
-func NewParams(askCount, minCount, minDsCount, prepareGasBase, prepareGasEach, executeGasBase, executeGasEach uint64, sourceChannel string, feeLimit sdk.Coins) Params {
+func NewParams(
+	askCount, minCount, minDsCount, prepareGasBase, prepareGasEach, executeGasBase, executeGasEach uint64,
+	sourceChannel string,
+	feeLimit sdk.Coins,
+) Params {
 	return Params{
 		AskCount:       askCount,
 		MinCount:       minCount,
@@ -60,7 +64,17 @@ func NewParams(askCount, minCount, minDsCount, prepareGasBase, prepareGasEach, e
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultAskCount, DefaultMinCount, DefaultMinDsCount, DefaultPrepareGasBase, DefaultPrepareGasEach, DefaultExecuteGasBase, DefaultExecuteGasEach, DefaultSourceChannel, DefaultFeeLimit)
+	return NewParams(
+		DefaultAskCount,
+		DefaultMinCount,
+		DefaultMinDsCount,
+		DefaultPrepareGasBase,
+		DefaultPrepareGasEach,
+		DefaultExecuteGasBase,
+		DefaultExecuteGasEach,
+		DefaultSourceChannel,
+		DefaultFeeLimit,
+	)
 }
 
 // ParamSetPairs get the params.ParamSet
