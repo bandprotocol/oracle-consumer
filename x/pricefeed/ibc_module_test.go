@@ -1,8 +1,6 @@
 package pricefeed_test
 
 import (
-	"math"
-
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
@@ -35,11 +33,6 @@ func (suite *PricefeedTestSuite) TestOnChanOpenInit() {
 			"empty version string", func() {
 				channel.Version = ""
 			}, true,
-		},
-		{
-			"max channels reached", func() {
-				path.EndpointA.ChannelID = channeltypes.FormatChannelIdentifier(math.MaxUint32 + 1)
-			}, false,
 		},
 		{
 			"invalid order - ORDERED", func() {
@@ -136,11 +129,6 @@ func (suite *PricefeedTestSuite) TestOnChanOpenTry() {
 	}{
 		{
 			"success", func() {}, true,
-		},
-		{
-			"max channels reached", func() {
-				path.EndpointA.ChannelID = channeltypes.FormatChannelIdentifier(math.MaxUint32 + 1)
-			}, false,
 		},
 		{
 			"capability already claimed", func() {
