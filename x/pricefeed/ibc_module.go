@@ -51,7 +51,7 @@ func ValidatePricefeedChannelParams(
 		)
 	}
 
-	// Require portID is the portID transfer module is bound to
+	// Require portID is the portID pricefeed module is bound to
 	boundPort := keeper.GetPort(ctx)
 	if boundPort != portID {
 		return sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
