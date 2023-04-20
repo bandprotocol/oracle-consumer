@@ -29,8 +29,7 @@ func NewIBCModule(k keeper.Keeper) IBCModule {
 }
 
 // ValidatePricefeedChannelParams does validation of a newly created priefeed channel. A pricefeed
-// channel must be UNORDERED, use the correct port (by default 'pricefeed'), and use the current
-// supported version. Only 2^32 channels are allowed to be created.
+// channel must be UNORDERED, use the correct port (by default 'pricefeed'),
 func ValidatePricefeedChannelParams(
 	ctx sdk.Context,
 	keeper keeper.Keeper,
