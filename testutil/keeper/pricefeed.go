@@ -62,23 +62,25 @@ func PriceFeedKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	logger := log.NewNopLogger()
 
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
-	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
+	memKeys := storetypes.NewMemoryStoreKey(capabilitytypes.MemStoreKey)
+	tPricefeedKey := sdk.NewTransientStoreKey("transient_test")
 
 	db := tmdb.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
-	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
+	stateStore.MountStoreWithDB(memKeys, storetypes.StoreTypeMemory, nil)
+	stateStore.MountStoreWithDB(tPricefeedKey, storetypes.StoreTypeTransient, nil)
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
-	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, storeKey, memStoreKey)
+	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, storeKey, memKeys)
 
 	paramsSubspace := typesparams.NewSubspace(
 		cdc,
 		types.Amino,
 		storeKey,
-		memStoreKey,
+		tPricefeedKey,
 		"PriceFeedParams",
 	)
 	k := keeper.NewKeeper(

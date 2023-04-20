@@ -9,6 +9,7 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
+	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
@@ -24,24 +25,26 @@ import (
 func ConsumerKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pricefeedkeeper.Keeper) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	pfStoreKey := sdk.NewKVStoreKey(pricefeedtypes.StoreKey)
-	pfMemStoreKey := storetypes.NewMemoryStoreKey(pricefeedtypes.MemStoreKey)
+	memKeys := storetypes.NewMemoryStoreKey(capabilitytypes.MemStoreKey)
+	tConsumerKey := sdk.NewTransientStoreKey("transient_test")
 
 	db := tmdb.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(pfStoreKey, storetypes.StoreTypeIAVL, db)
-	stateStore.MountStoreWithDB(pfMemStoreKey, storetypes.StoreTypeMemory, nil)
+	stateStore.MountStoreWithDB(memKeys, storetypes.StoreTypeMemory, nil)
+	stateStore.MountStoreWithDB(tConsumerKey, storetypes.StoreTypeTransient, nil)
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
-	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, pfStoreKey, pfMemStoreKey)
+	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, pfStoreKey, memKeys)
 
 	paramsSubspace := typesparams.NewSubspace(
 		cdc,
 		pricefeedtypes.Amino,
 		pfStoreKey,
-		pfMemStoreKey,
+		tConsumerKey,
 		"PriceFeedParams",
 	)
 
