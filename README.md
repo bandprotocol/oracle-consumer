@@ -86,10 +86,49 @@ The last step is to set up a relayer to listen and relay IBC packets between a o
 Here are the simple guides for setting up a relayer.
 * [Setup hermes relayer](docs/setup_hermes_relayer.md)
 
+
+### Open and Vote the source channel param change proposal
+The current default value for the source channel is `[not_set]`. If you wish to obtain BandChain data through IBC, you will need to open the proposal to change the source channel param to your own source channel. An example of how to open parameter change proposal is provided below.
+
+#### create proposal.json
+> Note: this example has been provided in `example/proposals`
+
+```json
+{
+  "title": "Param change for SourceChannel",
+  "description": "Proposal for change SourceChannel param in pricefeed module",
+  "changes": [
+    {
+      "subspace": "pricefeed",
+      "key": "SourceChannel",
+      "value": "channel-0"
+    }
+  ],
+  "deposit": "10000000stake"
+}
+```
+
+#### Submit proposal
+
+```
+oracle-consumerd tx gov submit-legacy-proposal param-change example/proposals/source-channel-params-change.json --from alice
+```
+
+#### Vote the proposal
+
+```
+oracle-consumerd tx gov vote 1 yes --from alice
+```
+
+```
+oracle-consumerd tx gov vote 1 yes --from bob
+```
+
 ### Open and Vote the update symbol requests proposal
 The purpose of this proposal is to request price data from BandChain at `block_interval` specified in the proposal. If the proposal is approved, the pricefeed module will retrieve the data and store the response on the consumer chain.
 
 #### create proposal.json
+> Note: this example has been provided in `example/proposals`
 
 ```json
 {
@@ -114,17 +153,17 @@ The purpose of this proposal is to request price data from BandChain at `block_i
 #### Submit proposal
 
 ```
-oracle-consumerd tx gov submit-legacy-proposal update-symbol-request simple_proposals/update-symbol-requests.json --from alice
+oracle-consumerd tx gov submit-legacy-proposal update-symbol-request example/proposals/update-symbol-requests.json --from alice
 ```
 
 #### Vote the proposal
 
 ```
-oracle-consumerd tx gov vote 1 yes --from alice
+oracle-consumerd tx gov vote 2 yes --from alice
 ```
 
 ```
-oracle-consumerd tx gov vote 1 yes --from bob
+oracle-consumerd tx gov vote 2 yes --from bob
 ```
 
 #### Check proposal status
@@ -132,6 +171,20 @@ oracle-consumerd tx gov vote 1 yes --from bob
 ```
 oracle-consumerd query gov proposals
 ```
+
+### Option 2: Another way to update symbol requests
+
+To utilize the Ignite feature to replace the genesis state, insert the code shown below into the `config.yml` file.
+
+```yml
+genesis:
+  app_state:
+    pricefeed:
+        symbol_requests: [{"symbol": "BAND", "oracle_script_id": 396, "block_interval":  40}]
+```
+
+
+
 
 
 ### Query latest price that got from BandChain

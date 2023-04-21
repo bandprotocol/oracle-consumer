@@ -254,9 +254,40 @@ The `tx gov submit-legacy-proposal` commands allow users to submit proposal on y
 oracle-consumerd tx gov submit-legacy-proposal -h
 ```
 
+##### source channel params change
+
+In order to acquire BandChain data through the IBC, it is imperative to update the `source-channel` parameter by submitting a proposal for the change that reflects your own source channel.
+
+```
+oracle-consumerd tx gov submit-legacy-proposal param-change [proposal-file]
+```
+
+Example:
+
+1. create json file
+    > proposal.json
+    ```json
+    {
+      "title": "Param change for SourceChannel",
+      "description": "Proposal for change SourceChannel param in pricefeed module",
+      "changes": [
+        {
+          "subspace": "pricefeed",
+          "key": "SourceChannel",
+          "value": "channel-0"
+        }
+      ],
+      "deposit": "10000000stake"
+    }
+    ```
+2. submit the proposal
+    ```
+    oracle-consumerd tx gov submit-legacy-proposal param-change proposal.json --from alice
+    ```
+
 ##### update symbol request
 
-The `update-symbol-request` command allows users to update symbol request to specify which symbols they desire to obtain price data from BandChain.
+The `update-symbol-request` proposal allows users to update symbol request to specify which symbols they desire to obtain price data from BandChain.
 
 ```
 oracle-consumerd tx gov submit-legacy-proposal update-symbol-request [proposal-file]
