@@ -166,7 +166,7 @@ oracle-consumerd tx gov vote 2 yes --from alice
 oracle-consumerd tx gov vote 2 yes --from bob
 ```
 
-#### Check proposal status
+### Check proposal status
 
 ```
 oracle-consumerd query gov proposals
