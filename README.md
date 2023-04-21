@@ -172,15 +172,15 @@ oracle-consumerd tx gov vote 2 yes --from bob
 oracle-consumerd query gov proposals
 ```
 
-### Option 2: Another way to initiate the symbol requests
+### Another way to initiate source channel and symbol requests
 
 To utilize the Ignite feature to replace the genesis state, insert the code shown below into the `config.yml` file.
 
 ```yml
-genesis:
-  app_state:
-    pricefeed:
-        symbol_requests: [{"symbol": "BAND", "oracle_script_id": 396, "block_interval":  40}]
+pricefeed:
+    params:
+        source_channel: "channel-0"
+    symbol_requests: [{"symbol": "BAND", "oracle_script_id": 396, "block_interval":  40}]
 ```
 
 
