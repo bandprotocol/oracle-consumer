@@ -174,7 +174,7 @@ oracle-consumerd query gov proposals
 
 ### Another way to initiate source channel and symbol requests
 
-To utilize the Ignite feature to replace the genesis state, insert the code shown below into the `config.yml` file.
+To utilize the Ignite feature to replace the genesis state, insert the code shown below into the `config.yml` file. and restat the chin by using `ignite chain serve -r -v` command.
 
 ```yml
 pricefeed:
