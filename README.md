@@ -172,7 +172,7 @@ oracle-consumerd tx gov vote 2 yes --from bob
 oracle-consumerd query gov proposals
 ```
 
-### Option 2: Another way to update symbol requests
+### Option 2: Another way to initiate the symbol requests
 
 To utilize the Ignite feature to replace the genesis state, insert the code shown below into the `config.yml` file.
 
