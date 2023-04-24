@@ -8,9 +8,13 @@ import (
 	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
-var _ types.QueryServer = Keeper{}
+type Querier struct {
+	Keeper
+}
 
-func (k Keeper) Price(c context.Context, req *types.QueryPriceRequest) (*types.QueryPriceResponse, error) {
+var _ types.QueryServer = Querier{}
+
+func (k Querier) Price(c context.Context, req *types.QueryPriceRequest) (*types.QueryPriceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
 	pf, err := k.priceFeedKeeper.GetPrice(ctx, req.Symbol)

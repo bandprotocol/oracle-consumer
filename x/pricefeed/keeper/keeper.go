@@ -185,7 +185,6 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 				),
 			))
 		}
-
 	}
 }
 
