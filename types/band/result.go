@@ -9,15 +9,9 @@ type Response struct {
 }
 
 func DecodeResult(result []byte) ([]Response, error) {
-	// For decode rates
-	type Output struct {
-		Responses []Response
-	}
-	var out Output
-	err := obi.Decode(result, &out)
-
-	if err != nil {
+	var out []Response
+	if err := obi.Decode(result, &out); err != nil {
 		return nil, err
 	}
-	return out.Responses, nil
+	return out, nil
 }

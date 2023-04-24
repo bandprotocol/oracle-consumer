@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  main:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    image: oracle-consumer:latest
+    command: oracle-consumerd start
+    ports:
+      - 1317:1317
+      - 26657:26657
+      - 9090:9090
+    volumes:
+      - ./nodes/main:/root/.oracle-consumer
+
+  alice:
+    image: oracle-consumer:latest
+    command: oracle-consumerd start
+    depends_on:
+      - main
+    volumes:
+      - ./nodes/alice:/root/.oracle-consumer
+
+  bob:
+    image: oracle-consumer:latest
+    command: oracle-consumerd start
+    depends_on:
+      - main
+    volumes:
+      - ./nodes/bob:/root/.oracle-consumer

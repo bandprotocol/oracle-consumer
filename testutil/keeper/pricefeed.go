@@ -25,16 +25,29 @@ import (
 // priceFeedChannelKeeper is a stub of cosmosibckeeper.ChannelKeeper.
 type priceFeedChannelKeeper struct{}
 
-func (priceFeedChannelKeeper) GetChannel(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool) {
+func (priceFeedChannelKeeper) GetChannel(
+	ctx sdk.Context,
+	srcPort, srcChan string,
+) (channel channeltypes.Channel, found bool) {
 	return channeltypes.Channel{}, false
 }
 func (priceFeedChannelKeeper) GetNextSequenceSend(ctx sdk.Context, portID, channelID string) (uint64, bool) {
 	return 0, false
 }
-func (priceFeedChannelKeeper) SendPacket(ctx sdk.Context, channelCap *capabilitytypes.Capability, packet ibcexported.PacketI) error {
+
+func (priceFeedChannelKeeper) SendPacket(
+	ctx sdk.Context,
+	channelCap *capabilitytypes.Capability,
+	packet ibcexported.PacketI,
+) error {
 	return nil
 }
-func (priceFeedChannelKeeper) ChanCloseInit(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error {
+
+func (priceFeedChannelKeeper) ChanCloseInit(
+	ctx sdk.Context,
+	portID, channelID string,
+	chanCap *capabilitytypes.Capability,
+) error {
 	return nil
 }
 
@@ -45,33 +58,36 @@ func (priceFeedPortKeeper) BindPort(ctx sdk.Context, portID string) *capabilityt
 	return &capabilitytypes.Capability{}
 }
 
-func PriceFeedKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func PriceFeedKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	logger := log.NewNopLogger()
 
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
-	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
+	memKeys := storetypes.NewMemoryStoreKey(capabilitytypes.MemStoreKey)
+	tPricefeedKey := sdk.NewTransientStoreKey("transient_test")
 
 	db := tmdb.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
-	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
+	stateStore.MountStoreWithDB(memKeys, storetypes.StoreTypeMemory, nil)
+	stateStore.MountStoreWithDB(tPricefeedKey, storetypes.StoreTypeTransient, nil)
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
-	appCodec := codec.NewProtoCodec(registry)
-	capabilityKeeper := capabilitykeeper.NewKeeper(appCodec, storeKey, memStoreKey)
+	cdc := codec.NewProtoCodec(registry)
+	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, storeKey, memKeys)
 
-	paramsSubspace := typesparams.NewSubspace(appCodec,
+	paramsSubspace := typesparams.NewSubspace(
+		cdc,
 		types.Amino,
 		storeKey,
-		memStoreKey,
+		tPricefeedKey,
 		"PriceFeedParams",
 	)
 	k := keeper.NewKeeper(
-		appCodec,
+		cdc,
 		storeKey,
-		memStoreKey,
 		paramsSubspace,
+		priceFeedChannelKeeper{},
 		priceFeedChannelKeeper{},
 		priceFeedPortKeeper{},
 		capabilityKeeper.ScopeToModule("PriceFeedScopedKeeper"),

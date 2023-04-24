@@ -3,6 +3,7 @@ package pricefeed
 import (
 	"encoding/hex"
 	"fmt"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -27,6 +28,38 @@ func NewIBCModule(k keeper.Keeper) IBCModule {
 	}
 }
 
+// ValidatePricefeedChannelParams does validation of a newly created priefeed channel. A pricefeed
+// channel must be UNORDERED, use the correct port (by default 'pricefeed'),
+func ValidatePricefeedChannelParams(
+	ctx sdk.Context,
+	keeper keeper.Keeper,
+	order channeltypes.Order,
+	portID string,
+	channelID string,
+) error {
+	_, err := channeltypes.ParseChannelSequence(channelID)
+	if err != nil {
+		return err
+	}
+
+	if order != channeltypes.UNORDERED {
+		return sdkerrors.Wrapf(
+			channeltypes.ErrInvalidChannelOrdering,
+			"expected %s channel, got %s ",
+			channeltypes.UNORDERED,
+			order,
+		)
+	}
+
+	// Require portID is the portID pricefeed module is bound to
+	boundPort := keeper.GetPort(ctx)
+	if boundPort != portID {
+		return sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+	}
+
+	return nil
+}
+
 // OnChanOpenInit implements the IBCModule interface
 func (im IBCModule) OnChanOpenInit(
 	ctx sdk.Context,
@@ -38,11 +71,12 @@ func (im IBCModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) (string, error) {
+	if err := ValidatePricefeedChannelParams(ctx, im.keeper, order, portID, channelID); err != nil {
+		return "", err
+	}
 
-	// Require portID is the portID module is bound to
-	boundPort := im.keeper.GetPort(ctx)
-	if boundPort != portID {
-		return "", sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+	if strings.TrimSpace(version) == "" {
+		version = types.Version
 	}
 
 	if version != types.Version {
@@ -68,26 +102,22 @@ func (im IBCModule) OnChanOpenTry(
 	counterparty channeltypes.Counterparty,
 	counterpartyVersion string,
 ) (string, error) {
-
-	// Require portID is the portID module is bound to
-	boundPort := im.keeper.GetPort(ctx)
-	if boundPort != portID {
-		return "", sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+	if err := ValidatePricefeedChannelParams(ctx, im.keeper, order, portID, channelID); err != nil {
+		return "", err
 	}
 
 	if counterpartyVersion != types.Version {
-		return "", sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s", counterpartyVersion, types.Version)
+		return "", sdkerrors.Wrapf(
+			types.ErrInvalidVersion,
+			"invalid counterparty version: got: %s, expected %s",
+			counterpartyVersion,
+			types.Version,
+		)
 	}
 
-	// Module may have already claimed capability in OnChanOpenInit in the case of crossing hellos
-	// (ie chainA and chainB both call ChanOpenInit before one of them calls ChanOpenTry)
-	// If module can already authenticate the capability then module already owns it so we don't need to claim
-	// Otherwise, module does not have channel capability and we must claim it from IBC
-	if !im.keeper.AuthenticateCapability(ctx, chanCap, host.ChannelCapabilityPath(portID, channelID)) {
-		// Only claim channel capability passed back by IBC module if we do not already own it
-		if err := im.keeper.ClaimCapability(ctx, chanCap, host.ChannelCapabilityPath(portID, channelID)); err != nil {
-			return "", err
-		}
+	// OpenTry must claim the channelCapability that IBC passes into the callback
+	if err := im.keeper.ClaimCapability(ctx, chanCap, host.ChannelCapabilityPath(portID, channelID)); err != nil {
+		return "", err
 	}
 
 	return types.Version, nil
@@ -102,7 +132,12 @@ func (im IBCModule) OnChanOpenAck(
 	counterpartyVersion string,
 ) error {
 	if counterpartyVersion != types.Version {
-		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.Version)
+		return sdkerrors.Wrapf(
+			types.ErrInvalidVersion,
+			"invalid counterparty version: %s, expected %s",
+			counterpartyVersion,
+			types.Version,
+		)
 	}
 	return nil
 }
@@ -183,7 +218,10 @@ func (im IBCModule) OnAcknowledgementPacket(
 		// If the response is of type Result, unmarshal the result into a
 		// bandtypes.OracleRequestPacketAcknowledgement object.
 		var oracleAck bandtypes.OracleRequestPacketAcknowledgement
-		types.ModuleCdc.MustUnmarshalJSON(resp.Result, &oracleAck)
+		if err := types.ModuleCdc.UnmarshalJSON(resp.Result, &oracleAck); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		}
+
 		// Emit a new event with the EventTypeBandChainAckSuccess and AckSuccess attributes.
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(

@@ -157,7 +157,8 @@ func (m *QuerySymbolRequest) GetSymbol() string {
 	return ""
 }
 
-// QuerySymbolRequestResponse is response type for the Query/SymbolRequest RPC method.
+// QuerySymbolRequestResponse is response type for the Query/SymbolRequest RPC
+// method.
 type QuerySymbolRequestResponse struct {
 	// symbol_request holds the symbol request data for the given symbol.
 	// The symbol request data for the given symbol name.

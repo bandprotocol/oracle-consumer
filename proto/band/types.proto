@@ -1,7 +1,7 @@
 syntax = "proto3";
 package band;
 
-option go_package = "oracle-consumer/types/band";
+option go_package = "github.com/bandprotocol/oracle-consumer/types/band";
 
 import "gogoproto/gogo.proto";
 import "cosmos/base/v1beta1/coin.proto";

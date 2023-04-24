@@ -1,0 +1,12 @@
+{
+  "title": "Param change for SourceChannel",
+  "description": "Proposal for change SourceChannel param in pricefeed module",
+  "changes": [
+    {
+      "subspace": "pricefeed",
+      "key": "SourceChannel",
+      "value": "channel-0"
+    }
+  ],
+  "deposit": "10000000stake"
+}

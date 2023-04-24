@@ -16,18 +16,18 @@ type (
 	// SymbolRequestJSON defines a parameter change used in JSON input. This
 	// allows values to be specified in raw JSON instead of being string encoded.
 	SymbolRequestJSON struct {
-		Symbol         string `json:"symbol" yaml:"symbol"`
+		Symbol         string `json:"symbol"           yaml:"symbol"`
 		OracleScriptId uint64 `json:"oracle_script_id" yaml:"oracle_script_id"`
-		BlockInterval  uint64 `json:"block_interval" yaml:"block_interval"`
+		BlockInterval  uint64 `json:"block_interval"   yaml:"block_interval"`
 	}
 
 	// UpdateSymbolRequestProposalJSON defines a ParameterChangeProposal with a deposit used
 	// to parse parameter change proposals from a JSON file.
 	UpdateSymbolRequestProposalJSON struct {
-		Title          string             `json:"title" yaml:"title"`
-		Description    string             `json:"description" yaml:"description"`
+		Title          string             `json:"title"           yaml:"title"`
+		Description    string             `json:"description"     yaml:"description"`
 		SymbolRequests SymbolRequestsJSON `json:"symbol_requests" yaml:"symbol_requests"`
-		Deposit        string             `json:"deposit" yaml:"deposit"`
+		Deposit        string             `json:"deposit"         yaml:"deposit"`
 	}
 )
 
@@ -56,7 +56,10 @@ func (srsj SymbolRequestsJSON) ToSymbolRequests() []types.SymbolRequest {
 
 // ParseUpdateSymbolRequestProposalJSON reads and parses a UpdateSymbolRequestProposalJSON from
 // file.
-func ParseUpdateSymbolRequestProposalJSON(cdc *codec.LegacyAmino, proposalFile string) (UpdateSymbolRequestProposalJSON, error) {
+func ParseUpdateSymbolRequestProposalJSON(
+	cdc *codec.LegacyAmino,
+	proposalFile string,
+) (UpdateSymbolRequestProposalJSON, error) {
 	proposal := UpdateSymbolRequestProposalJSON{}
 	contents, err := os.ReadFile(proposalFile)
 	if err != nil {

@@ -3,9 +3,9 @@ package types_test
 import (
 	"testing"
 
-	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
-
 	"github.com/stretchr/testify/require"
+
+	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {

@@ -8,11 +8,12 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
+	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
-	"github.com/ignite/cli/ignite/pkg/cosmosibckeeper"
 	"github.com/tendermint/tendermint/libs/log"
 
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
@@ -20,41 +21,64 @@ import (
 )
 
 type Keeper struct {
-	*cosmosibckeeper.Keeper
-	cdc        codec.BinaryCodec
 	storeKey   storetypes.StoreKey
-	memKey     storetypes.StoreKey
-	paramstore paramtypes.Subspace
+	cdc        codec.BinaryCodec
+	paramSpace paramtypes.Subspace
+
+	ics4Wrapper   types.ICS4Wrapper
+	channelKeeper types.ChannelKeeper
+	portKeeper    types.PortKeeper
+	scopedKeeper  capabilitykeeper.ScopedKeeper
 }
 
 func NewKeeper(
-	cdc codec.BinaryCodec,
-	storeKey,
-	memKey storetypes.StoreKey,
-	ps paramtypes.Subspace,
-	channelKeeper cosmosibckeeper.ChannelKeeper,
-	portKeeper cosmosibckeeper.PortKeeper,
-	scopedKeeper cosmosibckeeper.ScopedKeeper,
-
-) *Keeper {
+	cdc codec.BinaryCodec, key storetypes.StoreKey, paramSpace paramtypes.Subspace,
+	ics4Wrapper types.ICS4Wrapper, channelKeeper types.ChannelKeeper, portKeeper types.PortKeeper,
+	scopedKeeper capabilitykeeper.ScopedKeeper,
+) Keeper {
 	// set KeyTable if it has not already been set
-	if !ps.HasKeyTable() {
-		ps = ps.WithKeyTable(types.ParamKeyTable())
+	if !paramSpace.HasKeyTable() {
+		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
 	}
 
-	return &Keeper{
-		Keeper: cosmosibckeeper.NewKeeper(
-			types.PortKey,
-			storeKey,
-			channelKeeper,
-			portKeeper,
-			scopedKeeper,
-		),
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
+	return Keeper{
+		cdc:           cdc,
+		storeKey:      key,
+		paramSpace:    paramSpace,
+		ics4Wrapper:   ics4Wrapper,
+		channelKeeper: channelKeeper,
+		portKeeper:    portKeeper,
+		scopedKeeper:  scopedKeeper,
 	}
+}
+
+func (k Keeper) Logger(ctx sdk.Context) log.Logger {
+	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+// IsBound checks if the pricefeed module is already bound to the desired port
+func (k Keeper) IsBound(ctx sdk.Context, portID string) bool {
+	_, ok := k.scopedKeeper.GetCapability(ctx, host.PortPath(portID))
+	return ok
+}
+
+// BindPort defines a wrapper function for the ort Keeper's function in
+// order to expose it to module's InitGenesis function
+func (k Keeper) BindPort(ctx sdk.Context, portID string) error {
+	cap := k.portKeeper.BindPort(ctx, portID)
+	return k.ClaimCapability(ctx, cap, host.PortPath(portID))
+}
+
+// GetPort returns the portID for the pricefeed module. Used in ExportGenesis
+func (k Keeper) GetPort(ctx sdk.Context) string {
+	store := ctx.KVStore(k.storeKey)
+	return string(store.Get(types.PortKey))
+}
+
+// SetPort sets the portID for the pricefeed module. Used in InitGenesis
+func (k Keeper) SetPort(ctx sdk.Context, portID string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.PortKey, []byte(portID))
 }
 
 func (k Keeper) SetSymbolRequest(ctx sdk.Context, symbolRequest types.SymbolRequest) {
@@ -111,6 +135,12 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 	blockHeight := ctx.BlockHeight()
 
 	params := k.GetParams(ctx)
+
+	// Verify that SourceChannel params is set by open params proposal already
+	if params.SourceChannel == types.NotSet {
+		return
+	}
+
 	symbols := k.GetAllSymbolRequests(ctx)
 
 	// Map symbols that need to request on this block by oracle script ID and symbol block interval
@@ -133,38 +163,58 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 		prepareGas := types.CalculateGas(params.PrepareGasBase, params.PrepareGasEach, uint64(len(symbols)))
 		executeGas := types.CalculateGas(params.ExecuteGasBase, params.ExecuteGasEach, uint64(len(symbols)))
 
-		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(types.ModuleName, osID, calldataByte, params.AskCount, params.MinCount, params.FeeLimit, prepareGas, executeGas)
+		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
+			types.ModuleName,
+			osID,
+			calldataByte,
+			params.AskCount,
+			params.MinCount,
+			params.FeeLimit,
+			prepareGas,
+			executeGas,
+		)
 
 		// Send the oracle request packet to the Band Chain using the RequestBandChainData function from the keeper
 		err = k.RequestBandChainData(ctx, params.SourceChannel, oracleRequestPacket)
 		if err != nil {
 			ctx.EventManager().EmitEvent(sdk.NewEvent(
 				types.EventTypeRequestBandChainFailed,
-				sdk.NewAttribute(types.AttributeKeyReason, fmt.Sprintf("Unable to request data on BandChain: %s", err)),
+				sdk.NewAttribute(
+					types.AttributeKeyReason,
+					fmt.Sprintf("Unable to request data on BandChain: %s", err),
+				),
 			))
 		}
-
 	}
 }
 
 // RequestBandChainData is a function that sends an OracleRequestPacketData to BandChain via IBC.
-func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, oracleRequestPacket bandtypes.OracleRequestPacketData) error {
-	channel, found := k.ChannelKeeper.GetChannel(ctx, types.PortID, sourceChannel)
+func (k Keeper) RequestBandChainData(
+	ctx sdk.Context,
+	sourceChannel string,
+	oracleRequestPacket bandtypes.OracleRequestPacketData,
+) error {
+	channel, found := k.channelKeeper.GetChannel(ctx, types.PortID, sourceChannel)
 	if !found {
-		return sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", types.PortID, sourceChannel)
+		return sdkerrors.Wrapf(
+			channeltypes.ErrChannelNotFound,
+			"port ID (%s) channel ID (%s)",
+			types.PortID,
+			sourceChannel,
+		)
 	}
 
 	destinationPort := channel.GetCounterparty().GetPortID()
 	destinationChannel := channel.GetCounterparty().GetChannelID()
 
 	// Get the capability associated with the given channel.
-	channelCap, ok := k.ScopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(types.PortID, sourceChannel))
+	channelCap, ok := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(types.PortID, sourceChannel))
 	if !ok {
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
 	// Get the next sequence number for the given channel and port.
-	sequence, found := k.ChannelKeeper.GetNextSequenceSend(
+	sequence, found := k.channelKeeper.GetNextSequenceSend(
 		ctx, types.PortID, sourceChannel,
 	)
 	if !found {
@@ -189,7 +239,7 @@ func (k Keeper) RequestBandChainData(ctx sdk.Context, sourceChannel string, orac
 	)
 
 	// Send the packet via the channel and capability associated with the given channel.
-	if err := k.ChannelKeeper.SendPacket(ctx, channelCap, packet); err != nil {
+	if err := k.ics4Wrapper.SendPacket(ctx, channelCap, packet); err != nil {
 		return err
 	}
 
@@ -219,6 +269,8 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 	}
 }
 
-func (k Keeper) Logger(ctx sdk.Context) log.Logger {
-	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+// ClaimCapability allows the pricefeed module that can claim a capability that IBC module
+// passes to it
+func (k Keeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) error {
+	return k.scopedKeeper.ClaimCapability(ctx, cap, name)
 }

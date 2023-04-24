@@ -8,7 +8,14 @@ import (
 
 // NewOracleRequestPacketData contructs a new OracleRequestPacketData instance
 func NewOracleRequestPacketData(
-	clientID string, oracleScriptID uint64, calldata []byte, askCount uint64, minCount uint64, feeLimit sdk.Coins, prepareGas uint64, executeGas uint64,
+	clientID string,
+	oracleScriptID uint64,
+	calldata []byte,
+	askCount uint64,
+	minCount uint64,
+	feeLimit sdk.Coins,
+	prepareGas uint64,
+	executeGas uint64,
 ) OracleRequestPacketData {
 	return OracleRequestPacketData{
 		ClientID:       clientID,
@@ -32,6 +39,12 @@ func NewOracleRequestPacketAcknowledgement(requestID uint64) *OracleRequestPacke
 	return &OracleRequestPacketAcknowledgement{
 		RequestID: requestID,
 	}
+}
+
+// GetBytes is a helper for serialising
+func (p OracleRequestPacketAcknowledgement) GetBytes() []byte {
+	cdc := codec.NewProtoCodec(codectypes.NewInterfaceRegistry())
+	return sdk.MustSortJSON(cdc.MustMarshalJSON(&p))
 }
 
 // NewOracleResponsePacketData contructs a new OracleResponsePacketData instance
