@@ -165,7 +165,7 @@ ignore_port_channel = []
 
 #### Add relayer key
 
-##### create mnemonic file on consumer chain and BandChain
+##### Create mnemonic file on consumer chain and BandChain
 > Note: Upon logging for the first time that you run consumer chain, you will be given either Alice's or Bob's mnemonic, which can be used as the consumer mnemonic. It's important to note that you need to have funds in your key in order to send transactions on each chain.
 
 ```
