@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/hex"
 	"fmt"
 	"time"
 
@@ -242,6 +243,19 @@ func (k Keeper) RequestBandChainData(
 	if err := k.ics4Wrapper.SendPacket(ctx, channelCap, packet); err != nil {
 		return err
 	}
+
+	// Emit an event if send packet success
+	ctx.EventManager().EmitEvent(sdk.NewEvent(
+		types.EventTypeSendPacketSuccess,
+		sdk.NewAttribute(types.AttributeKeyData, hex.EncodeToString(packet.Data)),
+		sdk.NewAttribute(types.AttributeKeySequence, fmt.Sprintf("%d", packet.Sequence)),
+		sdk.NewAttribute(types.AttributeKeyPortID, packet.SourcePort),
+		sdk.NewAttribute(types.AttributeKeySourceChannel, packet.SourceChannel),
+		sdk.NewAttribute(types.AttributeKeyDestinationPort, packet.DestinationPort),
+		sdk.NewAttribute(types.AttributeKeyDestinationChannel, packet.DestinationChannel),
+		sdk.NewAttribute(types.AttributeKeyTimeoutHeight, packet.TimeoutHeight.String()),
+		sdk.NewAttribute(types.AttributeKeyTimeoutTimestamp, fmt.Sprintf("%d", packet.TimeoutTimestamp))),
+	)
 
 	return nil
 }
