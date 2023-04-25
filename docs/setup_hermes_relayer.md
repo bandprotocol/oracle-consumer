@@ -188,7 +188,7 @@ touch mem-band.txt
 target/release/hermes --config config_relayer.toml keys add --chain oracleconsumer --mnemonic-file "mem-oracleconsumer.txt"
 ```
 
-###### and BandChian key
+###### BandChian key
 
 ```
 target/release/hermes --config config_relayer.toml keys add --chain band-laozi-testnet6 --mnemonic-file "mem-band.txt"  --hd-path "m/44'/494'/0'/0/0"
