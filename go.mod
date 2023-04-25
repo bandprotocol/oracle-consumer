@@ -3,7 +3,7 @@ module github.com/bandprotocol/oracle-consumer
 go 1.19
 
 require (
-	github.com/cosmos/cosmos-sdk v0.46.11
+	github.com/cosmos/cosmos-sdk v0.46.12
 	github.com/cosmos/ibc-go/v5 v5.2.0
 	github.com/gogo/protobuf v1.3.3
 	github.com/golang/protobuf v1.5.3
