@@ -90,7 +90,7 @@ Here are the simple guides for setting up a relayer.
 ### Open and Vote the source channel param change proposal
 The current default value for the source channel is `[not_set]`. If you wish to obtain BandChain data through IBC, you will need to open the proposal to change the source channel param to your own source channel. An example of how to open parameter change proposal is provided below.
 
-#### create proposal.json
+#### Create proposal.json
 > Note: this example has been provided in `example/proposals/source-channel-params-change.json`
 
 ```json
@@ -127,7 +127,7 @@ oracle-consumerd tx gov vote 1 yes --from bob
 ### Open and Vote the update symbol requests proposal
 The purpose of this proposal is to request price data from BandChain at `block_interval` specified in the proposal. If the proposal is approved, the pricefeed module will retrieve the data and store the response on the consumer chain.
 
-#### create proposal.json
+#### Create proposal.json
 > Note: this example has been provided in `example/proposals/update-symbol-requests.json`
 
 ```json
