@@ -284,8 +284,11 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 	}
 }
 
-// ClaimCapability allows the pricefeed module that can claim a capability that IBC module
-// passes to it
+// ClaimCapability attempts to claim a given Capability. The provided name and
+// the scoped module's name tuple are treated as the owner. It will attempt
+// to add the owner to the persistent set of capability owners for the capability
+// index. If the owner already exists, it will return an error. Otherwise, it will
+// also set a forward and reverse index for the capability and capability name.
 func (k Keeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) error {
 	return k.scopedKeeper.ClaimCapability(ctx, cap, name)
 }
