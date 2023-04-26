@@ -122,11 +122,11 @@ func (k Keeper) SetPrice(ctx sdk.Context, price types.Price) {
 
 func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (types.Price, error) {
 	bz := ctx.KVStore(k.storeKey).Get(types.PriceStoreKey(symbol))
-
 	if bz == nil {
 		return types.Price{}, sdkerrors.Wrapf(types.ErrPriceNotFound, "symbol: %s", symbol)
 	}
-	pf := types.Price{}
+
+	var pf types.Price
 	k.cdc.MustUnmarshal(bz, &pf)
 
 	return pf, nil

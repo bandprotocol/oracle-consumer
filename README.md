@@ -1,6 +1,6 @@
 # Oracle Consumer Chain
 
-The oracle-consumer is an application of the Cosmos SDK that demonstrates the use of the [pricefeed-module](https://) implemented by BandProtocol. This module allows other Cosmos SDK applications to easily obtain data from BandChain through IBC.
+The oracle-consumer is an application of the Cosmos SDK that demonstrates the use of the [pricefeed-module](https://github.com/bandprotocol/oracle-consumer/tree/main/x/pricefeed) implemented by BandProtocol. This module allows other Cosmos SDK applications to easily obtain data from BandChain through IBC.
 
 - `oracle-consumerd`: The Oracle Consumer Daemon and command-line interface (CLI). Runs a full node of the consumer application. 
 
@@ -182,10 +182,6 @@ pricefeed:
         source_channel: "channel-0"
     symbol_requests: [{"symbol": "BAND", "oracle_script_id": 396, "block_interval":  40}]
 ```
-
-
-
-
 
 ### Query latest price that got from BandChain
 
