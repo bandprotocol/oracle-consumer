@@ -195,12 +195,13 @@ func (k Keeper) RequestBandChainData(
 	sourceChannel string,
 	oracleRequestPacket bandtypes.OracleRequestPacketData,
 ) error {
-	channel, found := k.channelKeeper.GetChannel(ctx, types.PortID, sourceChannel)
+	portID := k.GetPort(ctx)
+	channel, found := k.channelKeeper.GetChannel(ctx, portID, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(
 			channeltypes.ErrChannelNotFound,
 			"port ID (%s) channel ID (%s)",
-			types.PortID,
+			portID,
 			sourceChannel,
 		)
 	}
@@ -209,21 +210,21 @@ func (k Keeper) RequestBandChainData(
 	destinationChannel := channel.GetCounterparty().GetChannelID()
 
 	// Get the capability associated with the given channel.
-	channelCap, ok := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(types.PortID, sourceChannel))
+	channelCap, ok := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(portID, sourceChannel))
 	if !ok {
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
 	// Get the next sequence number for the given channel and port.
 	sequence, found := k.channelKeeper.GetNextSequenceSend(
-		ctx, types.PortID, sourceChannel,
+		ctx, portID, sourceChannel,
 	)
 	if !found {
 		return sdkerrors.Wrapf(
 			sdkerrors.ErrUnknownRequest,
 			"unknown sequence number for channel %s port %s",
 			sourceChannel,
-			types.PortID,
+			portID,
 		)
 	}
 
@@ -231,7 +232,7 @@ func (k Keeper) RequestBandChainData(
 	packet := channeltypes.NewPacket(
 		oracleRequestPacket.GetBytes(),
 		sequence,
-		types.PortID,
+		portID,
 		sourceChannel,
 		destinationPort,
 		destinationChannel,
