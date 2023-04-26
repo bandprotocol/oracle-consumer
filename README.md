@@ -84,7 +84,7 @@ version: ""
 The last step is to set up a relayer to listen and relay IBC packets between an oracle-consumer chain and BandChain.
 
 Here are the simple guides for setting up a relayer.
-* [Setup Hermes relayer](docs/setup_hermes_relayer.md)
+* [Setup Hermes Relayer](docs/setup_hermes_relayer.md)
 
 
 ### Open and Vote the source channel param change proposal
