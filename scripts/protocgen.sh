@@ -5,6 +5,7 @@ set -eo pipefail
 echo "Generating gogo proto code"
 cd proto
 
+buf mod update
 buf generate --template buf.gen.gogo.yaml $file
 
 cd ..
