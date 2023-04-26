@@ -14,6 +14,13 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 		PortId: types.PortID,
+		SymbolRequests: []types.SymbolRequest{
+			{
+				Symbol:         "BAND",
+				OracleScriptId: 1,
+				BlockInterval:  30,
+			},
+		},
 	}
 
 	k, ctx := testkeeper.PriceFeedKeeper(t)

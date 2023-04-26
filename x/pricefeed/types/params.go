@@ -13,10 +13,10 @@ const (
 	DefaultAskCount       = uint64(16)
 	DefaultMinCount       = uint64(10)
 	DefaultMinDsCount     = uint64(3)
-	DefaultPrepareGasBase = uint64(5000)
-	DefaultPrepareGasEach = uint64(1)
-	DefaultExecuteGasBase = uint64(100000)
-	DefaultExecuteGasEach = uint64(1)
+	DefaultPrepareGasBase = uint64(3000)
+	DefaultPrepareGasEach = uint64(600)
+	DefaultExecuteGasBase = uint64(70000)
+	DefaultExecuteGasEach = uint64(7500)
 	DefaultSourceChannel  = NotSet
 )
 

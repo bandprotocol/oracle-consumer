@@ -10,11 +10,13 @@ import (
 )
 
 func TestSymbolRequestStoreKey(t *testing.T) {
-	expect, _ := hex.DecodeString("01425443")
+	expect, err := hex.DecodeString("01425443")
+	require.NoError(t, err)
 	require.Equal(t, expect, types.SymbolRequestStoreKey("BTC"))
 }
 
 func TestPriceStoreKey(t *testing.T) {
-	expect, _ := hex.DecodeString("02425443")
+	expect, err := hex.DecodeString("02425443")
+	require.NoError(t, err)
 	require.Equal(t, expect, types.PriceStoreKey("BTC"))
 }

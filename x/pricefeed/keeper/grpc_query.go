@@ -54,10 +54,10 @@ func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPr
 	ctx := sdk.UnwrapSDKContext(c)
 
 	p, err := k.GetPrice(ctx, req.Symbol)
-
 	if err != nil {
 		return nil, err
 	}
+
 	return &types.QueryPriceResponse{
 		Price: &p,
 	}, nil
