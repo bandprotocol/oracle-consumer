@@ -13,8 +13,6 @@ git checkout v1.1.0-band
 cargo build --release
 ```
 
-
-
 #### Create config_relayer.toml
 ```
 # The global section has parameters that apply globally to the relayer operation.
@@ -170,28 +168,28 @@ ignore_port_channel = []
 
 ```
 # hermes/
-touch mem-oracleconsumer.txt
+touch mnemonic-oracleconsumer.txt
 ```
 - add your oracle-consumer chain mnemonic in mem-consumer.txt
 
 ```
 # hermes/
-touch mem-band.txt
+touch mnemonic-band.txt
 ```
 - add your BandChain mnemonic in mem-band.txt
 
-##### add keys to hermes by following command
+##### Add keys to hermes by following command
 
-###### consumer key
+###### Consumer key
 
 ```
-target/release/hermes --config config_relayer.toml keys add --chain oracleconsumer --mnemonic-file "mem-oracleconsumer.txt"
+target/release/hermes --config config_relayer.toml keys add --chain oracleconsumer --mnemonic-file "mnemonic-oracleconsumer.txt"
 ```
 
 ###### BandChain key
 
 ```
-target/release/hermes --config config_relayer.toml keys add --chain band-laozi-testnet6 --mnemonic-file "mem-band.txt"  --hd-path "m/44'/494'/0'/0/0"
+target/release/hermes --config config_relayer.toml keys add --chain band-laozi-testnet6 --mnemonic-file "mnemonic-band.txt"  --hd-path "m/44'/494'/0'/0/0"
 ```
 
 #### Create client connection
@@ -200,7 +198,7 @@ target/release/hermes --config config_relayer.toml keys add --chain band-laozi-t
 target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain oracleconsumer --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection
 ```
 
-#### Start hermes relayer
+#### Start Hermes relayer
 
 ```
 target/release/hermes --config config_relayer.toml start
