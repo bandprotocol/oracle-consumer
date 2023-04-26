@@ -223,7 +223,7 @@ The `symbol-requests` command enables users to retrieve information about all sy
 oracle-consumerd query pricefeed symbol-requests
 ```
 
-##### Price
+##### price
 
 The `price` command allows users to query price data by symbol.
 

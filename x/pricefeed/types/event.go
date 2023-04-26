@@ -3,7 +3,7 @@ package types
 // IBC events
 const (
 	EventTypeEncodeCalldataFailed               = "encode_calldata_failed"
-	EventTypeSendPacketSuccess                  = "request_bandchain_success"
+	EventTypeSendPacketSuccess                  = "send_packet_success"
 	EventTypeRequestBandChainFailed             = "request_bandchain_failed"
 	EventTypeDecodeBandChainResultFailed        = "decode_bandchain_result_failed"
 	EventTypeBandChainAckSuccess                = "bandchain_ack_success"

@@ -73,7 +73,7 @@ You should see something similar to the following:
 ...
 build_tags: ""
 commit: ...
-cosmos_sdk_version: v0.46.11
+cosmos_sdk_version: v0.46.12
 go: go version go1.19.5 darwin/amd64
 name: Oracle-Consumer
 server_name: oracle-consumerd
@@ -84,7 +84,7 @@ version: ""
 The last step is to set up a relayer to listen and relay IBC packets between an oracle-consumer chain and BandChain.
 
 Here are the simple guides for setting up a relayer.
-* [Setup hermes relayer](docs/setup_hermes_relayer.md)
+* [Setup Hermes relayer](docs/setup_hermes_relayer.md)
 
 
 ### Open and Vote the source channel param change proposal
