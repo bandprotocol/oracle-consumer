@@ -400,13 +400,13 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"pricefeed", "params"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"pricefeed", "params"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_SymbolRequest_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"pricefeed", "symbol_requests", "symbol"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_SymbolRequest_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"pricefeed", "symbol_requests", "symbol"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_SymbolRequests_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"pricefeed", "symbol_requests"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_SymbolRequests_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"pricefeed", "symbol_requests"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_Price_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"pricefeed", "prices", "symbol"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Price_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"pricefeed", "prices", "symbol"}, "", runtime.AssumeColonVerbOpt(false)))
 )
 
 var (
