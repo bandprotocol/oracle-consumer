@@ -32,6 +32,36 @@ func TestSetSymbolRequest(t *testing.T) {
 	require.EqualValues(t, symbolRequest, storedSymbolRequest)
 }
 
+func TestSetSymbolRequests(t *testing.T) {
+	// Initialize the testing environment.
+	k, ctx := testkeeper.PriceFeedKeeper(t)
+
+	// Define symbol request
+	symbolRequests := []types.SymbolRequest{
+		{
+			Symbol:         "BTC",
+			OracleScriptId: 1,
+			BlockInterval:  60,
+		},
+		{
+			Symbol:         "BTCC",
+			OracleScriptId: 1,
+			BlockInterval:  60,
+		},
+	}
+
+	// Set symbol request
+	k.SetSymbolRequests(ctx, symbolRequests)
+
+	storedSymbolRequest1, err := k.GetSymbolRequest(ctx, "BTC")
+	require.NoError(t, err)
+	storedSymbolRequest2, err := k.GetSymbolRequest(ctx, "BTCC")
+	require.NoError(t, err)
+
+	require.EqualValues(t, symbolRequests[0], storedSymbolRequest1)
+	require.EqualValues(t, symbolRequests[1], storedSymbolRequest2)
+}
+
 func TestSetPrice(t *testing.T) {
 	// Initialize the testing environment.
 	k, ctx := testkeeper.PriceFeedKeeper(t)
