@@ -41,7 +41,7 @@ sed -i '' -e \
   "s/persistent_peers = .*/persistent_peers = \"$main_node@main:26656\"/" \
   $DIR/main/config/config.toml
 
-cat <<< $(jq '.app_state.gov.voting_params.voting_period = "20s"' $DIR/main/config/genesis.json) > $DIR/main/config/genesis.json
+cat <<< $(jq '.app_state.gov.voting_params.voting_period = "50s"' $DIR/main/config/genesis.json) > $DIR/main/config/genesis.json
 
 for val in "${vals[@]}"
 do
