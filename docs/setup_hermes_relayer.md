@@ -107,7 +107,7 @@ host = '127.0.0.1'
 port = 3001
 
 [[chains]]
-id = 'oracleconsumer'
+id = 'oracle-consumer'
 rpc_addr = 'http://localhost:26657'
 grpc_addr = 'http://localhost:9090'
 websocket_addr = 'ws://localhost:26657/websocket'
@@ -168,7 +168,7 @@ ignore_port_channel = []
 
 ```
 # hermes/
-touch mnemonic-oracleconsumer.txt
+touch mnemonic-oracle-consumer.txt
 ```
 - add your oracle-consumer chain mnemonic in mem-consumer.txt
 
@@ -183,7 +183,7 @@ touch mnemonic-band.txt
 ###### Consumer key
 
 ```
-target/release/hermes --config config_relayer.toml keys add --chain oracleconsumer --mnemonic-file "mnemonic-oracleconsumer.txt"
+target/release/hermes --config config_relayer.toml keys add --chain oracle-consumer --mnemonic-file "mnemonic-oracle-consumer.txt"
 ```
 
 ###### BandChain key
@@ -195,7 +195,7 @@ target/release/hermes --config config_relayer.toml keys add --chain band-laozi-t
 #### Create client connection
 
 ```
-target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain oracleconsumer --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection
+target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain oracle-consumer --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection
 ```
 
 #### Start Hermes relayer

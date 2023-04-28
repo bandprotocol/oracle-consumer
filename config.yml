@@ -8,6 +8,7 @@ validators:
   - name: alice
     bonded: "100000000stake"
 genesis:
+  chain_id: "oracle-consumer"
   app_state:
     gov:
       voting_params:
