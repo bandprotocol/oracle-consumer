@@ -1,0 +1,24 @@
+syntax = "proto3";
+package consumer;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/bandprotocol/oracle-consumer/x/consumer/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Price queries a latest price of symbol.
+  rpc Price(QueryPriceRequest) returns (QueryPriceResponse) {
+    option (google.api.http).get = "/consumer/prices/{symbol}";
+  }
+}
+
+// QueryPriceRequest is request type for the Query/Price RPC method.
+message QueryPriceRequest { string symbol = 1; }
+
+// QueryPriceResponse is response type for the Query/Price RPC method.
+message QueryPriceResponse {
+  string symbol = 1;
+  uint64 price = 2;
+  int64 resolve_time = 3;
+}

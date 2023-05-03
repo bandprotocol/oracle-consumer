@@ -1,31 +1,35 @@
 package cli
 
 import (
-	"fmt"
-	// "strings"
-
-	"github.com/spf13/cobra"
+	"context"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
-	// sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/spf13/cobra"
 
-	"consumer/x/consumer/types"
+	"github.com/bandprotocol/oracle-consumer/x/consumer/types"
 )
 
-// GetQueryCmd returns the cli query commands for this module
-func GetQueryCmd(queryRoute string) *cobra.Command {
-	// Group consumer queries under a subcommand
+func CmdQueryPriceFeed() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:                        types.ModuleName,
-		Short:                      fmt.Sprintf("Querying commands for the %s module", types.ModuleName),
-		DisableFlagParsing:         true,
-		SuggestionsMinimumDistance: 2,
-		RunE:                       client.ValidateCmd,
+		Use:   "price [symbol]",
+		Short: "shows the latest price by symbol",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx := client.GetClientContextFromCmd(cmd)
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			res, err := queryClient.Price(context.Background(), &types.QueryPriceRequest{Symbol: args[0]})
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
 	}
 
-	cmd.AddCommand(CmdQueryParams())
-	// this line is used by starport scaffolding # 1
+	flags.AddQueryFlagsToCmd(cmd)
 
 	return cmd
 }

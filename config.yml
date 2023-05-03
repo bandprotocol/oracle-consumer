@@ -7,6 +7,16 @@ accounts:
 validators:
   - name: alice
     bonded: "100000000stake"
+genesis:
+  chain_id: "oracle-consumer"
+  app_state:
+    gov:
+      voting_params:
+        voting_period: "40s"
+    pricefeed:
+      params:
+        source_channel: "channel-0"
+      symbol_requests: [{"symbol": "BAND", "oracle_script_id": 396, "block_interval":  40}]
 client:
   openapi:
     path: "docs/static/openapi.yml"
