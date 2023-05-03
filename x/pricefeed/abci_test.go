@@ -23,12 +23,12 @@ func (suite *PricefeedTestSuite) TestHandleBeginBlock() {
 	pricefeedKeeper.SetSymbolRequests(suite.chainA.GetContext(), []types.SymbolRequest{
 		{
 			Symbol:         "BTC",
-			OracleScriptId: 1,
+			OracleScriptID: 1,
 			BlockInterval:  1,
 		},
 		{
 			Symbol:         "BAND",
-			OracleScriptId: 2,
+			OracleScriptID: 2,
 			BlockInterval:  1,
 		},
 	})

@@ -1,7 +1,5 @@
 # `x/pricefeed`
 
-
-
 > Pre-requisite Readings
 > - cosmos-sdk
 >   - [building-modules](https://docs.cosmos.network/main/building-modules/intro)

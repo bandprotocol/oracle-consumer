@@ -74,11 +74,12 @@ func PriceFeedKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
+	amino := codec.NewLegacyAmino()
 	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, storeKey, memKeys)
 
 	paramsSubspace := typesparams.NewSubspace(
 		cdc,
-		types.Amino,
+		amino,
 		storeKey,
 		tPricefeedKey,
 		"PriceFeedParams",

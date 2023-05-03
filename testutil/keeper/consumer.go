@@ -38,11 +38,12 @@ func ConsumerKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pricefeedkeeper.K
 
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
+	amino := codec.NewLegacyAmino()
 	capabilityKeeper := capabilitykeeper.NewKeeper(cdc, pfStoreKey, memKeys)
 
 	paramsSubspace := typesparams.NewSubspace(
 		cdc,
-		pricefeedtypes.Amino,
+		amino,
 		pfStoreKey,
 		tConsumerKey,
 		"PriceFeedParams",

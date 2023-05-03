@@ -4,6 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 )
@@ -22,8 +23,7 @@ func (k Querier) Params(c context.Context, req *types.QueryParamsRequest) (*type
 }
 
 func (k Querier) SymbolRequest(
-	c context.Context,
-	req *types.QuerySymbolRequest,
+	c context.Context, req *types.QuerySymbolRequest,
 ) (*types.QuerySymbolRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
@@ -38,8 +38,7 @@ func (k Querier) SymbolRequest(
 }
 
 func (k Querier) SymbolRequests(
-	c context.Context,
-	req *types.QuerySymbolRequests,
+	c context.Context, _ *types.QuerySymbolRequests,
 ) (*types.QuerySymbolRequestsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
@@ -53,9 +52,9 @@ func (k Querier) SymbolRequests(
 func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPriceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
-	p, err := k.GetPrice(ctx, req.Symbol)
-	if err != nil {
-		return nil, err
+	p, found := k.GetPrice(ctx, req.Symbol)
+	if !found {
+		return nil, sdkerrors.Wrapf(types.ErrPriceNotFound, "symbol: %s", req.Symbol)
 	}
 
 	return &types.QueryPriceResponse{

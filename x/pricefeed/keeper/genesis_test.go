@@ -17,7 +17,7 @@ func TestGenesis(t *testing.T) {
 		SymbolRequests: []types.SymbolRequest{
 			{
 				Symbol:         "BAND",
-				OracleScriptId: 1,
+				OracleScriptID: 1,
 				BlockInterval:  30,
 			},
 		},

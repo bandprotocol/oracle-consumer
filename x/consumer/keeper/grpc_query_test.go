@@ -25,7 +25,7 @@ func TestPriceQuery(t *testing.T) {
 		Price:       100000,
 		ResolveTime: 1690000000,
 	}
-	pfk.SetPrice(ctx, price)
+	pfk.UpdatePrice(ctx, price)
 
 	response, err := q.Price(wctx, &types.QueryPriceRequest{
 		Symbol: "BTC",

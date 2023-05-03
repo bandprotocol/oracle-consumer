@@ -23,22 +23,48 @@ func NewUpdateSymbolRequestProposal(
 }
 
 // GetTitle returns the title of a update symbol request proposal.
-func (usrp *UpdateSymbolRequestProposal) GetTitle() string { return usrp.Title }
+func (p *UpdateSymbolRequestProposal) GetTitle() string { return p.Title }
 
 // GetDescription returns the description of a update symbol request proposal.
-func (usrp *UpdateSymbolRequestProposal) GetDescription() string { return usrp.Description }
+func (p *UpdateSymbolRequestProposal) GetDescription() string { return p.Description }
 
 // ProposalRoute returns the routing key of a update symbol request proposal.
-func (usrp *UpdateSymbolRequestProposal) ProposalRoute() string { return RouterKey }
+func (*UpdateSymbolRequestProposal) ProposalRoute() string { return RouterKey }
 
 // ProposalType returns the type of a update symbol request proposal.
-func (usrp *UpdateSymbolRequestProposal) ProposalType() string { return UpdateSymbolRequest }
+func (*UpdateSymbolRequestProposal) ProposalType() string { return UpdateSymbolRequest }
 
 // ValidateBasic validates the update symbol request proposal.
-func (usrp *UpdateSymbolRequestProposal) ValidateBasic() error {
-	err := govtypes.ValidateAbstract(usrp)
+func (p *UpdateSymbolRequestProposal) ValidateBasic() error {
+	err := govtypes.ValidateAbstract(p)
 	if err != nil {
 		return err
+	}
+
+	return ValidateSymbolRequests(p.SymbolRequests)
+}
+
+func NewSymbolRequest(symbol string, oracleScriptID, interval uint64) SymbolRequest {
+	return SymbolRequest{symbol, oracleScriptID, interval}
+}
+
+// ValidateSymbolRequests performs basic validation checks over a set of SymbolRequest. It
+// returns an error if any SymbolRequest is invalid.
+func ValidateSymbolRequests(symbols []SymbolRequest) error {
+	if len(symbols) == 0 {
+		return ErrEmptySymbolRequests
+	}
+
+	for _, s := range symbols {
+		if len(s.Symbol) == 0 {
+			return ErrEmptySymbol
+		}
+		if s.OracleScriptID == 0 {
+			return ErrInvalidOracleScriptID
+		}
+		if s.BlockInterval == 0 {
+			return ErrInvalidBlockInterval
+		}
 	}
 
 	return nil

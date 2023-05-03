@@ -19,7 +19,7 @@ func TestSetSymbolRequest(t *testing.T) {
 	// Define symbol request
 	symbolRequest := types.SymbolRequest{
 		Symbol:         "BTC",
-		OracleScriptId: 1,
+		OracleScriptID: 1,
 		BlockInterval:  60,
 	}
 
@@ -40,12 +40,12 @@ func TestSetSymbolRequests(t *testing.T) {
 	symbolRequests := []types.SymbolRequest{
 		{
 			Symbol:         "BTC",
-			OracleScriptId: 1,
+			OracleScriptID: 1,
 			BlockInterval:  60,
 		},
 		{
 			Symbol:         "BTCC",
-			OracleScriptId: 1,
+			OracleScriptID: 1,
 			BlockInterval:  60,
 		},
 	}
@@ -62,7 +62,7 @@ func TestSetSymbolRequests(t *testing.T) {
 	require.EqualValues(t, symbolRequests[1], storedSymbolRequest2)
 }
 
-func TestSetPrice(t *testing.T) {
+func TestUpdatePrice(t *testing.T) {
 	// Initialize the testing environment.
 	k, ctx := testkeeper.PriceFeedKeeper(t)
 
@@ -70,16 +70,39 @@ func TestSetPrice(t *testing.T) {
 	price := types.Price{
 		Symbol:      "BTC",
 		Price:       uint64(50000),
-		ResolveTime: time.Now().Unix(),
+		ResolveTime: 100,
 	}
 
-	// Set price
-	k.SetPrice(ctx, price)
+	// Update the first price
+	changed := k.UpdatePrice(ctx, price)
+	require.True(t, changed)
 
-	storedPrice, err := k.GetPrice(ctx, "BTC")
-	require.NoError(t, err)
-
+	storedPrice, found := k.GetPrice(ctx, "BTC")
+	require.True(t, found)
 	require.EqualValues(t, price, storedPrice)
+
+	// Define new price
+	newPrice := types.Price{
+		Symbol:      "BTC",
+		Price:       uint64(52000),
+		ResolveTime: 110,
+	}
+
+	// Update new price
+	changed = k.UpdatePrice(ctx, newPrice)
+	require.True(t, changed)
+
+	storedPrice, found = k.GetPrice(ctx, "BTC")
+	require.True(t, found)
+	require.EqualValues(t, newPrice, storedPrice)
+
+	// Update with old price
+	changed = k.UpdatePrice(ctx, price)
+	require.False(t, changed)
+
+	storedPrice, found = k.GetPrice(ctx, "BTC")
+	require.True(t, found)
+	require.EqualValues(t, newPrice, storedPrice)
 }
 
 func TestStoreOracleResponsePacket(t *testing.T) {
@@ -115,8 +138,7 @@ func TestStoreOracleResponsePacket(t *testing.T) {
 	k.StoreOracleResponsePacket(ctx, oracleResponsePacket)
 
 	// Retrieve the price from the store.
-	storedPrice, err := k.GetPrice(ctx, "test")
-	require.NoError(t, err)
-
+	storedPrice, found := k.GetPrice(ctx, "test")
+	require.True(t, found)
 	require.Equal(t, price, storedPrice)
 }

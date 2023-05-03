@@ -37,7 +37,7 @@ func TestSymbolRequestQuery(t *testing.T) {
 	// Set symbol request
 	symbolRequest := types.SymbolRequest{
 		Symbol:         "BTC",
-		OracleScriptId: 1,
+		OracleScriptID: 1,
 		BlockInterval:  60,
 	}
 	k.SetSymbolRequest(ctx, symbolRequest)
@@ -60,12 +60,12 @@ func TestSymbolRequestsQuery(t *testing.T) {
 	symbolRequests := []types.SymbolRequest{
 		{
 			Symbol:         "BTC",
-			OracleScriptId: 1,
+			OracleScriptID: 1,
 			BlockInterval:  60,
 		},
 		{
 			Symbol:         "ETH",
-			OracleScriptId: 2,
+			OracleScriptID: 2,
 			BlockInterval:  100,
 		},
 	}
@@ -89,7 +89,7 @@ func TestPriceQuery(t *testing.T) {
 		Price:       100000,
 		ResolveTime: 1690000000,
 	}
-	k.SetPrice(ctx, price)
+	k.UpdatePrice(ctx, price)
 
 	response, err := q.Price(wctx, &types.QueryPrice{
 		Symbol: "BTC",
