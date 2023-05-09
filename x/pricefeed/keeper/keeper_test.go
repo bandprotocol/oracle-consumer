@@ -77,7 +77,7 @@ func TestDeleteSymbolRequest(t *testing.T) {
 	k.DeleteSymbolRequest(ctx, symbolRequest.Symbol)
 
 	_, err := k.GetSymbolRequest(ctx, "BTC")
-	require.Error(t, err)
+	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
 }
 
 func TestDeleteSymbolRequestsBySetBlockIntervalToZero(t *testing.T) {
@@ -119,9 +119,9 @@ func TestDeleteSymbolRequestsBySetBlockIntervalToZero(t *testing.T) {
 	k.SetSymbolRequests(ctx, symbolRequestsZeroBlockInterval)
 
 	_, err := k.GetSymbolRequest(ctx, "BTC")
-	require.Error(t, err)
+	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
 	_, err = k.GetSymbolRequest(ctx, "BTCC")
-	require.Error(t, err)
+	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
 }
 
 func TestUpdatePrice(t *testing.T) {
