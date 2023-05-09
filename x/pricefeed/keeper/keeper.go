@@ -95,9 +95,18 @@ func (k Keeper) GetSymbolRequest(ctx sdk.Context, symbol string) (types.SymbolRe
 	return sr, nil
 }
 
+func (k Keeper) DeleteSymbolRequest(ctx sdk.Context, symbol string) {
+	ctx.KVStore(k.storeKey).Delete(types.SymbolRequestStoreKey(symbol))
+}
+
 func (k Keeper) SetSymbolRequests(ctx sdk.Context, symbolRequests []types.SymbolRequest) {
 	for _, sr := range symbolRequests {
-		k.SetSymbolRequest(ctx, sr)
+		// delete when block interval is equal to zero
+		if sr.BlockInterval == 0 {
+			k.DeleteSymbolRequest(ctx, sr.Symbol)
+		} else {
+			k.SetSymbolRequest(ctx, sr)
+		}
 	}
 }
 
