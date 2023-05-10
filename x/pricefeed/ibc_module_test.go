@@ -286,7 +286,6 @@ func (suite *PricefeedTestSuite) TestOnRecvPacket() {
 	// TODO: Add more test case to cover all branch
 	var packetData []byte
 	var msg bandtypes.OracleResponsePacketData
-
 	testCases := []struct {
 		name          string
 		malleate      func()
