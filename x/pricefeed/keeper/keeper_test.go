@@ -83,6 +83,24 @@ func TestDeleteSymbolRequest(t *testing.T) {
 	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
 }
 
+func TestDeleteSymbolRequestWithoutSet(t *testing.T) {
+	// Initialize the testing environment.
+	k, ctx := testkeeper.PriceFeedKeeper(t)
+
+	// Define symbol requests
+	symbolRequest := types.SymbolRequest{
+		Symbol:         "BTC",
+		OracleScriptID: 1,
+		BlockInterval:  60,
+	}
+
+	// Delete symbol request that did't have on chain
+	k.DeleteSymbolRequest(ctx, symbolRequest.Symbol)
+
+	_, err := k.GetSymbolRequest(ctx, "BTC")
+	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
+}
+
 func TestDeleteSymbolRequestsBySetBlockIntervalToZero(t *testing.T) {
 	// Initialize the testing environment.
 	k, ctx := testkeeper.PriceFeedKeeper(t)
