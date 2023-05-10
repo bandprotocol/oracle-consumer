@@ -20,7 +20,7 @@ func (suite *PricefeedTestSuite) TestHandleBeginBlock() {
 	params := pricefeedKeeper.GetParams(suite.chainA.GetContext())
 	params.SourceChannel = ibctesting.FirstChannelID
 	pricefeedKeeper.SetParams(suite.chainA.GetContext(), params)
-	pricefeedKeeper.SetSymbolRequests(suite.chainA.GetContext(), []types.SymbolRequest{
+	pricefeedKeeper.HandleSymbolRequests(suite.chainA.GetContext(), []types.SymbolRequest{
 		{
 			Symbol:         "BTC",
 			OracleScriptID: 1,

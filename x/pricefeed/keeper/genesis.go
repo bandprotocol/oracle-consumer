@@ -20,7 +20,7 @@ func (k Keeper) InitGenesis(ctx sdk.Context, state types.GenesisState) {
 		}
 	}
 	k.SetParams(ctx, state.Params)
-	k.SetSymbolRequests(ctx, state.SymbolRequests)
+	k.HandleSymbolRequests(ctx, state.SymbolRequests)
 }
 
 // ExportGenesis returns the module's exported genesis

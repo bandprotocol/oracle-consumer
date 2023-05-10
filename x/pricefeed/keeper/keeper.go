@@ -99,7 +99,7 @@ func (k Keeper) DeleteSymbolRequest(ctx sdk.Context, symbol string) {
 	ctx.KVStore(k.storeKey).Delete(types.SymbolRequestStoreKey(symbol))
 }
 
-func (k Keeper) SetSymbolRequests(ctx sdk.Context, symbolRequests []types.SymbolRequest) {
+func (k Keeper) HandleSymbolRequests(ctx sdk.Context, symbolRequests []types.SymbolRequest) {
 	for _, sr := range symbolRequests {
 		// delete when block interval is equal to zero
 		if sr.BlockInterval == 0 {
