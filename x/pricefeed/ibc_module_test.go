@@ -334,8 +334,6 @@ func (suite *PricefeedTestSuite) TestOnRecvPacket() {
 			// modify test data
 			tc.malleate()
 
-			suite.T().Log(msg.ResolveStatus)
-
 			packet := channeltypes.NewPacket(
 				packetData,
 				uint64(1),
