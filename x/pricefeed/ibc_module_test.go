@@ -285,6 +285,8 @@ func (suite *PricefeedTestSuite) TestOnChanOpenAck() {
 func (suite *PricefeedTestSuite) TestOnRecvPacket() {
 	// TODO: Add more test case to cover all branch
 	var packetData []byte
+	var msg bandtypes.OracleResponsePacketData
+
 	testCases := []struct {
 		name          string
 		malleate      func()
@@ -296,6 +298,12 @@ func (suite *PricefeedTestSuite) TestOnRecvPacket() {
 		{
 			"fails - cannot unmarshal packet data", func() {
 				packetData = []byte("invalid data")
+			}, false,
+		},
+		{
+			"fails - request is not resolved successfully", func() {
+				msg.ResolveStatus = bandtypes.RESOLVE_STATUS_FAILURE
+				packetData = msg.GetBytes()
 			}, false,
 		},
 	}
@@ -313,7 +321,7 @@ func (suite *PricefeedTestSuite) TestOnRecvPacket() {
 				"000000090000000441544f4d00000000028510582500000003424e42000000004b269758800000000342544300000019cde9ff0a340000000345544800000001b055202e8c00000003494e4a0000000001b991af3c000000045553445400000000003ba159af000000044f534d4f00000000002b0682d70000000353545800000000002f7a459e00000003534f4c0000000004fa3a37e8",
 			)
 			// prepare packet
-			msg := bandtypes.OracleResponsePacketData{
+			msg = bandtypes.OracleResponsePacketData{
 				ClientID:      "test",
 				RequestID:     1,
 				AnsCount:      1,
@@ -326,6 +334,8 @@ func (suite *PricefeedTestSuite) TestOnRecvPacket() {
 
 			// modify test data
 			tc.malleate()
+
+			suite.T().Log(msg.ResolveStatus)
 
 			packet := channeltypes.NewPacket(
 				packetData,
