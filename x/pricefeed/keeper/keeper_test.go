@@ -12,7 +12,7 @@ import (
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
 
-func TestSetSymbolRequest(t *testing.T) {
+func TestGetSetSymbolRequest(t *testing.T) {
 	// Initialize the testing environment.
 	k, ctx := testkeeper.PriceFeedKeeper(t)
 
