@@ -12,7 +12,6 @@ var (
 	ErrEmptySymbolRequests     = sdkerrors.Register(ModuleName, 5, "submitted symbol requests are empty")
 	ErrEmptySymbol             = sdkerrors.Register(ModuleName, 6, "symbol is empty")
 	ErrInvalidOracleScriptID   = sdkerrors.Register(ModuleName, 7, "invalid oracle script id")
-	ErrInvalidBlockInterval    = sdkerrors.Register(ModuleName, 8, "invalid block interval")
 
 	ErrInvalidVersion = sdkerrors.Register(ModuleName, 1501, "invalid version")
 )

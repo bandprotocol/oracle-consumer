@@ -25,11 +25,15 @@ func TestUpdateSymbolRequestProposal(t *testing.T) {
 	p = types.NewUpdateSymbolRequestProposal("test title", "test description", []types.SymbolRequest{r3})
 	require.Error(t, p.ValidateBasic())
 
-	r4 := types.NewSymbolRequest("BTC", 0, 20)
+	r4 := types.NewSymbolRequest("BTC", 0, 0)
 	p = types.NewUpdateSymbolRequestProposal("test title", "test description", []types.SymbolRequest{r4})
-	require.Error(t, p.ValidateBasic())
+	require.NoError(t, p.ValidateBasic())
 
-	r5 := types.NewSymbolRequest("BTC", 1, 0)
+	r5 := types.NewSymbolRequest("BTC", 0, 20)
 	p = types.NewUpdateSymbolRequestProposal("test title", "test description", []types.SymbolRequest{r5})
 	require.Error(t, p.ValidateBasic())
+
+	r6 := types.NewSymbolRequest("BTC", 1, 0)
+	p = types.NewUpdateSymbolRequestProposal("test title", "test description", []types.SymbolRequest{r6})
+	require.NoError(t, p.ValidateBasic())
 }

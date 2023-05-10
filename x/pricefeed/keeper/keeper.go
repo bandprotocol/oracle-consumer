@@ -162,12 +162,10 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 	symbols := k.GetAllSymbolRequests(ctx)
 
 	// Map symbols that need to request on this block by oracle script ID and symbol block interval
-	symbolsOsMap := types.MapSymbolsByOsIDAndCheckBlockIntervalRequest(symbols, blockHeight)
-	// Sort keys map for deterministic value
-	symbolsOsMapKeys := types.SortKeysUint64StringMap(symbolsOsMap)
+	tasks := types.ComputeOracleTasks(symbols, blockHeight)
 
-	for _, osID := range symbolsOsMapKeys {
-		calldataByte, err := bandtypes.EncodeCalldata(symbolsOsMap[osID], uint8(params.MinDsCount))
+	for _, task := range tasks {
+		calldataByte, err := bandtypes.EncodeCalldata(task.Symbols, uint8(params.MinDsCount))
 		if err != nil {
 			// This error don't expect to happen, so just log in case unexpected bug
 			ctx.Logger().Error(fmt.Sprintf("Unable to encode calldata: %s", err))
@@ -181,7 +179,7 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 
 		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
 			types.ModuleName,
-			osID,
+			task.OracleScriptID,
 			calldataByte,
 			params.AskCount,
 			params.MinCount,

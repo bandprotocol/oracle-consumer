@@ -59,11 +59,8 @@ func ValidateSymbolRequests(symbols []SymbolRequest) error {
 		if len(s.Symbol) == 0 {
 			return ErrEmptySymbol
 		}
-		if s.OracleScriptID == 0 {
+		if s.BlockInterval != 0 && s.OracleScriptID == 0 {
 			return ErrInvalidOracleScriptID
-		}
-		if s.BlockInterval == 0 {
-			return ErrInvalidBlockInterval
 		}
 	}
 
