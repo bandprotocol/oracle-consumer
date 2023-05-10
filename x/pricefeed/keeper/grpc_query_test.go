@@ -69,7 +69,7 @@ func TestSymbolRequestsQuery(t *testing.T) {
 			BlockInterval:  100,
 		},
 	}
-	k.SetSymbolRequests(ctx, symbolRequests)
+	k.HandleSymbolRequests(ctx, symbolRequests)
 
 	response, err := q.SymbolRequests(wctx, &types.QuerySymbolRequests{})
 	require.NoError(t, err)

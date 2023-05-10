@@ -149,6 +149,7 @@ The purpose of this proposal is to request price data from BandChain at `block_i
     "deposit": "10000000stake"
 }
 ```
+You can also delete symbol request by set `"block_interval": "0"` on this proposal.
 
 #### Submit proposal
 
