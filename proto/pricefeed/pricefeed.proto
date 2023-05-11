@@ -22,7 +22,9 @@ message Price {
 // at which the price data should be update every n block.
 message SymbolRequest {
   string symbol = 1;
-  uint64 oracle_script_id = 2;
+  uint64 oracle_script_id = 2 [
+    (gogoproto.customname) = "OracleScriptID"
+  ];
   uint64 block_interval = 3;
 }
 

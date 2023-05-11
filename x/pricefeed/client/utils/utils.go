@@ -17,7 +17,7 @@ type (
 	// allows values to be specified in raw JSON instead of being string encoded.
 	SymbolRequestJSON struct {
 		Symbol         string `json:"symbol"           yaml:"symbol"`
-		OracleScriptId uint64 `json:"oracle_script_id" yaml:"oracle_script_id"`
+		OracleScriptID uint64 `json:"oracle_script_id" yaml:"oracle_script_id"`
 		BlockInterval  uint64 `json:"block_interval"   yaml:"block_interval"`
 	}
 
@@ -31,15 +31,15 @@ type (
 	}
 )
 
-func NewSymbolRequestJSON(symbol string, oracleScriptId, blockInterval uint64) SymbolRequestJSON {
-	return SymbolRequestJSON{symbol, oracleScriptId, blockInterval}
+func NewSymbolRequestJSON(symbol string, oracleScriptID, blockInterval uint64) SymbolRequestJSON {
+	return SymbolRequestJSON{symbol, oracleScriptID, blockInterval}
 }
 
 // ToSymbolRequest converts a SymbolRequestJSON object to SymbolRequest.
 func (srj SymbolRequestJSON) ToSymbolRequest() types.SymbolRequest {
 	return types.SymbolRequest{
 		Symbol:         srj.Symbol,
-		OracleScriptId: srj.OracleScriptId,
+		OracleScriptID: srj.OracleScriptID,
 		BlockInterval:  srj.BlockInterval,
 	}
 }

@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"encoding/hex"
 	"fmt"
 	"time"
 
@@ -96,9 +95,18 @@ func (k Keeper) GetSymbolRequest(ctx sdk.Context, symbol string) (types.SymbolRe
 	return sr, nil
 }
 
-func (k Keeper) SetSymbolRequests(ctx sdk.Context, symbolRequests []types.SymbolRequest) {
+func (k Keeper) DeleteSymbolRequest(ctx sdk.Context, symbol string) {
+	ctx.KVStore(k.storeKey).Delete(types.SymbolRequestStoreKey(symbol))
+}
+
+func (k Keeper) HandleSymbolRequests(ctx sdk.Context, symbolRequests []types.SymbolRequest) {
 	for _, sr := range symbolRequests {
-		k.SetSymbolRequest(ctx, sr)
+		// delete when block interval is equal to zero
+		if sr.BlockInterval == 0 {
+			k.DeleteSymbolRequest(ctx, sr.Symbol)
+		} else {
+			k.SetSymbolRequest(ctx, sr)
+		}
 	}
 }
 
@@ -116,20 +124,29 @@ func (k Keeper) GetAllSymbolRequests(ctx sdk.Context) []types.SymbolRequest {
 	return srs
 }
 
-func (k Keeper) SetPrice(ctx sdk.Context, price types.Price) {
+func (k Keeper) UpdatePrice(ctx sdk.Context, price types.Price) bool {
+	old, found := k.GetPrice(ctx, price.Symbol)
+	if !found || old.ResolveTime < price.ResolveTime {
+		k.setPrice(ctx, price)
+		return true
+	}
+	return false
+}
+
+func (k Keeper) setPrice(ctx sdk.Context, price types.Price) {
 	ctx.KVStore(k.storeKey).Set(types.PriceStoreKey(price.Symbol), k.cdc.MustMarshal(&price))
 }
 
-func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (types.Price, error) {
+func (k Keeper) GetPrice(ctx sdk.Context, symbol string) (types.Price, bool) {
 	bz := ctx.KVStore(k.storeKey).Get(types.PriceStoreKey(symbol))
 	if bz == nil {
-		return types.Price{}, sdkerrors.Wrapf(types.ErrPriceNotFound, "symbol: %s", symbol)
+		return types.Price{}, false
 	}
 
 	var pf types.Price
 	k.cdc.MustUnmarshal(bz, &pf)
 
-	return pf, nil
+	return pf, true
 }
 
 func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
@@ -145,17 +162,13 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 	symbols := k.GetAllSymbolRequests(ctx)
 
 	// Map symbols that need to request on this block by oracle script ID and symbol block interval
-	symbolsOsMap := types.MapSymbolsByOsIDAndCheckBlockIntervalRequest(symbols, blockHeight)
-	// Sort keys map for deterministic value
-	symbolsOsMapKeys := types.SortKeysUint64StringMap(symbolsOsMap)
+	tasks := types.ComputeOracleTasks(symbols, blockHeight)
 
-	for _, osID := range symbolsOsMapKeys {
-		calldataByte, err := bandtypes.EncodeCalldata(symbolsOsMap[osID], uint8(params.MinDsCount))
+	for _, task := range tasks {
+		calldataByte, err := bandtypes.EncodeCalldata(task.Symbols, uint8(params.MinDsCount))
 		if err != nil {
-			ctx.EventManager().EmitEvent(sdk.NewEvent(
-				types.EventTypeEncodeCalldataFailed,
-				sdk.NewAttribute(types.AttributeKeyReason, fmt.Sprintf("Unable to encode calldata: %s", err)),
-			))
+			// This error don't expect to happen, so just log in case unexpected bug
+			ctx.Logger().Error(fmt.Sprintf("Unable to encode calldata: %s", err))
 			continue
 		}
 
@@ -166,7 +179,7 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 
 		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
 			types.ModuleName,
-			osID,
+			task.OracleScriptID,
 			calldataByte,
 			params.AskCount,
 			params.MinCount,
@@ -177,14 +190,9 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 
 		// Send the oracle request packet to the Band Chain using the RequestBandChainData function from the keeper
 		err = k.RequestBandChainData(ctx, params.SourceChannel, oracleRequestPacket)
+		// In the normal case, this module should able to create new packet, so just log error to debug should be ok
 		if err != nil {
-			ctx.EventManager().EmitEvent(sdk.NewEvent(
-				types.EventTypeRequestBandChainFailed,
-				sdk.NewAttribute(
-					types.AttributeKeyReason,
-					fmt.Sprintf("Unable to request data on BandChain: %s", err),
-				),
-			))
+			ctx.Logger().Error(fmt.Sprintf("Unable to send oracle request: %s", err))
 		}
 	}
 }
@@ -245,43 +253,40 @@ func (k Keeper) RequestBandChainData(
 		return err
 	}
 
-	// Emit an event if send packet success
-	ctx.EventManager().EmitEvent(sdk.NewEvent(
-		types.EventTypeSendPacketSuccess,
-		sdk.NewAttribute(types.AttributeKeyData, hex.EncodeToString(packet.Data)),
-		sdk.NewAttribute(types.AttributeKeySequence, fmt.Sprintf("%d", packet.Sequence)),
-		sdk.NewAttribute(types.AttributeKeyPortID, packet.SourcePort),
-		sdk.NewAttribute(types.AttributeKeySourceChannel, packet.SourceChannel),
-		sdk.NewAttribute(types.AttributeKeyDestinationPort, packet.DestinationPort),
-		sdk.NewAttribute(types.AttributeKeyDestinationChannel, packet.DestinationChannel),
-		sdk.NewAttribute(types.AttributeKeyTimeoutHeight, packet.TimeoutHeight.String()),
-		sdk.NewAttribute(types.AttributeKeyTimeoutTimestamp, fmt.Sprintf("%d", packet.TimeoutTimestamp))),
-	)
-
 	return nil
 }
 
 // StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
-func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) {
+func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) error {
 	// Decode the result from the response packet.
 	result, err := bandtypes.DecodeResult(res.Result)
 	if err != nil {
-		// Emit an event if decoding the result fails and return.
-		ctx.EventManager().EmitEvent(sdk.NewEvent(
-			types.EventTypeDecodeBandChainResultFailed,
-			sdk.NewAttribute(types.AttributeKeyReason, fmt.Sprintf("Unable to decode result from BandChain: %s", err)),
-		))
-		return
+		return err
 	}
 
 	// Loop through the result and set the price in the state for each symbol.
 	for _, r := range result {
-		k.SetPrice(ctx, types.Price{
-			Symbol:      r.Symbol,
-			Price:       r.Rate,
-			ResolveTime: res.ResolveTime,
-		})
+		if r.ResponseCode == 0 {
+			changed := k.UpdatePrice(ctx, types.Price{
+				Symbol:      r.Symbol,
+				Price:       r.Rate,
+				ResolveTime: res.ResolveTime,
+			})
+			if changed {
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(
+						types.EventTypePriceUpdate,
+						sdk.NewAttribute(types.AttributeKeySymbol, r.Symbol),
+						sdk.NewAttribute(types.AttributeKeyPrice, fmt.Sprintf("%d", r.Rate)),
+						sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus.String()),
+					),
+				)
+			}
+		}
+		// TODO: allow to write logic to handle failed symbol now just ignore and skip update
 	}
+
+	return nil
 }
 
 // ClaimCapability attempts to claim a given Capability. The provided name and

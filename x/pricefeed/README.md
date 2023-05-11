@@ -1,7 +1,5 @@
 # `x/pricefeed`
 
-
-
 > Pre-requisite Readings
 > - cosmos-sdk
 >   - [building-modules](https://docs.cosmos.network/main/building-modules/intro)
@@ -295,8 +293,9 @@ oracle-consumerd tx gov submit-legacy-proposal update-symbol-request [proposal-f
 
 Example:
 
-1. create json file
-    > proposal.json
+1. create proposal.json file
+    > Note: You can delete symbol request by set `"block_interval": "0"` on this proposal.
+    
     ```json
     {
         "title": "Update Symbol requests",
@@ -316,6 +315,7 @@ Example:
         "deposit": "10000000stake"
     }
     ```
+
 2. submit the proposal
     ```
     oracle-consumerd tx gov submit-legacy-proposal update-symbol-request proposal.json --from alice

@@ -61,16 +61,45 @@ func TestCalculateGas(t *testing.T) {
 	}
 }
 
-func TestSortKeysUint64StringMap(t *testing.T) {
-	uint64StringMap := map[uint64][]string{
-		3: {"value1", "value2"},
-		1: {"value3", "value4"},
-		5: {"value5", "value6"},
-		2: {"value7", "value8"},
+func TestComputeOracleTasks(t *testing.T) {
+	symbolRequests := []types.SymbolRequest{
+		types.NewSymbolRequest("BTC", 46, 10),
+		types.NewSymbolRequest("ETH", 46, 10),
+		types.NewSymbolRequest("BAND", 46, 15),
+		types.NewSymbolRequest("EUR", 47, 35),
+		types.NewSymbolRequest("CNY", 47, 40),
+		types.NewSymbolRequest("JPY", 47, 50),
 	}
 
-	expectedKeys := []uint64{1, 2, 3, 5}
-	sortedKeys := types.SortKeysUint64StringMap(uint64StringMap)
+	// Compute task at 300
+	tasks := types.ComputeOracleTasks(symbolRequests, 300)
+	require.Equal(t, []types.OracleTask{
+		{OracleScriptID: 46, Symbols: []string{"BTC", "ETH", "BAND"}},
+		{OracleScriptID: 47, Symbols: []string{"JPY"}},
+	}, tasks)
 
-	require.Equal(t, expectedKeys, sortedKeys, "SortKeysUint64StringMap should return the correct sorted keys")
+	// Compute task at 315
+	tasks = types.ComputeOracleTasks(symbolRequests, 315)
+	require.Equal(t, []types.OracleTask{
+		{OracleScriptID: 46, Symbols: []string{"BAND"}},
+		{OracleScriptID: 47, Symbols: []string{"EUR"}},
+	}, tasks)
+
+	// Compute task at 322
+	tasks = types.ComputeOracleTasks(symbolRequests, 322)
+	require.Equal(t, []types.OracleTask{}, tasks)
+
+	// Compute task at 350
+	tasks = types.ComputeOracleTasks(symbolRequests, 350)
+	require.Equal(t, []types.OracleTask{
+		{OracleScriptID: 46, Symbols: []string{"BTC", "ETH"}},
+		{OracleScriptID: 47, Symbols: []string{"EUR", "JPY"}},
+	}, tasks)
+
+	// Compute task at 400
+	tasks = types.ComputeOracleTasks(symbolRequests, 400)
+	require.Equal(t, []types.OracleTask{
+		{OracleScriptID: 46, Symbols: []string{"BTC", "ETH"}},
+		{OracleScriptID: 47, Symbols: []string{"CNY", "JPY"}},
+	}, tasks)
 }

@@ -1,7 +1,6 @@
 package pricefeed
 
 import (
-	"encoding/hex"
 	"fmt"
 	"strings"
 
@@ -170,36 +169,6 @@ func (im IBCModule) OnChanCloseConfirm(
 	return nil
 }
 
-// OnRecvPacket implements the IBCModule interface
-func (im IBCModule) OnRecvPacket(
-	ctx sdk.Context,
-	modulePacket channeltypes.Packet,
-	relayer sdk.AccAddress,
-) ibcexported.Acknowledgement {
-	ack := channeltypes.NewResultAcknowledgement(nil)
-	var data bandtypes.OracleResponsePacketData
-
-	// Unmarshal the data from the module packet into the OracleResponsePacketData object.
-	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &data); err != nil {
-		ack = channeltypes.NewErrorAcknowledgement(err)
-	}
-
-	if ack.Success() {
-		// If the acknowledgement was successful, receive the OracleResponsePacketData using the StoreOracleResponsePacket function of the pricefeed keeper to store data.
-		im.keeper.StoreOracleResponsePacket(ctx, data)
-
-		ctx.EventManager().EmitEvent(sdk.NewEvent(
-			types.EventTypeBandChainStoreOracleResponsePacket,
-			sdk.NewAttribute(types.AttributeKeyRequestID, fmt.Sprintf("%d", data.RequestID)),
-			sdk.NewAttribute(types.AttributeKeyResolveStatus, fmt.Sprintf("%d", data.ResolveStatus)),
-			sdk.NewAttribute(types.AttributeKeyResult, hex.EncodeToString(data.Result)),
-			sdk.NewAttribute(types.AttributeKeyResolveTime, fmt.Sprintf("%d", data.ResolveTime)),
-		))
-	}
-
-	return ack
-}
-
 // OnAcknowledgementPacket implements the IBCModule interface
 func (im IBCModule) OnAcknowledgementPacket(
 	ctx sdk.Context,
@@ -222,18 +191,18 @@ func (im IBCModule) OnAcknowledgementPacket(
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 		}
 
-		// Emit a new event with the EventTypeBandChainAckSuccess and AckSuccess attributes.
+		// Emit a new event with the EventTypeRequestPacket and AckSuccess with request id.
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeBandChainAckSuccess,
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, string(resp.Result)),
+				types.EventTypeRequestPacket,
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%d", oracleAck.RequestID)),
 			),
 		)
 	case *channeltypes.Acknowledgement_Error:
-		// Emit a new event with the EventTypeBandChainAckError and AckError attributes.
+		// Emit a new event with the AttributeKeyAckError and AckError with error message.
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeBandChainAckError,
+				types.AttributeKeyAckError,
 				sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
 			),
 		)
@@ -250,4 +219,34 @@ func (im IBCModule) OnTimeoutPacket(
 ) error {
 	// Do nothing for out-going packet
 	return nil
+}
+
+// OnRecvPacket implements the IBCModule interface
+func (im IBCModule) OnRecvPacket(
+	ctx sdk.Context,
+	modulePacket channeltypes.Packet,
+	relayer sdk.AccAddress,
+) ibcexported.Acknowledgement {
+	var packet bandtypes.OracleResponsePacketData
+
+	// Unmarshal the data from the module packet into the OracleResponsePacketData object.
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packet); err != nil {
+		return channeltypes.NewErrorAcknowledgement(err)
+	}
+
+	// Request has been resolved and relayed to pricefeed module
+	ctx.EventManager().EmitEvent(sdk.NewEvent(
+		types.EventTypeResponsePacket,
+		sdk.NewAttribute(types.AttributeKeyRequestID, fmt.Sprintf("%d", packet.RequestID)),
+	))
+
+	if packet.ResolveStatus != bandtypes.RESOLVE_STATUS_SUCCESS {
+		return channeltypes.NewErrorAcknowledgement(types.ErrResolveStatusNotSuccess)
+	}
+
+	if err := im.keeper.StoreOracleResponsePacket(ctx, packet); err != nil {
+		return channeltypes.NewErrorAcknowledgement(err)
+	}
+
+	return channeltypes.NewResultAcknowledgement(nil)
 }

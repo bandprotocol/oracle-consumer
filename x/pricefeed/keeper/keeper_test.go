@@ -12,14 +12,14 @@ import (
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
 
-func TestSetSymbolRequest(t *testing.T) {
+func TestGetSetSymbolRequest(t *testing.T) {
 	// Initialize the testing environment.
 	k, ctx := testkeeper.PriceFeedKeeper(t)
 
 	// Define symbol request
 	symbolRequest := types.SymbolRequest{
 		Symbol:         "BTC",
-		OracleScriptId: 1,
+		OracleScriptID: 1,
 		BlockInterval:  60,
 	}
 
@@ -32,26 +32,26 @@ func TestSetSymbolRequest(t *testing.T) {
 	require.EqualValues(t, symbolRequest, storedSymbolRequest)
 }
 
-func TestSetSymbolRequests(t *testing.T) {
+func TestHandleSymbolRequests(t *testing.T) {
 	// Initialize the testing environment.
 	k, ctx := testkeeper.PriceFeedKeeper(t)
 
-	// Define symbol request
+	// Define symbol requests
 	symbolRequests := []types.SymbolRequest{
 		{
 			Symbol:         "BTC",
-			OracleScriptId: 1,
+			OracleScriptID: 1,
 			BlockInterval:  60,
 		},
 		{
 			Symbol:         "BTCC",
-			OracleScriptId: 1,
+			OracleScriptID: 1,
 			BlockInterval:  60,
 		},
 	}
 
-	// Set symbol request
-	k.SetSymbolRequests(ctx, symbolRequests)
+	// Handle symbol requests
+	k.HandleSymbolRequests(ctx, symbolRequests)
 
 	storedSymbolRequest1, err := k.GetSymbolRequest(ctx, "BTC")
 	require.NoError(t, err)
@@ -62,7 +62,90 @@ func TestSetSymbolRequests(t *testing.T) {
 	require.EqualValues(t, symbolRequests[1], storedSymbolRequest2)
 }
 
-func TestSetPrice(t *testing.T) {
+func TestDeleteSymbolRequest(t *testing.T) {
+	// Initialize the testing environment.
+	k, ctx := testkeeper.PriceFeedKeeper(t)
+
+	// Define symbol requests
+	symbolRequest := types.SymbolRequest{
+		Symbol:         "BTC",
+		OracleScriptID: 1,
+		BlockInterval:  60,
+	}
+
+	// Set symbol request
+	k.SetSymbolRequest(ctx, symbolRequest)
+
+	// Delete symbol request
+	k.DeleteSymbolRequest(ctx, symbolRequest.Symbol)
+
+	_, err := k.GetSymbolRequest(ctx, "BTC")
+	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
+}
+
+func TestDeleteSymbolRequestWithoutSet(t *testing.T) {
+	// Initialize the testing environment.
+	k, ctx := testkeeper.PriceFeedKeeper(t)
+
+	// Define symbol requests
+	symbolRequest := types.SymbolRequest{
+		Symbol:         "BTC",
+		OracleScriptID: 1,
+		BlockInterval:  60,
+	}
+
+	// Delete symbol request that did't have on chain
+	k.DeleteSymbolRequest(ctx, symbolRequest.Symbol)
+
+	_, err := k.GetSymbolRequest(ctx, "BTC")
+	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
+}
+
+func TestDeleteSymbolRequestsBySetBlockIntervalToZero(t *testing.T) {
+	// Initialize the testing environment.
+	k, ctx := testkeeper.PriceFeedKeeper(t)
+
+	// Define symbol request
+	symbolRequests := []types.SymbolRequest{
+		{
+			Symbol:         "BTC",
+			OracleScriptID: 1,
+			BlockInterval:  60,
+		},
+		{
+			Symbol:         "BTCC",
+			OracleScriptID: 1,
+			BlockInterval:  60,
+		},
+	}
+
+	// Handle symbol request
+	k.HandleSymbolRequests(ctx, symbolRequests)
+
+	// Define symbol request with zero block interval to delete symbol
+	symbolRequestsZeroBlockInterval := []types.SymbolRequest{
+		{
+			Symbol:         "BTC",
+			OracleScriptID: 1,
+			BlockInterval:  0,
+		},
+		{
+			Symbol:         "BTCC",
+			OracleScriptID: 1,
+			BlockInterval:  0,
+		},
+	}
+
+	// Handle symbol request
+	k.HandleSymbolRequests(ctx, symbolRequestsZeroBlockInterval)
+
+	_, err := k.GetSymbolRequest(ctx, "BTC")
+	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
+	_, err = k.GetSymbolRequest(ctx, "BTCC")
+	require.ErrorIs(t, types.ErrSymbolRequestNotFound, err)
+}
+
+func TestUpdatePrice(t *testing.T) {
 	// Initialize the testing environment.
 	k, ctx := testkeeper.PriceFeedKeeper(t)
 
@@ -70,16 +153,39 @@ func TestSetPrice(t *testing.T) {
 	price := types.Price{
 		Symbol:      "BTC",
 		Price:       uint64(50000),
-		ResolveTime: time.Now().Unix(),
+		ResolveTime: 100,
 	}
 
-	// Set price
-	k.SetPrice(ctx, price)
+	// Update the first price
+	changed := k.UpdatePrice(ctx, price)
+	require.True(t, changed)
 
-	storedPrice, err := k.GetPrice(ctx, "BTC")
-	require.NoError(t, err)
-
+	storedPrice, found := k.GetPrice(ctx, "BTC")
+	require.True(t, found)
 	require.EqualValues(t, price, storedPrice)
+
+	// Define new price
+	newPrice := types.Price{
+		Symbol:      "BTC",
+		Price:       uint64(52000),
+		ResolveTime: 110,
+	}
+
+	// Update new price
+	changed = k.UpdatePrice(ctx, newPrice)
+	require.True(t, changed)
+
+	storedPrice, found = k.GetPrice(ctx, "BTC")
+	require.True(t, found)
+	require.EqualValues(t, newPrice, storedPrice)
+
+	// Update with old price
+	changed = k.UpdatePrice(ctx, price)
+	require.False(t, changed)
+
+	storedPrice, found = k.GetPrice(ctx, "BTC")
+	require.True(t, found)
+	require.EqualValues(t, newPrice, storedPrice)
 }
 
 func TestStoreOracleResponsePacket(t *testing.T) {
@@ -115,8 +221,7 @@ func TestStoreOracleResponsePacket(t *testing.T) {
 	k.StoreOracleResponsePacket(ctx, oracleResponsePacket)
 
 	// Retrieve the price from the store.
-	storedPrice, err := k.GetPrice(ctx, "test")
-	require.NoError(t, err)
-
+	storedPrice, found := k.GetPrice(ctx, "test")
+	require.True(t, found)
 	require.Equal(t, price, storedPrice)
 }
