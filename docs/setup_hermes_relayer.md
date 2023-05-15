@@ -5,9 +5,8 @@ This document describes methods on how to set up Hermes Relayer to send IBC mess
 
 ```
 # Clone Hermes version 1.1.0-band
-git clone https://github.com/bandprotocol/hermes.git
+git clone https://github.com/informalsystems/hermes.git
 cd hermes
-git checkout v1.1.0-band
 
 # Build Hermes
 cargo build --release
@@ -107,7 +106,7 @@ host = '127.0.0.1'
 port = 3001
 
 [[chains]]
-id = 'oracle-consumer'
+id = '[YOUR_CHAIN_ID]'
 rpc_addr = 'http://localhost:26657'
 grpc_addr = 'http://localhost:9090'
 websocket_addr = 'ws://localhost:26657/websocket'
@@ -126,12 +125,6 @@ max_block_time = '10s'
 trusting_period = '10days'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
-ignore_port_channel = []
-# [chains.packet_filter]
-# policy = 'allow'
-# list = [
-#    ['wasm.*', '*'],
-# ]
 
 [[chains]]
 id = 'band-laozi-testnet6'
@@ -153,49 +146,43 @@ max_block_time = '10s'
 trusting_period = '14days'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
-ignore_port_channel = []
-# [chains.packet_filter]
-# policy = 'allow'
-# list = [
-#    ['oracle', '*'],
-# ]
 ```
 
 #### Add relayer key
 
-##### Create mnemonic file on consumer chain and BandChain
-> Note: Upon logging for the first time that you run consumer chain, you will be given either Alice's or Bob's mnemonic, which can be used as the consumer mnemonic. It's important to note that you need to have funds in your key in order to send transactions on each chain.
+##### Create mnemonic file on your chain and BandChain
+> Note: Upon logging for the first time that you run chain, you will be given either Alice's or Bob's mnemonic, which can be used as the consumer mnemonic. It's important to note that you need to have funds in your key in order to send transactions on each chain.
 
 ```
 # hermes/
-touch mnemonic-oracle-consumer.txt
+touch consumer-mnemonic.txt
 ```
-- add your oracle-consumer chain mnemonic in mem-consumer.txt
+- add your chain mnemonic in consumer-mnemonic.txt
 
 ```
 # hermes/
-touch mnemonic-band.txt
+touch band-mnemonic.txt
 ```
-- add your BandChain mnemonic in mem-band.txt
+- add your BandChain mnemonic in band-mnemonic.txt
 
 ##### Add keys to hermes by following command
 
 ###### Consumer key
 
 ```
-target/release/hermes --config config_relayer.toml keys add --chain oracle-consumer --mnemonic-file "mnemonic-oracle-consumer.txt"
+target/release/hermes --config config_relayer.toml keys add --chain [YOUR_CHAIN_ID] --mnemonic-file "consumer-mnemonic.txt"
 ```
 
 ###### BandChain key
 
 ```
-target/release/hermes --config config_relayer.toml keys add --chain band-laozi-testnet6 --mnemonic-file "mnemonic-band.txt"  --hd-path "m/44'/494'/0'/0/0"
+target/release/hermes --config config_relayer.toml keys add --chain band-laozi-testnet6 --mnemonic-file "band-mnemonic.txt"  --hd-path "m/44'/494'/0'/0/0"
 ```
 
 #### Create client connection
 
 ```
-target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain oracle-consumer --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection
+target/release/hermes --config config_relayer.toml create channel --a-chain band-laozi-testnet6 --b-chain [YOUR_CHAIN_ID] --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection
 ```
 
 #### Start Hermes relayer
