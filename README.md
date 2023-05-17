@@ -178,10 +178,12 @@ oracle-consumerd query gov proposals
 To utilize the Ignite feature to replace the genesis state, insert the code shown below into the `config.yml` file. and restat the chin by using `ignite chain serve -r -v` command.
 
 ```yml
-pricefeed:
-    params:
+genesis:
+  app_state:
+    pricefeed:
+      params:
         source_channel: "channel-0"
-    symbol_requests: [{"symbol": "BAND", "oracle_script_id": 396, "block_interval":  40}]
+      symbol_requests: [{"symbol": "BAND", "oracle_script_id": 396, "block_interval":  40}]
 ```
 
 ### Query latest price that got from BandChain
@@ -189,11 +191,11 @@ pricefeed:
 Query latest price that got from BandChin via pricefeed module
 
 ```
-oracle-consumerd query pricefeed price BTC
+oracle-consumerd query pricefeed price BAND
 ```
 
 Query latest price that got from BandChin via consumer module
 
 ```
-oracle-consumerd query consumer price BTC
+oracle-consumerd query consumer price BAND
 ```
