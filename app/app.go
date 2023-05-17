@@ -531,8 +531,8 @@ func New(
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
-		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
-	ibcRouter.AddRoute(pricefeedtypes.ModuleName, pricefeedIBCModule)
+		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
+		AddRoute(pricefeedtypes.ModuleName, pricefeedIBCModule)
 
 	app.IBCKeeper.SetRouter(ibcRouter)
 
