@@ -8,8 +8,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
@@ -57,6 +59,7 @@ func ConsumerKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pricefeedkeeper.K
 		priceFeedChannelKeeper{},
 		priceFeedPortKeeper{},
 		capabilityKeeper.ScopeToModule("PriceFeedScopedKeeper"),
+		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 
 	k := keeper.NewKeeper(

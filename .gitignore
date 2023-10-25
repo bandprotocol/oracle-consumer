@@ -1,7 +1,9 @@
 vue/node_modules
 vue/dist
+vue/src
 release/
 .idea/
 .vscode/
 .DS_Store
 bin/
+ts-client

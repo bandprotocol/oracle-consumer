@@ -492,8 +492,13 @@ func New(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedPricefeedKeeper,
+		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
-	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.PricefeedKeeper)
+	pricefeedModule := pricefeedmodule.NewAppModule(
+		appCodec,
+		app.PricefeedKeeper,
+		app.GetSubspace(pricefeedtypes.ModuleName),
+	)
 
 	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.PricefeedKeeper)
 

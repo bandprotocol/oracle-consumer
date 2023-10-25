@@ -16,7 +16,8 @@ genesis:
     pricefeed:
       params:
         source_channel: "channel-0"
-      symbol_requests: [{"symbol": "BAND", "oracle_script_id": 396, "block_interval":  40}]
+      symbol_requests:
+        [{ "symbol": "BAND", "oracle_script_id": 396, "block_interval": 40 }]
 client:
   openapi:
     path: "docs/static/openapi.yml"
