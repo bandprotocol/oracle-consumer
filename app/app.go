@@ -112,7 +112,10 @@ import (
 	"github.com/ignite/cli/ignite/pkg/openapiconsole"
 	"github.com/spf13/cast"
 
+	"github.com/bandprotocol/oracle-consumer/app/keepers"
 	appparams "github.com/bandprotocol/oracle-consumer/app/params"
+	"github.com/bandprotocol/oracle-consumer/app/upgrades"
+	v2 "github.com/bandprotocol/oracle-consumer/app/upgrades/v2"
 	"github.com/bandprotocol/oracle-consumer/docs"
 	consumermodule "github.com/bandprotocol/oracle-consumer/x/consumer"
 	consumerkeeper "github.com/bandprotocol/oracle-consumer/x/consumer/keeper"
@@ -195,6 +198,8 @@ var (
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
+
+	Upgrades = []upgrades.Upgrade{v2.Upgrade}
 )
 
 var (
@@ -216,6 +221,7 @@ func init() {
 // capabilities aren't needed for testing.
 type App struct {
 	*baseapp.BaseApp
+	keepers.AppKeepers
 
 	cdc               *codec.LegacyAmino
 	appCodec          codec.Codec
@@ -228,36 +234,6 @@ type App struct {
 	keys    map[string]*storetypes.KVStoreKey
 	tkeys   map[string]*storetypes.TransientStoreKey
 	memKeys map[string]*storetypes.MemoryStoreKey
-
-	// keepers
-	AccountKeeper         authkeeper.AccountKeeper
-	AuthzKeeper           authzkeeper.Keeper
-	BankKeeper            bankkeeper.Keeper
-	CapabilityKeeper      *capabilitykeeper.Keeper
-	StakingKeeper         *stakingkeeper.Keeper
-	SlashingKeeper        slashingkeeper.Keeper
-	MintKeeper            mintkeeper.Keeper
-	DistrKeeper           distrkeeper.Keeper
-	GovKeeper             govkeeper.Keeper
-	CrisisKeeper          *crisiskeeper.Keeper
-	UpgradeKeeper         *upgradekeeper.Keeper
-	ParamsKeeper          paramskeeper.Keeper
-	IBCKeeper             *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
-	EvidenceKeeper        evidencekeeper.Keeper
-	TransferKeeper        ibctransferkeeper.Keeper
-	ICAHostKeeper         icahostkeeper.Keeper
-	FeeGrantKeeper        feegrantkeeper.Keeper
-	GroupKeeper           groupkeeper.Keeper
-	ConsensusParamsKeeper consensusparamkeeper.Keeper
-
-	// make scoped keepers public for test purposes
-	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
-	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
-	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
-
-	ConsumerKeeper        consumerkeeper.Keeper
-	ScopedPricefeedKeeper capabilitykeeper.ScopedKeeper
-	PricefeedKeeper       pricefeedkeeper.Keeper
 
 	// mm is the module manager
 	mm *module.Manager
@@ -812,6 +788,9 @@ func New(
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
 
+	app.setupUpgradeHandlers()
+	app.setupUpgradeStoreLoaders()
+
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
 			tmos.Exit(err.Error())
@@ -1004,4 +983,36 @@ func (app *App) SimulationManager() *module.SimulationManager {
 // ModuleManager returns the app ModuleManager
 func (app *App) ModuleManager() *module.Manager {
 	return app.mm
+}
+
+func (app *App) setupUpgradeHandlers() {
+	for _, upgrade := range Upgrades {
+		app.UpgradeKeeper.SetUpgradeHandler(
+			upgrade.UpgradeName,
+			upgrade.CreateUpgradeHandler(
+				app.mm,
+				app.configurator,
+				app,
+				&app.AppKeepers,
+			),
+		)
+	}
+}
+
+// configure store loader that checks if version == upgradeHeight and applies store upgrades
+func (app *App) setupUpgradeStoreLoaders() {
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(fmt.Sprintf("failed to read upgrade info from disk %s", err))
+	}
+
+	if app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		return
+	}
+
+	for _, upgrade := range Upgrades {
+		if upgradeInfo.Name == upgrade.UpgradeName {
+			app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &upgrade.StoreUpgrades))
+		}
+	}
 }
