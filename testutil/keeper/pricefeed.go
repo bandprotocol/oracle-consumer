@@ -3,6 +3,9 @@ package keeper
 import (
 	"testing"
 
+	tmdb "github.com/cometbft/cometbft-db"
+	"github.com/cometbft/cometbft/libs/log"
+	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -13,12 +16,9 @@ import (
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
-	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	"github.com/stretchr/testify/require"
-	"github.com/tendermint/tendermint/libs/log"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	tmdb "github.com/tendermint/tm-db"
 
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/keeper"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
@@ -40,9 +40,13 @@ func (priceFeedChannelKeeper) GetNextSequenceSend(ctx sdk.Context, portID, chann
 func (priceFeedChannelKeeper) SendPacket(
 	ctx sdk.Context,
 	channelCap *capabilitytypes.Capability,
-	packet ibcexported.PacketI,
-) error {
-	return nil
+	sourcePort string,
+	sourceChannel string,
+	timeoutHeight clienttypes.Height,
+	timeoutTimestamp uint64,
+	data []byte,
+) (uint64, error) {
+	return 0, nil
 }
 
 func (priceFeedChannelKeeper) ChanCloseInit(

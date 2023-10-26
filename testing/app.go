@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 
 	oracleapp "github.com/bandprotocol/oracle-consumer/app"
+	dbm "github.com/cometbft/cometbft-db"
+	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
-	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
-	ibctesting "github.com/cosmos/ibc-go/v5/testing"
-	ibctestingtypes "github.com/cosmos/ibc-go/v5/testing/types"
-	"github.com/tendermint/tendermint/libs/log"
-	dbm "github.com/tendermint/tm-db"
+	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
+	ibctesting "github.com/cosmos/ibc-go/v7/testing"
+	ibctestingtypes "github.com/cosmos/ibc-go/v7/testing/types"
 )
 
 // EmptyAppOptions is a stub implementing AppOptions
