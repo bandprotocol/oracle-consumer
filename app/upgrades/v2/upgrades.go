@@ -20,6 +20,7 @@ import (
 
 	"github.com/bandprotocol/oracle-consumer/app/keepers"
 	"github.com/bandprotocol/oracle-consumer/app/upgrades"
+	pricefeedtypes "github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
 )
 
 func CreateUpgradeHandler(
@@ -58,6 +59,8 @@ func CreateUpgradeHandler(
 				keyTable = icacontrollertypes.ParamKeyTable() //nolint:staticcheck
 			case icahosttypes.SubModuleName:
 				keyTable = icahosttypes.ParamKeyTable() //nolint:staticcheck
+			case pricefeedtypes.ModuleName:
+				keyTable = pricefeedtypes.ParamKeyTable() //nolint:staticcheck
 			default:
 				continue
 			}

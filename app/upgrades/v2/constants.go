@@ -24,7 +24,7 @@ var Upgrade = upgrades.Upgrade{
 	UpgradeName:          UpgradeName,
 	CreateUpgradeHandler: CreateUpgradeHandler,
 	StoreUpgrades: storetypes.StoreUpgrades{
-		Added: []string{group.StoreKey, consensusparamtypes.StoreKey, crisistypes.StoreKey},
+		Added: []string{consensusparamtypes.StoreKey, crisistypes.StoreKey},
 	},
 }
 

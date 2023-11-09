@@ -51,6 +51,7 @@ func (AppModuleBasic) Name() string {
 
 // RegisterLegacyAminoCodec does nothing. Pricefeed does not support amino.
 func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
+	types.RegisterLegacyAminoCodec(cdc)
 }
 
 // RegisterInterfaces registers a module's interface types and their concrete implementations as proto.Message
