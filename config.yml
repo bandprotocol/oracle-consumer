@@ -11,7 +11,7 @@ genesis:
   chain_id: "oracle-consumer"
   app_state:
     gov:
-      voting_params:
+      params:
         voting_period: "40s"
     pricefeed:
       params:
