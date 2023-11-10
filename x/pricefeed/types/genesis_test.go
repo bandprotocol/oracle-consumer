@@ -20,11 +20,11 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc: "valid genesis state",
+			desc: "no param genesis state",
 			genState: &types.GenesisState{
 				PortId: types.PortID,
 			},
-			valid: true,
+			valid: false,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

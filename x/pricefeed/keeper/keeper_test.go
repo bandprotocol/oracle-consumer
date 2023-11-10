@@ -225,3 +225,39 @@ func TestStoreOracleResponsePacket(t *testing.T) {
 	require.True(t, found)
 	require.Equal(t, price, storedPrice)
 }
+
+func TestParams(t *testing.T) {
+	testCases := []struct {
+		name      string
+		input     types.Params
+		expectErr bool
+	}{
+		{
+			name:      "set invalid params",
+			input:     types.Params{},
+			expectErr: true,
+		},
+		{
+			name:      "set full valid params",
+			input:     types.DefaultParams(),
+			expectErr: false,
+		},
+	}
+
+	// Initialize the testing environment.
+	k, ctx := testkeeper.PriceFeedKeeper(t)
+
+	for _, tc := range testCases {
+		expected := k.GetParams(ctx)
+		err := k.SetParams(ctx, tc.input)
+		if tc.expectErr {
+			require.Error(t, err)
+		} else {
+			expected = tc.input
+			require.NoError(t, err)
+		}
+
+		p := k.GetParams(ctx)
+		require.Equal(t, expected, p)
+	}
+}

@@ -3,13 +3,13 @@ package pricefeed_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/suite"
-
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
-	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
-	"github.com/cosmos/ibc-go/v5/modules/core/exported"
-	localhosttypes "github.com/cosmos/ibc-go/v5/modules/light-clients/09-localhost/types"
-	ibctesting "github.com/cosmos/ibc-go/v5/testing"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+	commitmenttypes "github.com/cosmos/ibc-go/v7/modules/core/23-commitment/types"
+	"github.com/cosmos/ibc-go/v7/modules/core/exported"
+	ibctmtypes "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
+	ibctesting "github.com/cosmos/ibc-go/v7/testing"
+	"github.com/stretchr/testify/suite"
 )
 
 type PricefeedTestSuite struct {
@@ -29,10 +29,15 @@ func (suite *PricefeedTestSuite) SetupTest() {
 
 	// set localhost client
 	revision := clienttypes.ParseChainID(suite.chainA.GetContext().ChainID())
-	localHostClient := localhosttypes.NewClientState(
-		suite.chainA.GetContext().
-			ChainID(),
+	localHostClient := ibctmtypes.NewClientState(
+		suite.chainA.GetContext().ChainID(),
+		ibctmtypes.DefaultTrustLevel,
+		ibctesting.TrustingPeriod,
+		ibctesting.UnbondingPeriod,
+		ibctesting.MaxClockDrift,
 		clienttypes.NewHeight(revision, uint64(suite.chainA.GetContext().BlockHeight())),
+		commitmenttypes.GetSDKSpecs(),
+		ibctesting.UpgradePath,
 	)
 	suite.chainA.App.GetIBCKeeper().ClientKeeper.SetClientState(
 		suite.chainA.GetContext(),
