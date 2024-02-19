@@ -768,9 +768,6 @@ func New(
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
 
-	app.setupUpgradeHandlers()
-	app.setupUpgradeStoreLoaders()
-
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
 			tmos.Exit(err.Error())
@@ -962,36 +959,4 @@ func (app *App) SimulationManager() *module.SimulationManager {
 // ModuleManager returns the app ModuleManager
 func (app *App) ModuleManager() *module.Manager {
 	return app.mm
-}
-
-func (app *App) setupUpgradeHandlers() {
-	// for _, upgrade := range Upgrades {
-	// 	app.UpgradeKeeper.SetUpgradeHandler(
-	// 		upgrade.UpgradeName,
-	// 		upgrade.CreateUpgradeHandler(
-	// 			app.mm,
-	// 			app.configurator,
-	// 			app,
-	// 			&app.AppKeepers,
-	// 		),
-	// 	)
-	// }
-}
-
-// configure store loader that checks if version == upgradeHeight and applies store upgrades
-func (app *App) setupUpgradeStoreLoaders() {
-	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
-	if err != nil {
-		panic(fmt.Sprintf("failed to read upgrade info from disk %s", err))
-	}
-
-	if app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		return
-	}
-
-	// for _, upgrade := range Upgrades {
-	// 	if upgradeInfo.Name == upgrade.UpgradeName {
-	// 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &upgrade.StoreUpgrades))
-	// 	}
-	// }
 }
