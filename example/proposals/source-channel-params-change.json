@@ -1,12 +1,28 @@
 {
-  "title": "Param change for SourceChannel",
-  "description": "Proposal for change SourceChannel param in pricefeed module",
-  "changes": [
+  "messages": [
     {
-      "subspace": "pricefeed",
-      "key": "SourceChannel",
-      "value": "channel-0"
+      "@type": "/pricefeed.MsgUpdateParams",
+      "authority": <Alice Address>,
+      "params": {
+        "ask_count": "16",
+        "min_count": "10",
+        "min_ds_count": "3",
+        "prepare_gas_base": "3000",
+        "prepare_gas_each": "600",
+        "execute_gas_base": "70000",
+        "execute_gas_each": "7500",
+        "source_channel": "channel-0",
+        "fee_limit": [
+          {
+            "amount": "1000000",
+            "denom": "uband"
+          }
+        ]
+      }
     }
   ],
-  "deposit": "10000000stake"
+  "metadata": "ipfs://CID",
+  "deposit": "10000000stake",
+  "title": "Param change for SourceChannel",
+  "summary": "Proposal for change SourceChannel param in pricefeed module"
 }

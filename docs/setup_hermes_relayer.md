@@ -4,9 +4,10 @@ This document describes methods on how to set up Hermes Relayer to send IBC mess
 #### Build hermes for BandChain
 
 ```
-# Clone Hermes version 1.1.0-band
+# Clone Hermes version 1.4.0
 git clone https://github.com/informalsystems/hermes.git
 cd hermes
+git checkout v1.4.0
 
 # Build Hermes
 cargo build --release

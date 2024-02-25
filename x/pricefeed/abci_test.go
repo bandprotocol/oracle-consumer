@@ -4,7 +4,7 @@ import (
 	testingapp "github.com/bandprotocol/oracle-consumer/testing"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
-	ibctesting "github.com/cosmos/ibc-go/v5/testing"
+	ibctesting "github.com/cosmos/ibc-go/v7/testing"
 )
 
 func (suite *PricefeedTestSuite) TestHandleBeginBlock() {

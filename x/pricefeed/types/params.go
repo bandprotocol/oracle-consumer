@@ -24,24 +24,7 @@ var (
 	DefaultFeeLimit = sdk.NewCoins(sdk.NewInt64Coin("uband", 1000000))
 )
 
-var (
-	KeyAskCount       = []byte("AskCount")
-	KeyMinCount       = []byte("MinCount")
-	KeyMinDsCount     = []byte("MinDsCount")
-	KeyPrepareGasBase = []byte("PrepareGasBase")
-	KeyPrepareGasEach = []byte("PrepareGasEach")
-	KeyExecuteGasBase = []byte("ExecuteGasBase")
-	KeyExecuteGasEach = []byte("ExecuteGasEach")
-	KeySourceChannel  = []byte("SourceChannel")
-	KeyFeeLimit       = []byte("FeeLimit")
-)
-
 var _ paramtypes.ParamSet = (*Params)(nil)
-
-// ParamKeyTable the param key table for launch module
-func ParamKeyTable() paramtypes.KeyTable {
-	return paramtypes.NewKeyTable().RegisterParamSet(&Params{})
-}
 
 // NewParams creates a new Params instance
 func NewParams(
@@ -77,23 +60,36 @@ func DefaultParams() Params {
 	)
 }
 
-// ParamSetPairs get the params.ParamSet
-func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
-	return paramtypes.ParamSetPairs{
-		paramtypes.NewParamSetPair(KeyAskCount, &p.AskCount, validateUint64("ask count", true)),
-		paramtypes.NewParamSetPair(KeyMinCount, &p.MinCount, validateUint64("min count", true)),
-		paramtypes.NewParamSetPair(KeyMinDsCount, &p.MinDsCount, validateUint64("min ds count", true)),
-		paramtypes.NewParamSetPair(KeyPrepareGasBase, &p.PrepareGasBase, validateUint64("prepare gas base", true)),
-		paramtypes.NewParamSetPair(KeyPrepareGasEach, &p.PrepareGasEach, validateUint64("prepare gas each", true)),
-		paramtypes.NewParamSetPair(KeyExecuteGasBase, &p.ExecuteGasBase, validateUint64("execute gas base", true)),
-		paramtypes.NewParamSetPair(KeyExecuteGasEach, &p.ExecuteGasEach, validateUint64("execute gas each", true)),
-		paramtypes.NewParamSetPair(KeySourceChannel, &p.SourceChannel, validateString("source channel")),
-		paramtypes.NewParamSetPair(KeyFeeLimit, &p.FeeLimit, validateFeeLimit),
-	}
-}
-
 // Validate validates the set of params
 func (p Params) Validate() error {
+	if err := validateUint64("ask count", true)(p.AskCount); err != nil {
+		return err
+	}
+	if err := validateUint64("min count", true)(p.MinCount); err != nil {
+		return err
+	}
+	if err := validateUint64("min ds count", true)(p.MinDsCount); err != nil {
+		return err
+	}
+	if err := validateUint64("prepare gas base", true)(p.PrepareGasBase); err != nil {
+		return err
+	}
+	if err := validateUint64("prepare gas each", true)(p.PrepareGasEach); err != nil {
+		return err
+	}
+	if err := validateUint64("execute gas base", true)(p.ExecuteGasBase); err != nil {
+		return err
+	}
+	if err := validateUint64("execute gas each", true)(p.ExecuteGasEach); err != nil {
+		return err
+	}
+	if err := validateString("source channel")(p.SourceChannel); err != nil {
+		return err
+	}
+	if err := validateFeeLimit(p.FeeLimit); err != nil {
+		return err
+	}
+
 	return nil
 }
 

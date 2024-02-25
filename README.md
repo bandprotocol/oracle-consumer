@@ -95,23 +95,41 @@ The current default value for the source channel is `[not_set]`. If you wish to 
 
 ```json
 {
-  "title": "Param change for SourceChannel",
-  "description": "Proposal for change SourceChannel param in pricefeed module",
-  "changes": [
+  "messages": [
     {
-      "subspace": "pricefeed",
-      "key": "SourceChannel",
-      "value": "channel-0"
+      "@type": "/pricefeed.MsgUpdateParams",
+      "authority": <Gov Address>,
+      "params": {
+        "ask_count": "16",
+        "min_count": "10",
+        "min_ds_count": "3",
+        "prepare_gas_base": "3000",
+        "prepare_gas_each": "600",
+        "execute_gas_base": "70000",
+        "execute_gas_each": "7500",
+        "source_channel": "channel-1",
+        "fee_limit": [
+          {
+            "amount": "1000000",
+            "denom": "uband"
+          }
+        ]
+      }
     }
   ],
-  "deposit": "10000000stake"
+  "metadata": "ipfs://CID",
+  "deposit": "10000000stake",
+  "title": "Param change for SourceChannel",
+  "summary": "Proposal for change SourceChannel param in pricefeed module"
 }
 ```
+
+Note that you have to put your gov module address in authority field, you can get it by running this command `oracle-consumerd query auth module-account gov`
 
 #### Submit proposal
 
 ```
-oracle-consumerd tx gov submit-legacy-proposal param-change example/proposals/source-channel-params-change.json --from alice
+oracle-consumerd tx gov submit-proposal example/proposals/source-channel-params-change.json --from alice
 ```
 
 #### Vote the proposal
