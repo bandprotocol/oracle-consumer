@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -11,10 +12,9 @@ import (
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
-	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
-	"github.com/tendermint/tendermint/libs/log"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
+	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	"github.com/bandprotocol/oracle-consumer/x/pricefeed/types"
@@ -29,18 +29,17 @@ type Keeper struct {
 	channelKeeper types.ChannelKeeper
 	portKeeper    types.PortKeeper
 	scopedKeeper  capabilitykeeper.ScopedKeeper
+
+	// the address capable of executing a MsgUpdateParams message. Typically, this
+	// should be the x/gov module account.
+	authority string
 }
 
 func NewKeeper(
 	cdc codec.BinaryCodec, key storetypes.StoreKey, paramSpace paramtypes.Subspace,
 	ics4Wrapper types.ICS4Wrapper, channelKeeper types.ChannelKeeper, portKeeper types.PortKeeper,
-	scopedKeeper capabilitykeeper.ScopedKeeper,
+	scopedKeeper capabilitykeeper.ScopedKeeper, authority string,
 ) Keeper {
-	// set KeyTable if it has not already been set
-	if !paramSpace.HasKeyTable() {
-		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
-	}
-
 	return Keeper{
 		cdc:           cdc,
 		storeKey:      key,
@@ -49,7 +48,13 @@ func NewKeeper(
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
+		authority:     authority,
 	}
+}
+
+// GetAuthority returns the x/pricefeed module's authority.
+func (k Keeper) GetAuthority() string {
+	return k.authority
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
@@ -204,7 +209,7 @@ func (k Keeper) RequestBandChainData(
 	oracleRequestPacket bandtypes.OracleRequestPacketData,
 ) error {
 	portID := k.GetPort(ctx)
-	channel, found := k.channelKeeper.GetChannel(ctx, portID, sourceChannel)
+	_, found := k.channelKeeper.GetChannel(ctx, portID, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(
 			channeltypes.ErrChannelNotFound,
@@ -214,9 +219,6 @@ func (k Keeper) RequestBandChainData(
 		)
 	}
 
-	destinationPort := channel.GetCounterparty().GetPortID()
-	destinationChannel := channel.GetCounterparty().GetChannelID()
-
 	// Get the capability associated with the given channel.
 	channelCap, ok := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(portID, sourceChannel))
 	if !ok {
@@ -224,7 +226,7 @@ func (k Keeper) RequestBandChainData(
 	}
 
 	// Get the next sequence number for the given channel and port.
-	sequence, found := k.channelKeeper.GetNextSequenceSend(
+	_, found = k.channelKeeper.GetNextSequenceSend(
 		ctx, portID, sourceChannel,
 	)
 	if !found {
@@ -236,20 +238,16 @@ func (k Keeper) RequestBandChainData(
 		)
 	}
 
-	// Create a new packet with the oracle request packet data and the sequence number.
-	packet := channeltypes.NewPacket(
-		oracleRequestPacket.GetBytes(),
-		sequence,
+	// Send the packet via the channel and capability associated with the given channel.
+	if _, err := k.ics4Wrapper.SendPacket(
+		ctx,
+		channelCap,
 		portID,
 		sourceChannel,
-		destinationPort,
-		destinationChannel,
 		clienttypes.ZeroHeight(),
 		uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute)),
-	)
-
-	// Send the packet via the channel and capability associated with the given channel.
-	if err := k.ics4Wrapper.SendPacket(ctx, channelCap, packet); err != nil {
+		oracleRequestPacket.GetBytes(),
+	); err != nil {
 		return err
 	}
 

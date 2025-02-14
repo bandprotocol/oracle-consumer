@@ -26,6 +26,8 @@ var (
 	SymbolRequestStoreKeyPrefix = []byte{0x02}
 
 	PriceStoreKeyPrefix = []byte{0x03}
+
+	ParamsKey = []byte{0x04}
 )
 
 func SymbolRequestStoreKey(symbol string) []byte {
